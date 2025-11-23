@@ -1,27 +1,27 @@
-﻿@page "/CuentaAdmin/autorizados"
+﻿@page "/cuenta/autorizados"
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
-    <h1>CUENTA</h1>
+    <h1>Cuenta : autorizados para entrega</h1>
 </SectionContent>
 
 <div class="glass-container authorized-view">
 
     <div class="sub-nav-bar">
-        <NavLink class="sub-nav-item" href="/CuentaAdmin" Match="NavLinkMatch.All">Perfil</NavLink>
+        <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
         <div class="separator"></div>
 
-        <NavLink class="sub-nav-item" href="/CuentaAdmin/direcciones">Direcciones</NavLink>
+        <NavLink class="sub-nav-item" href="/cuenta/direcciones">Direcciones</NavLink>
         <div class="separator"></div>
 
-        <NavLink class="sub-nav-item active" href="/CuentaAdmin/autorizados">Autorizados</NavLink>
+        <NavLink class="sub-nav-item active" href="/cuenta/autorizados">Autorizados</NavLink>
     </div>
 
     <div class="content-wrapper">
 
         <div class="header-section">
             <h3 class="section-title">Personas Autorizadas</h3>
-            <a href="/CuentaAdmin/autorizados/create" class="btn-add text-decoration-none">
+            <a href="/cuenta/autorizados/create" class="btn-add text-decoration-none">
                 <i class="bi bi-plus-circle-fill"></i> Nuevo Autorizado
             </a>
         </div>

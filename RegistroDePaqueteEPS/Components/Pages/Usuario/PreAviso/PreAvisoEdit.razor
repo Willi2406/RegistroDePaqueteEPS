@@ -1,8 +1,6 @@
-﻿@page "/pre-aviso/edit/{Id:int}"
+﻿@page "/preavisousuario/edit/{Id:int}"
 @inject NavigationManager NavManager
 @rendermode InteractiveServer
-
-<PageTitle>Editar Pre-Aviso</PageTitle>
 
 <SectionContent SectionName="TituloPagina">
     <h1>PRE-AVISO</h1>
@@ -11,7 +9,7 @@
 <div class="glass-container edit-preaviso-view">
 
     <div class="header-actions">
-        <a href="/pre-aviso" class="btn-back">
+        <a href="/preavisousuario" class="btn-back">
             <i class="bi bi-arrow-left"></i> Regresar al Listado
         </a>
     </div>
@@ -119,12 +117,12 @@
     private void GuardarCambios()
     {
         // Lógica de actualización...
-        NavManager.NavigateTo("/pre-aviso");
+        NavManager.NavigateTo("/preavisousuario");
     }
 
     private void Cancelar()
     {
-        NavManager.NavigateTo("/pre-aviso");
+        NavManager.NavigateTo("/preavisousuario");
     }
 
     private void ManejarArchivo(InputFileChangeEventArgs e)

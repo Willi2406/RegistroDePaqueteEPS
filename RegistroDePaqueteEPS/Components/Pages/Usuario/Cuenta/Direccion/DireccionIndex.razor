@@ -1,21 +1,20 @@
-﻿@page "/Cuenta/direcciones"
+﻿@page "/cuenta/direcciones"
 @rendermode InteractiveServer
 
-
 <SectionContent SectionName="TituloPagina">
-    <h1>CUENTA</h1>
+    <h1>Cuenta : direcciones</h1>
 </SectionContent>
 
 <div class="glass-container addresses-view">
 
     <div class="sub-nav-bar">
-        <NavLink class="sub-nav-item" href="/cuenta" Match="NavLinkMatch.All">Perfil</NavLink>
+        <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
         <div class="separator"></div>
 
         <NavLink class="sub-nav-item" href="/cuenta/direcciones">Direcciones</NavLink>
         <div class="separator"></div>
 
-        <NavLink class="sub-nav-item" href="/cuenta/autorizados">Autorizados</NavLink>
+        <NavLink class="sub-nav-item active" href="/cuenta/autorizados">Autorizados</NavLink>
     </div>
 
     <div class="addresses-content">
@@ -23,7 +22,7 @@
         <div class="header-section">
             <h3 class="section-title">Mis Direcciones</h3>
             <button class="btn-add">
-                <i class="bi bi-plus-circle-fill" href="/CuentaAdmin/direcciones/create"></i> Nueva Dirección
+                <i class="bi bi-plus-circle-fill" href="/cuenta/direcciones/create"></i> Nueva Dirección
             </button>
         </div>
 
@@ -52,10 +51,10 @@
 
                     <div class="card-actions">
                         <button class="btn-icon edit" title="Editar">
-                            <i class="bi bi-pencil-square"></i>
+                            <a class="bi bi-pencil-square" href="/cuenta/direcciones/edit"></a>
                         </button>
                         <button class="btn-icon delete" title="Eliminar">
-                            <i class="bi bi-trash-fill"></i>
+                            <a class="bi bi-trash-fill" href="/cuenta/direcciones/edit"></a>
                         </button>
                     </div>
                 </div>

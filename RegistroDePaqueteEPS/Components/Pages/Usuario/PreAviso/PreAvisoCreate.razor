@@ -1,8 +1,6 @@
-﻿@page "/pre-aviso/create"
+﻿@page "/preavisousuario/create"
 @inject NavigationManager NavManager
 @rendermode InteractiveServer
-
-<PageTitle>Nuevo Pre-Aviso</PageTitle>
 
 <SectionContent SectionName="TituloPagina">
     <h1>PRE-AVISO</h1>
@@ -11,7 +9,7 @@
 <div class="glass-container create-preaviso-view">
 
     <div class="header-actions">
-        <a href="/pre-aviso" class="btn-back">
+        <a href="/preavisousuario" class="btn-back">
             <i class="bi bi-arrow-left"></i> Regresar al Listado
         </a>
     </div>
@@ -91,12 +89,12 @@
     private void GuardarPreAviso()
     {
         // Lógica de guardado...
-        NavManager.NavigateTo("/pre-aviso");
+        NavManager.NavigateTo("/preavisousario");
     }
 
     private void Cancelar()
     {
-        NavManager.NavigateTo("/pre-aviso");
+        NavManager.NavigateTo("/preavisousuario");
     }
 
     private void ManejarArchivo(InputFileChangeEventArgs e)
