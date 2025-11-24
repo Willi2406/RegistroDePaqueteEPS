@@ -1,5 +1,7 @@
 ﻿@page "/cuenta/autorizados"
+@inject AutorizadosEntregaService autorizadosEntregaService
 @rendermode InteractiveServer
+
 
 <SectionContent SectionName="TituloPagina">
     <h1>Cuenta : autorizados para entrega</h1>
@@ -34,18 +36,13 @@
                         <div class="icon-box">
                             <i class="bi bi-person-vcard-fill"></i>
                         </div>
-                        <span class="alias-text">@persona.Nombre</span>
-
-                        @if (persona.Activo)
-                        {
-                            <span class="badge-main" style="background-color: #0BC8A2;">Activo</span>
-                        }
+                        <span class="alias-text">@persona.Nombres</span>
                     </div>
 
                     <div class="card-body">
-                        <p><strong>Cédula:</strong> @persona.Cedula</p>
-                        <p><strong>Parentesco:</strong> @persona.Parentesco</p>
+                        <p><strong>Cédula:</strong> @persona.Identificacion</p>
                         <p><strong>Teléfono:</strong> @persona.Telefono</p>
+                        <p><strong>Teléfono:</strong> @persona.Correo</p>
                     </div>
 
                     <div class="card-actions">
@@ -64,38 +61,10 @@
 </div>
 
 @code {
-    // Modelo para Autorizados
-    public class AutorizadosEntrega
-    {
-        public int AutorizadoEntregaId { get; set; }
-        public string Nombre { get; set; }
-        public string Cedula { get; set; }
-        public string Parentesco { get; set; } // Ej: Hermano, Esposa
-        public string Telefono { get; set; }
-        public bool Activo { get; set; }
-    }
-
     public List<AutorizadosEntrega> ListaAutorizados { get; set; } = new List<AutorizadosEntrega>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        // Datos de prueba simulados
-        ListaAutorizados.Add(new AutorizadosEntrega
-        {
-            Nombre = "Maria Perez",
-            Cedula = "402-1234567-8",
-            Parentesco = "Esposa",
-            Telefono = "809-555-1234",
-            Activo = true
-        });
-
-        ListaAutorizados.Add(new AutorizadosEntrega
-        {
-            Nombre = "Jose Rodriguez",
-            Cedula = "001-9876543-2",
-            Parentesco = "Hermano",
-            Telefono = "829-555-5678",
-            Activo = true
-        });
+        ListaAutorizados = await autorizadosEntregaService.Listar(a => a.AutorizadoEntregaId > 0);
     }
 }
