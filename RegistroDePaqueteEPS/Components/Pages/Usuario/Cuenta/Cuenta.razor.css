@@ -1,4 +1,4 @@
-﻿/* Reutilizamos el contenedor de vidrio base */
+﻿/* --- Contenedor de Vidrio --- */
 .glass-container {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 30px;
@@ -6,18 +6,18 @@
     min-height: 600px;
     display: flex;
     flex-direction: column;
-    gap: 2rem; /* Espacio entre el menú y el contenido */
+    gap: 2rem;
     margin: 0 20px;
 }
 
-/* --- 1. Estilos del Sub-Menú Superior --- */
+/* --- Sub-Menú --- */
 .sub-nav-bar {
     background-color: #FFFFFF;
     border-radius: 30px;
     height: 60px;
     display: flex;
     align-items: center;
-    justify-content: space-evenly; /* Distribuye los items equitativamente */
+    justify-content: space-evenly;
     padding: 0 2rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
@@ -25,21 +25,20 @@
 .sub-nav-item {
     font-family: 'Jaldi', sans-serif;
     font-size: 20px;
-    color: #888; /* Color gris para inactivos */
+    color: #888;
     text-decoration: none;
     font-weight: 400;
     padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
     position: relative;
+    transition: all 0.3s ease;
 }
 
-    /* Estado Activo (Link seleccionado) */
+    /* Blazor aplica la clase 'active' automáticamente al NavLink coincidente */
     .sub-nav-item.active {
-        color: #006089; /* Azul EPS */
+        color: #006089;
         font-weight: 700;
     }
 
-        /* Pequeña línea debajo del activo para resaltar (Opcional) */
         .sub-nav-item.active::after {
             content: '';
             position: absolute;
@@ -56,61 +55,56 @@
         color: #006089;
     }
 
-/* Separadores verticales pequeños */
 .separator {
     width: 1px;
     height: 20px;
     background-color: #ddd;
 }
 
-
-/* --- 2. Estilos del Formulario/Datos --- */
+/* --- Contenido del Perfil --- */
 .section-title {
     font-family: 'Jaldi', sans-serif;
     color: white;
     font-size: 24px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     font-weight: 400;
 }
 
-/* Grid para organizar los inputs (2 columnas) */
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-    gap: 1.5rem; /* Espacio entre cajas */
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
     margin-bottom: 2rem;
-    border-radius: 30px;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    border-radius: 30px;
 }
 
     .input-group label {
         color: white;
         font-family: 'Jaldi', sans-serif;
         font-size: 18px;
-        margin-left: 10px; /* Alinear visualmente con el borde redondeado */
+        margin-left: 20px; /* Alineado con la curva */
     }
 
-/* Las cajas blancas donde van los datos */
+/* CAJAS DE DATOS (Solo lectura) - Estilo Píldora */
 .data-box {
     background-color: #FFFFFF;
-    border-radius: 15px;
+    border-radius: 30px; /* Redondo completo */
     height: 50px;
     display: flex;
     align-items: center;
     padding: 0 1.5rem;
     font-family: 'Jaldi', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Botón de Guardar */
+/* Botón Guardar */
 .action-row {
     display: flex;
     justify-content: flex-end;
@@ -119,35 +113,36 @@
 .btn-save {
     background-color: #006089;
     color: white;
-    border: 2px solid white;
+    border: none;
     border-radius: 30px;
     padding: 10px 40px;
     font-family: 'Jaldi', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
 }
 
     .btn-save:hover {
-        background-color: white;
-        color: #006089;
+        transform: scale(1.05);
+        background-color: #004d6e;
     }
 
-/* Responsividad para móviles */
+/* Responsividad */
 @media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
     .sub-nav-bar {
-        flex-wrap: wrap;
         height: auto;
-        padding: 1rem;
-        gap: 0.5rem;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px;
     }
 
     .separator {
         display: none;
-    }
-    /* Ocultar separadores en móvil */
-
-    .form-grid {
-        grid-template-columns: 1fr; /* Una sola columna en móviles */
     }
 }

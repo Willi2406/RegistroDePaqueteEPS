@@ -1,5 +1,6 @@
 ﻿@page "/cuenta"
 @rendermode InteractiveServer
+@layout MainLayoutUsuario
 
 <SectionContent SectionName="TituloPagina">
     <h1>CUENTA</h1>
@@ -21,27 +22,34 @@
         <h3 class="section-title">Datos Personales</h3>
 
         <div class="form-grid">
-            <div class="input-group">
-                <label>Nombre</label>
-                <div class="data-box">William</div>
-            </div>
-            <div class="input-group">
-                <label>Apellido</label>
-                <div class="data-box">Rodriguez</div>
+
+            <div class="form-item">
+                <label>Codigo</label>
+                <div class="data-box">2024</div>
             </div>
 
-            <div class="input-group">
+            <div class="form-item">
+                <label>Sucursal</label>
+                <div class="data-box">Salcedo</div>
+            </div>
+
+            <div class="form-item">
+                <label>Nombre</label>
+                <div class="data-box"> William Rodriguez</div>
+            </div>
+
+            <div class="form-item">
+                <label>Cédula</label>
+                <div class="data-box">402-0000000-0</div>
+            </div>
+
+            <div class="form-item">
                 <label>Correo</label>
                 <div class="data-box">william@ejemplo.com</div>
             </div>
-            <div class="input-group">
+            <div class="form-item">
                 <label>Teléfono</label>
                 <div class="data-box">809-555-5555</div>
-            </div>
-
-            <div class="input-group">
-                <label>Cédula</label>
-                <div class="data-box">402-0000000-0</div>
             </div>
         </div>
 
