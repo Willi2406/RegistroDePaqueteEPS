@@ -1,0 +1,198 @@
+﻿@page "/Account/Register"
+@layout AuthLayout
+@inject UserManager<ApplicationUser> UserManager
+@inject IUserStore<ApplicationUser> UserStore
+@inject SignInManager<ApplicationUser> SignInManager
+@inject ILogger<Register> Logger
+@inject NavigationManager NavigationManager
+@inject IdentityRedirectManager RedirectManager
+
+<PageTitle>Crear Cuenta</PageTitle>
+
+<h2 class="register-title">HAZTE SOCIO</h2>
+
+<div class="form-wrapper">
+    <StatusMessage Message="@Message" />
+
+    <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+        <DataAnnotationsValidator />
+
+        <div class="form-grid">
+
+            <div class="form-column">
+                <div class="form-item">
+                    <label>Provincia:</label>
+                    <InputText @bind-Value="Input.Provincia" class="input-box" placeholder="Santo Domingo" />
+                </div>
+
+                <div class="form-item">
+                    <label>Identificación:</label>
+                    <InputText @bind-Value="Input.Identificacion" class="input-box" placeholder="000-0000000-0" />
+                </div>
+
+                <div class="form-item">
+                    <label>Sexo:</label>
+                    <InputSelect @bind-Value="Input.Sexo" class="input-box">
+                        <option value="">Seleccione...</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </InputSelect>
+                </div>
+
+                <div class="form-item">
+                    <label>Teléfono:</label>
+                    <InputText @bind-Value="Input.Telefono" class="input-box" placeholder="809-000-0000" />
+                </div>
+
+                <div class="form-item">
+                    <label>Correo Electrónico:</label>
+                    <InputText @bind-Value="Input.Email" class="input-box" type="email" placeholder="ejemplo@correo.com" />
+                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+                </div>
+
+                <div class="form-item">
+                    <label>Contraseña:</label>
+                    <InputText @bind-Value="Input.Password" class="input-box" type="password" placeholder="******" />
+                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-column">
+                <div class="form-item">
+                    <label>Agencia o Sucursal</label>
+                    <InputText @bind-Value="Input.Sucursal" class="input-box" placeholder="Sucursal Principal" />
+                </div>
+
+                <div class="form-item">
+                    <label>Nombre Completo</label>
+                    <InputText @bind-Value="Input.NombreCompleto" class="input-box" placeholder="Nombre y Apellido" />
+                </div>
+
+                <div class="form-item">
+                    <label>Fecha de Nacimiento</label>
+                    <InputDate @bind-Value="Input.FechaNacimiento" class="input-box" />
+                </div>
+
+                <div class="form-item">
+                    <label>Celular:</label>
+                    <InputText @bind-Value="Input.Celular" class="input-box" placeholder="829-000-0000" />
+                </div>
+
+                <div class="form-item">
+                    <label>Validación correo</label>
+                    <InputText @bind-Value="Input.ConfirmEmail" class="input-box" type="email" placeholder="Confirmar correo" />
+                </div>
+
+                <div class="form-item">
+                    <label>Confirmar contrasena</label>
+                    <InputText @bind-Value="Input.ConfirmPassword" class="input-box" type="password" placeholder="Confirmar contraseña" />
+                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="btn-register">Crear Cuenta</button>
+        </div>
+
+        <div class="login-link">
+            <a href="Account/Login">¿Ya tienes cuenta? <strong>Iniciar Sesión</strong></a>
+        </div>
+
+    </EditForm>
+</div>
+
+@code {
+    private IEnumerable<IdentityError>? identityErrors;
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+
+    public async Task RegisterUser()
+    {
+        var user = CreateUser();
+
+        await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+        var emailStore = GetEmailStore();
+        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        user.NombreCompleto = Input.NombreCompleto;
+        user.Provincia = Input.Provincia;
+        user.Sucursal = Input.Sucursal;
+        user.Identificacion = Input.Identificacion;
+        user.Sexo = Input.Sexo;
+        user.FechaNacimiento = Input.FechaNacimiento;
+        user.Telefono = Input.Telefono;
+        user.Celular = Input.Celular;
+        var result = await UserManager.CreateAsync(user, Input.Password);
+
+        if (!result.Succeeded)
+        {
+            identityErrors = result.Errors;
+            return;
+        }
+
+        Logger.LogInformation("User created a new account with password.");
+
+        var userId = await UserManager.GetUserIdAsync(user);
+        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+        // Auto-login tras registro
+        await SignInManager.SignInAsync(user, isPersistent: false);
+        RedirectManager.RedirectTo(ReturnUrl);
+    }
+
+    private ApplicationUser CreateUser()
+    {
+        try
+        {
+            return Activator.CreateInstance<ApplicationUser>();
+        }
+        catch
+        {
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
+        }
+    }
+
+    private IUserEmailStore<ApplicationUser> GetEmailStore()
+    {
+        if (!UserManager.SupportsUserEmail)
+        {
+            throw new NotSupportedException("The default UI requires a user store with email support.");
+        }
+        return (IUserEmailStore<ApplicationUser>)UserStore;
+    }
+
+    // Modelo de Datos del Formulario
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
+        public string ConfirmPassword { get; set; } = "";
+        public string Provincia { get; set; } = "";
+        public string Sucursal { get; set; } = "";
+        public string Identificacion { get; set; } = "";
+        public string NombreCompleto { get; set; } = "";
+        public string Sexo { get; set; } = "";
+        public DateTime? FechaNacimiento { get; set; }
+        public string Telefono { get; set; } = "";
+        public string Celular { get; set; } = "";
+        public string ConfirmEmail { get; set; } = "";
+    }
+}

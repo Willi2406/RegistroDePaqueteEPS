@@ -1,0 +1,113 @@
+﻿@page "/cuenta/direcciones/upsert/{DireccionDeliveryId:int}"
+@inject DireccionesDeliveryService direccionesDeliveryService
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+<SectionContent SectionName="TituloPagina">
+    <h1>Cuenta : Crear direcciones </h1>
+</SectionContent>
+
+<div class="glass-container create-address-view">
+
+    <div class="sub-nav-bar">
+        <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
+        <div class="separator"></div>
+
+        <NavLink class="sub-nav-item" href="/cuenta/direcciones">Direcciones</NavLink>
+        <div class="separator"></div>
+
+        <NavLink class="sub-nav-item active" href="/cuenta/autorizados">Autorizados</NavLink>
+    </div>
+
+    <div class="form-content">
+        <h3 class="section-title">@Estado Dirección</h3>
+
+        <EditForm Model="Direccion" OnValidSubmit="GuardarDireccion">
+            <DataAnnotationsValidator />
+
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Provincia</label>
+                    <InputText @bind-Value="Direccion.Provincia" class="input-box" placeholder="Provincia" />
+                </div>
+
+                <div class="input-group">
+                    <label>Municipio</label>
+                    <InputText @bind-Value="Direccion.Municipio" class="input-box" placeholder="Ciudad" />
+                </div>
+
+                <div class="input-group">
+                    <label>Sector</label>
+                    <InputText @bind-Value="Direccion.Sector" class="input-box" placeholder="Sector" />
+                    <ValidationMessage For="@(() => Direccion.Sector)" />
+                </div>
+
+                <div class="input-group">
+                    <label>Calle</label>
+                    <InputText @bind-Value="Direccion.Calle" class="input-box" placeholder="Calle Principal" />
+                    <ValidationMessage For="@(() => Direccion.Calle)" />
+                </div>
+
+                <div class="input-group">
+                    <label>Domicilio</label>
+                    <InputText @bind-Value="Direccion.Domicilio" class="input-box" placeholder="#123" />
+                </div>
+
+                <div class="input-group">
+                    <label>Referencias</label>
+                    <InputText @bind-Value="Direccion.Referencias" class="input-box" placeholder="#123" />
+                    <ValidationMessage For="@(() => Direccion.Referencias)" />
+                </div>
+
+                <div class="input-group">
+                    <label>Alias (Ej: Casa, Oficina)</label>
+                    <InputText @bind-Value="Direccion.Alias" class="input-box" placeholder="Nombre de la dirección" />
+                    <ValidationMessage For="@(() => Direccion.Alias)" />
+                </div>
+            </div>
+
+            <div class="options-row">
+                <div class="checkbox-group">
+                    <label class="switch">
+                        <InputCheckbox @bind-Value="Direccion.Principal" />
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="checkbox-label">Dirección Principal</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/cuenta/direcciones" class="btn-cancel">Cancelar</a>
+                <button type="submit" class="btn-save">Guardar</button>
+            </div>
+
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public int DireccionDeliveryId { get; set; }
+
+    public DireccionesDelivery Direccion { get; set; } = new DireccionesDelivery();
+    public string Estado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (DireccionDeliveryId > 0)
+        {
+            Estado = "Editar";
+            Direccion = await direccionesDeliveryService.Buscar(DireccionDeliveryId);
+        }
+        else
+            Estado = "Agregar";
+    }
+
+    private async Task GuardarDireccion()
+    {
+        var modificado = await direccionesDeliveryService.Guardar(Direccion);
+        if (modificado)
+            NavManager.NavigateTo("/cuenta/direcciones");
+    }
+}

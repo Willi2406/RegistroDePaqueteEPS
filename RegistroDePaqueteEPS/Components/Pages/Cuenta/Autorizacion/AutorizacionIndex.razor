@@ -1,0 +1,79 @@
+﻿@page "/cuenta/autorizados"
+@inject AutorizadosEntregaService autorizadosEntregaService
+@rendermode InteractiveServer
+
+<SectionContent SectionName="TituloPagina">
+    <h1>Cuenta : autorizados para entrega</h1>
+</SectionContent>
+
+<div class="glass-container authorized-view">
+
+    <div class="sub-nav-bar">
+        <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
+        <div class="separator"></div>
+
+        <NavLink class="sub-nav-item" href="/cuenta/direcciones">Direcciones</NavLink>
+        <div class="separator"></div>
+
+        <NavLink class="sub-nav-item active" href="/cuenta/autorizados">Autorizados</NavLink>
+    </div>
+
+    <div class="content-wrapper">
+
+        <div class="header-section">
+            <h3 class="section-title">Personas Autorizadas</h3>
+            <a href="/cuenta/autorizados/upsert/0" class="btn-add text-decoration-none">
+                <i class="bi bi-plus-circle-fill"></i> Nuevo Autorizado
+            </a>
+        </div>
+
+        @if (ListaAutorizados.Count == 0)
+        {
+            <div class="empty-state">
+                <i class="bi bi-people" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                <p>No hay personas autorizadas registradas.</p>
+            </div>
+        }
+        else
+        {
+            <div class="cards-grid">
+                @foreach (var persona in ListaAutorizados)
+                {
+                    <div class="address-card">
+                        <div class="card-header">
+                            <div class="icon-box">
+                                <i class="bi bi-person-vcard-fill"></i>
+                            </div>
+                            <span class="alias-text">@persona.Nombres</span>
+                        </div>
+
+                        <div class="card-body">
+                            <p><strong>Cédula:</strong> @persona.Identificacion</p>
+                            <p><strong>Teléfono:</strong> @persona.Telefono</p>
+                            <p><strong>Correo:</strong> @persona.Correo</p>
+                        </div>
+
+                        <div class="card-actions">
+                            <a href="/cuenta/autorizados/upsert/@persona.AutorizadoEntregaId" class="btn-icon edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <button class="btn-icon delete" title="Eliminar">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    public List<AutorizadosEntrega> ListaAutorizados { get; set; } = new List<AutorizadosEntrega>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaAutorizados = await autorizadosEntregaService.Listar(a => a.AutorizadoEntregaId > 0);
+    }
+}

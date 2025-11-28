@@ -1,0 +1,86 @@
+﻿@page "/cuenta/direcciones"
+@inject DireccionesDeliveryService direccionesDeliveryService
+@rendermode InteractiveServer
+
+<SectionContent SectionName="TituloPagina">
+    <h1>Cuenta : direcciones</h1>
+</SectionContent>
+
+<div class="glass-container addresses-view">
+
+    <div class="sub-nav-bar">
+        <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
+        <div class="separator"></div>
+
+        <NavLink class="sub-nav-item active" href="/cuenta/direcciones">Direcciones</NavLink>
+        <div class="separator"></div>
+
+        <NavLink class="sub-nav-item" href="/cuenta/autorizados">Autorizados</NavLink>
+    </div>
+
+    <div class="addresses-content">
+
+        <div class="header-section">
+            <h3 class="section-title">Mis Direcciones</h3>
+            <a href="/cuenta/direcciones/upsert/0" class="btn-add text-decoration-none">
+                <i class="bi bi-plus-circle-fill"></i> Nueva Dirección
+            </a>
+        </div>
+
+        @if (ListaDirecciones.Count == 0)
+        {
+            <div class="empty-state">
+                <i class="bi bi-geo-alt" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                <p>No tienes direcciones registradas.</p>
+            </div>
+        }
+        else
+        {
+            <div class="cards-grid">
+                @foreach (var dir in ListaDirecciones)
+                {
+                    <div class="address-card">
+                        <div class="card-header">
+                            <div class="icon-box">
+                                <i class="bi bi-house-door-fill"></i>
+                            </div>
+                            <span class="alias-text">@dir.Alias</span>
+
+                            @if (dir.Principal)
+                            {
+                                <span class="badge-main">Principal</span>
+                            }
+                        </div>
+
+                        <div class="card-body">
+                            <p><strong>Sector:</strong> @dir.Sector</p>
+                            <p><strong>Calle:</strong> @dir.Calle</p>
+                            <p><strong>Domicilio:</strong> @(dir.Domicilio ?? "N/A")</p>
+                            <p><strong>Referencias:</strong> @dir.Referencias</p>
+                        </div>
+
+                        <div class="card-actions">
+                            <a href="/cuenta/direcciones/upsert/@dir.DireccionDeliveryId" class="btn-icon edit" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <button class="btn-icon delete" title="Eliminar">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    public List<DireccionesDelivery> ListaDirecciones { get; set; } = new List<DireccionesDelivery>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaDirecciones = await direccionesDeliveryService.Listar(d => d.DireccionDeliveryId > 0);
+    }
+}

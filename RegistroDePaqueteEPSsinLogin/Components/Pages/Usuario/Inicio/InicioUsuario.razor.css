@@ -1,0 +1,77 @@
+﻿/* Reutilizamos el estilo glass-container base, pero lo centramos para el dashboard */
+.dashboard-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px; /* Altura mínima para que se vea imponente */
+}
+
+.cards-wrapper {
+    display: flex;
+    gap: 3rem; /* Espacio entre tarjetas */
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+/* --- Estilo de la Tarjeta Individual --- */
+.stat-card {
+    background: rgba(255, 255, 255, 0.85); /* Blanco al 85% de opacidad */
+    border-radius: 20px;
+    width: 350px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra suave */
+    transition: transform 0.3s ease;
+    padding: 2rem;
+}
+
+    .stat-card:hover {
+        transform: translateY(-10px); /* Efecto de elevación al pasar el mouse */
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+/* --- Iconos --- */
+.icon-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+    color: #0097B2; /* Color Teal/Azul del diseño */
+}
+
+.main-icon {
+    font-size: 5rem; /* Icono gigante */
+}
+
+.badge-icon {
+    position: absolute;
+    font-size: 2rem;
+    bottom: -5px;
+    right: -10px;
+    color: #0097B2;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+}
+
+/* --- Textos --- */
+.card-content {
+    text-align: center;
+    color: #0097B2; /* Mismo color del icono */
+    font-family: 'Jaldi', sans-serif;
+}
+
+    .card-content h2 {
+        font-size: 28px;
+        font-weight: 400;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+.count-number {
+    font-size: 48px;
+    font-weight: 700;
+    display: block;
+    margin-top: 0.5rem;
+}

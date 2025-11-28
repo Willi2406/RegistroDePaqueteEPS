@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegistroDePaqueteEPS.DAL;
+using RegistroDePaqueteEPS.Data;
 using RegistroDePaqueteEPS.Models;
 using System.Linq.Expressions;
 
 namespace RegistroDePaqueteEPS.Services;
 
-public class AutorizadosEntregaService(IDbContextFactory<Contexto> dbContext)
+public class AutorizadosEntregaService(IDbContextFactory<ApplicationDbContext> dbContext)
 {
     public async Task<bool> Existe(int autorizadoEntregaId)
     {

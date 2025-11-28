@@ -1,0 +1,45 @@
+﻿/* Fondo general */
+.auth-background {
+    background-color: #006089;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: 'Jaldi', sans-serif;
+}
+
+/* Tarjeta de Vidrio */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 3rem;
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 10;
+}
+
+/* Logo */
+.logo-container {
+    margin-bottom: 1rem;
+}
+
+.logo-img {
+    max-width: 250px;
+    height: auto;
+}
+
+/* Contenedor del cuerpo (@Body) */
+.auth-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

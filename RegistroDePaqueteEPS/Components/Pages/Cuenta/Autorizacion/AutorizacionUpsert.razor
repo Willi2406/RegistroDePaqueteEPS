@@ -1,0 +1,93 @@
+﻿@page "/cuenta/autorizados/upsert/{AutorizadoEntregaId:int}"
+@inject NavigationManager NavManager
+@inject AutorizadosEntregaService autorizadosEntregaService
+
+
+<SectionContent SectionName="TituloPagina">
+    <h1>CUENTA</h1>
+</SectionContent>
+
+<div class="glass-container create-authorized-view">
+
+    <div class="sub-nav-bar">
+        <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
+        <div class="separator"></div>
+        <NavLink class="sub-nav-item" href="/cuenta/direcciones">Direcciones</NavLink>
+        <div class="separator"></div>
+        <NavLink class="sub-nav-item active" href="/cuenta/autorizados">Autorizados</NavLink>
+    </div>
+
+    <div class="form-content">
+        <h3 class="section-title">@Estado Autorizado</h3>
+
+        <EditForm Model="Autorizado" OnValidSubmit="GuardarAutorizado">
+            <DataAnnotationsValidator />
+
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>Identificación</label>
+                    <input type="text"
+                           class="input-box"
+                           @bind-value="Autorizado.Identificacion"
+                           placeholder="000-0000000-0" />
+                    <ValidationMessage For="@(() => Autorizado.Identificacion)" />
+                </div>
+
+                <div class="form-item">
+                    <label>Nombre Completo</label>
+                    <input type="text"
+                           class="input-box"
+                           @bind-value="Autorizado.Nombres"
+                           placeholder="Nombre y Apellido" />
+                    <ValidationMessage For="@(() => Autorizado.Nombres)" />
+                </div>
+
+                <div class="form-item">
+                    <label>Teléfono</label>
+                    <input type="text"
+                           class="input-box"
+                           @bind-value="Autorizado.Telefono"
+                           placeholder="809-000-0000" />
+                    <ValidationMessage For="@(() => Autorizado.Telefono)" />
+                </div>
+
+                <div class="form-item">
+                    <label>Correo</label>
+                    <input type="email"
+                           class="input-box"
+                           @bind-value="Autorizado.Correo"
+                           placeholder="cliente@correo.com" />
+                    <ValidationMessage For="@(() => Autorizado.Correo)" />
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/cuenta/autorizados" class="btn-cancel">Cancelar</a>
+                <button type="submit" class="btn-save">Guardar</button>
+            </div>
+
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public int AutorizadoEntregaId { get; set; }
+    public AutorizadosEntrega Autorizado { get; set; } = new AutorizadosEntrega();
+    public string Estado { get; set; } = "Agregar";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AutorizadoEntregaId > 0)
+        {
+            Estado = "Editar";
+            Autorizado = await autorizadosEntregaService.Buscar(AutorizadoEntregaId);
+        }
+    }
+
+    private async Task GuardarAutorizado()
+    {
+        var modificado = await autorizadosEntregaService.Guardar(Autorizado);
+        if (modificado) NavManager.NavigateTo("/cuenta/autorizados");
+    }
+}

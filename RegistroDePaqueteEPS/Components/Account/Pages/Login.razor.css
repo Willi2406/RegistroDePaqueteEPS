@@ -1,0 +1,135 @@
+﻿/* Título */
+.login-title {
+    font-family: 'Jaldi', sans-serif;
+    color: #FFFFFF;
+    font-size: 36px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Contenedor del formulario */
+.form-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Grid Vertical */
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Item individual del formulario */
+.form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+    /* ETIQUETAS CON ÍCONOS */
+    .form-item label {
+        color: #FFFFFF;
+        font-family: 'Jaldi', sans-serif;
+        font-size: 24px;
+        margin-left: 20px; /* Alineado con la curva del input */
+        /* Alineación Flex para el ícono y el texto */
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Espacio entre el ícono y la letra */
+    }
+
+/* Estilo del ícono en el label */
+.input-icon {
+    font-size: 1.2rem; /* Un poco más grande que el texto */
+}
+
+/* --- INPUTS TOTALMENTE REDONDOS --- */
+.input-box {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 50px; /* Redondo */
+    height: 50px;
+    padding: 0 25px;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 18px;
+    color: #333;
+    outline: none;
+    width: 100%;
+    transition: box-shadow 0.3s ease;
+}
+
+    .input-box:focus {
+        box-shadow: 0 0 0 4px rgba(1, 145, 169, 0.3);
+    }
+
+/* --- Botón Iniciar Sesión --- */
+.button-item {
+    margin-top: 1.5rem;
+    align-items: center;
+}
+
+.btn-login {
+    background-color: #0191A9; /* Color Teal */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50px; /* Redondo */
+    height: 50px;
+    padding: 0 40px;
+    width: 100%;
+    max-width: 250px;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+    .btn-login:hover {
+        background-color: #017a8c;
+        transform: translateY(-2px);
+    }
+
+/* --- Enlaces inferiores con íconos --- */
+.login-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 0 10px;
+}
+
+    .login-links a {
+        color: #FFFFFF;
+        text-decoration: none;
+        font-family: 'Jaldi', sans-serif;
+        font-size: 18px;
+        /* Alineación Flex para ícono y texto */
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Espacio entre ícono y texto */
+
+        transition: opacity 0.2s;
+    }
+
+        .login-links a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+
+/* Estilo del ícono en los enlaces */
+.link-icon {
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .login-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+}

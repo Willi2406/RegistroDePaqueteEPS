@@ -1,0 +1,87 @@
+/* El contenedor translúcido redondeado */
+.nav-card {
+    background: rgba(255, 255, 255, 0.1); /* Figma: 10% opacidad */
+    border-radius: 30px; /* Figma: Radio de 30px */
+    width: 174px;
+    height: 100%;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.nav-item {
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Estilos del enlace (NavLink y Botones) */
+::deep .nav-link {
+    display: flex;
+    flex-direction: column; /* Icono arriba, texto abajo */
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s;
+    background: transparent !important;
+    border: none; /* Importante para el botón de logout */
+    width: 100%; /* Importante para el botón de logout */
+    cursor: pointer;
+}
+
+/* Iconos */
+.nav-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+/* Texto (Jaldi) */
+.nav-text {
+    font-family: 'Jaldi', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: capitalize;
+    line-height: 1;
+}
+
+/* Efecto Hover */
+::deep .nav-link:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* Estado Activo */
+::deep .nav-link.active {
+    font-weight: 700;
+    opacity: 1;
+}
+
+/* CORRECCIÓN 1: Se llama .nav-footer en el HTML, no .menu-footer */
+.nav-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* CORRECCIÓN 2: Estilos específicos para resetear el botón de Logout */
+.logout-btn {
+    appearance: none; /* Quita estilos nativos de botón */
+    padding: 0;
+    background: transparent;
+}
+
+/* Tu imagen del logo */
+.toggle-logo {
+    width: 65px;
+    height: auto;
+    object-fit: contain;
+    /* El transform depende de tu gusto visual, si lo ves centrado déjalo, si no quítalo */
+    transform: translateX(15px);
+}

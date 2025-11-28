@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using RegistroDePaqueteEPS.DAL;
+using RegistroDePaqueteEPS.Data;
 using RegistroDePaqueteEPS.Models;
-using System.Linq.Expressions;
 
 namespace RegistroDePaqueteEPS.Services;
 
-public class PaquetesService (IDbContextFactory<Contexto> dbContext)
+public class PaquetesService (IDbContextFactory<ApplicationDbContext> dbContext)
 {
     public async Task<bool> Existe(int paqueteId)
     {

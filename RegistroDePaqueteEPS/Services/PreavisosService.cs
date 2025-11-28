@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RegistroDePaqueteEPS.DAL;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using RegistroDePaqueteEPS.Data;
 using RegistroDePaqueteEPS.Models;
-using System.Linq.Expressions;
 
 namespace RegistroDePaqueteEPS.Services;
 
-public class PreavisosService(IDbContextFactory<Contexto> dbContext)
+public class PreavisosService(IDbContextFactory<ApplicationDbContext> dbContext)
 {
     public async Task<bool> Existe(int preavisoId)
     {

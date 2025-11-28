@@ -1,0 +1,87 @@
+﻿@page "/preavisousuario"
+@inject NavigationManager NavManager
+@inject PreavisosService preavisosService
+@rendermode InteractiveServer
+
+<SectionContent SectionName="TituloPagina">
+    <h1>PRE-AVISO</h1>
+</SectionContent>
+
+<div class="glass-container preaviso-view">
+
+    <div class="top-actions">
+        <a href="/preavisousuario/upsert/0" class="btn-new">
+            <i class="bi bi-plus-lg"></i> Nuevo Pre-Aviso
+        </a>
+    </div>
+
+    <div class="table-header-row">
+        <div class="col-cell">Fecha</div>
+        <div class="vertical-line"></div>
+
+        <div class="col-cell wide">Tracking</div>
+        <div class="vertical-line"></div>
+
+        <div class="col-cell">Tienda</div>
+        <div class="vertical-line"></div>
+
+        <div class="col-cell">Transportista</div>
+        <div class="vertical-line"></div>
+
+        <div class="col-cell">Contenido</div>
+        <div class="vertical-line"></div>
+
+        <div class="col-cell">Valor</div>
+        <div class="vertical-line"></div>
+
+        <div class="col-cell small">Acciones</div>
+    </div>
+    <div class="rows-container">
+        @if (ListaPreavisos.Count == 0)
+        {
+            <div class="data-row justify-content-center">
+                <span class="text-muted">No hay paquetes registrados.</span>
+            </div>
+        }
+        else
+        {
+            @foreach(Preavisos PreAviso in ListaPreavisos)
+            {
+                <div class="data-row justify-content-center">
+
+                    <div class="col-cell">@PreAviso.Fecha</div>
+                    <div class="vertical-line"></div>
+
+                    <div class="col-cell wide">@PreAviso.NumeroTracking</div>
+                    <div class="vertical-line"></div>
+
+                    <div class="col-cell">@PreAviso.Tienda</div>
+                    <div class="vertical-line"></div>
+
+                    <div class="col-cell">@PreAviso.Transportista</div>
+                    <div class="vertical-line"></div>
+
+                    <div class="col-cell">@PreAviso.Contenido</div>
+                    <div class="vertical-line"></div>
+
+                    <div class="col-cell">@PreAviso.Valor</div>
+                    <div class="vertical-line"></div>
+
+                    <div class="col-cell small">
+                        <a href="preavisousuario/upsert/@PreAviso.PreavisoId" class="btn btn-outline-primary"><span class="bi bi-pencil"/></a>
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    public List<Preavisos> ListaPreavisos { get; set; } = new List<Preavisos>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaPreavisos = await preavisosService.Listar(p => p.PreavisoId > 0);
+    }
+}

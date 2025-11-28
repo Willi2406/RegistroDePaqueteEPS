@@ -1,0 +1,195 @@
+/* --- Mantenemos tus estilos base --- */
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #006089;
+    font-family: 'Jaldi', sans-serif;
+}
+
+.top-header {
+    background-color: #FFFFFF;
+    height: 128px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 20;
+}
+
+.logo-img {
+    max-height: 70px;
+    width: auto;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    height: calc(100vh - 128px);
+    overflow: hidden;
+}
+
+/* --- MODIFICACIÓN AQUÍ: Agregamos display flex --- */
+.content {
+    flex: 1;
+    padding: 0; /* <--- ESTO ES CLAVE: Quitamos el colchón general */
+    overflow-y: auto;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Clase auxiliar para que @Body ocupe el espacio libre */
+.content-body {
+    flex: 1;
+    padding: 2rem; /* <--- El relleno ahora vive aquí */
+}
+
+/* 3. En .layout-footer: Ajustamos para que se pegue a los bordes pero respire un poco */
+.layout-footer {
+    margin-top: auto;
+    /* Padding: 10px arriba/abajo (poco), 2rem lados (para alinearse con el logo) */
+    padding: 10px 2rem;
+    align-items: center;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: transparent; /* Opcional */
+}
+
+.sidebar-container {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+}
+
+.copyright-text {
+    color: #FFFFFF; /* Color Cyan de la imagen */
+    font-size: 20px;
+}
+
+.footer-link {
+    color: #FFFFFF; /* Color blanco */
+    text-decoration: none;
+    font-size: 20px;
+}
+
+    .footer-link:hover {
+        text-decoration: underline;
+    }
+
+/* Responsividad */
+@media (max-width: 800px) {
+    .main-container {
+        flex-direction: column-reverse;
+    }
+
+    .sidebar-container {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+    }
+
+    .top-header {
+        height: 80px;
+    }
+}
+
+.header-title-container {
+    flex: 1; /* Toma todo el espacio disponible entre el logo y el final */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;
+    padding-right: 250px
+}
+
+/* Estilos para el H1 que vendrá desde las páginas */
+::deep h1 {
+    margin: 0;
+    font-family: 'Jaldi', sans-serif;
+    font-weight: 700;
+    font-size: 40px; /* Tamaño grande y visible */
+    color: #006089; /* El azul de tu marca */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* El contenedor translúcido redondeado */
+.nav-card {
+    background: rgba(255, 255, 255, 0.1); /* Figma: 10% opacidad */
+    border-radius: 30px; /* Figma: Radio de 30px */
+    width: 174px;
+    height: 100%; /* Llena el alto del sidebar-container */
+    min-height: 600px; /* Altura mínima para que se vea bien */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    backdrop-filter: blur(5px); /* Efecto moderno opcional */
+}
+
+.nav-item {
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Estilos del enlace (NavLink) */
+::deep .nav-link {
+    display: flex;
+    flex-direction: column; /* Icono arriba, texto abajo */
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s;
+    background: transparent !important; /* Quitar fondo hover de bootstrap */
+}
+
+/* Iconos */
+.nav-icon {
+    font-size: 3rem; /* Tamaño grande como en el diseño */
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+/* Texto (Jaldi) */
+.nav-text {
+    font-family: 'Jaldi', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: capitalize;
+    line-height: 1;
+}
+
+/* Efecto Hover (Opcional, para que se sienta interactivo) */
+::deep .nav-link:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* Estado Activo */
+::deep .nav-link.active {
+    font-weight: 700;
+    opacity: 1;
+}
+
+/* Mantenemos el botón redondo blanco que ya teníamos */
+.menu-footer {
+    margin-top: auto;
+}
+
+/* Nueva clase para tu imagen */
+.toggle-logo {
+    width: 65px; /* Ajusta este tamaño para que el logo "E" se vea bien */
+    height: auto;
+    object-fit: contain;
+    transform: translateX(15px);
+}
