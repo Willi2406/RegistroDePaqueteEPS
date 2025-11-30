@@ -1,10 +1,11 @@
 ﻿@page "/preavisousuario/upsert/{PreavisoId:int}"
+@using MudBlazor
 @inject NavigationManager NavManager
 @inject PreavisosService preavisosService
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
-    <h1>PRE-AVISO </h1>
+    <h1>PRE-AVISO</h1>
 </SectionContent>
 
 <div class="glass-container create-preaviso-view">
@@ -24,8 +25,7 @@
             <div class="form-grid">
                 <div class="form-item">
                     <label>Tracking Number</label>
-                    <input type="text"
-                           class="input-box"
+                    <input type="text" class="input-box"
                            @bind-value="Preaviso.NumeroTracking"
                            placeholder="Ej: 1Z999..." />
                     <ValidationMessage For="@(() => Preaviso.NumeroTracking)" />
@@ -33,8 +33,7 @@
 
                 <div class="form-item">
                     <label>Tienda</label>
-                    <input type="text"
-                           class="input-box"
+                    <input type="text" class="input-box"
                            @bind-value="Preaviso.Tienda"
                            placeholder="Ej: Amazon, Shein" />
                     <ValidationMessage For="@(() => Preaviso.Tienda)" />
@@ -56,8 +55,7 @@
 
                 <div class="form-item">
                     <label>Contenido</label>
-                    <input type="text"
-                           class="input-box"
+                    <input type="text" class="input-box"
                            @bind-value="Preaviso.Contenido"
                            placeholder="Ej: Ropa, Zapatos" />
                     <ValidationMessage For="@(() => Preaviso.Contenido)" />
@@ -65,11 +63,9 @@
 
                 <div class="form-item">
                     <label>Valor (USD)</label>
-                    <input type="number"
-                           class="input-box"
+                    <input type="number" class="input-box"
                            @bind-value="Preaviso.Valor"
-                           placeholder="0.00"
-                           step="0.01" />
+                           placeholder="0.00" step="0.01" />
                     <ValidationMessage For="@(() => Preaviso.Valor)" />
                 </div>
 
@@ -91,12 +87,44 @@
         </EditForm>
     </div>
 
+    <MudDialog @bind-IsVisible="dialogoVisible" Options="dialogOptions" Class="glass-dialog">
+        <DialogContent>
+            <div class="success-content">
+                <div class="icon-circle">
+                    <MudIcon Icon="@Icons.Material.Filled.Check" Class="check-icon" />
+                </div>
+                <h2 class="success-title">¡ÉXITO!</h2>
+                <p class="success-message">El Pre-Aviso ha sido guardado correctamente.</p>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <div class="action-area">
+                <MudButton OnClick="CerrarYRedirigir" Class="btn-mud-custom">Continuar</MudButton>
+            </div>
+        </DialogActions>
+    </MudDialog>
+
 </div>
 
 @code {
-    [Parameter] public int PreavisoId { get; set; }
+    // 2. CORRECCIÓN DEL ERROR DE PROPIEDAD:
+    // El nombre "PreavisoId" debe coincidir exactamente con la ruta {PreavisoId}
+    [Parameter]
+    public int PreavisoId { get; set; }
+
     public Preavisos Preaviso { get; set; } = new Preavisos();
     public string Estado { get; set; } = "Crear";
+
+    // Variables para el diálogo
+    private bool dialogoVisible = false;
+
+    // Configuramos BackdropClick = false para que no se cierre clicando fuera (Forma nueva)
+    private DialogOptions dialogOptions = new DialogOptions
+    {
+        BackdropClick = false,
+        CloseOnEscapeKey = true,
+        NoHeader = true
+    };
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,7 +138,17 @@
     private async Task GuardarPreaviso()
     {
         var modificado = await preavisosService.Guardar(Preaviso);
-        if (modificado) NavManager.NavigateTo("/preavisousuario");
+        if (modificado)
+        {
+            // Mostramos el diálogo en lugar de navegar de inmediato
+            dialogoVisible = true;
+        }
+    }
+
+    private void CerrarYRedirigir()
+    {
+        dialogoVisible = false;
+        NavManager.NavigateTo("/preavisousuario");
     }
 
     private void ManejarArchivo(InputFileChangeEventArgs e)

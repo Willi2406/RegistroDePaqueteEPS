@@ -193,3 +193,20 @@
     object-fit: contain;
     transform: translateX(15px);
 }
+
+/* Clase para ocultar la barra lateral suavemente */
+.sidebar-hidden {
+    display: none;
+    /* O si prefieres una animación de ancho:
+       width: 0 !important;
+       overflow: hidden; 
+    */
+}
+
+/* Ajuste para que el Header no se rompa con el nuevo botón */
+.top-header {
+    /* Aseguramos que los elementos se alineen bien */
+    display: flex;
+    align-items: center;
+    /* El resto de tus estilos del header se mantienen igual */
+}
