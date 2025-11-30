@@ -54,7 +54,7 @@ try
 {
 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-string[] roleNames = { "Admin", "Usuario" };
+string[] roleNames = { "Admin", "Cliente" };
 foreach (var roleName in roleNames)
 {
 var roleExist = await roleManager.RoleExistsAsync(roleName);
@@ -64,16 +64,16 @@ await roleManager.CreateAsync(new IdentityRole(roleName));
 }
 }
 
-var emailAdmin = "blayverthreyesp14@gmail.com";
+var emailAdmin = "ramonjunito10@gmail.com";
  
 
 
         var user = await userManager.FindByEmailAsync(emailAdmin);
 if (user != null)
 {
-if (!await userManager.IsInRoleAsync(user, "Admin"))
+if (!await userManager.IsInRoleAsync(user, "Cliente"))
 {
-await userManager.AddToRoleAsync(user, "Admin");
+await userManager.AddToRoleAsync(user, "Cliente");
 }
 }
 }

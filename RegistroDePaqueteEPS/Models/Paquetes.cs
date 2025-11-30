@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using RegistroDePaqueteEPS.Data;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroDePaqueteEPS.Models;
 
@@ -6,7 +9,8 @@ public class Paquetes
 {
     [Key]
     public int PaqueteId { get; set; }
-    public int ClienteId { get; set; }
+    public string ClienteId { get; set; }
+    public int? PreavisoId { get; set; }
     public string NumeroRecepcion { get; set; }
 
     [Required(ErrorMessage = "El numero de tracking es requerido")]
@@ -30,6 +34,16 @@ public class Paquetes
 
     [Required(ErrorMessage = "La categoria es requerido")]
     public string Categoria { get; set; }
-
     public bool Retenido { get; set; }
+
+
+
+    [ForeignKey(nameof(ClienteId))]
+    public virtual ApplicationUser Cliente { get; set; }
+
+    [ForeignKey(nameof(PreavisoId))]
+    public virtual Preavisos Preaviso { get; set; }
+
+    [ForeignKey(nameof(PaqueteId))]
+    public virtual ICollection<EstatusPaqueteDetalles> EstatusPaquete { get; set; } = new List<EstatusPaqueteDetalles>();
 }

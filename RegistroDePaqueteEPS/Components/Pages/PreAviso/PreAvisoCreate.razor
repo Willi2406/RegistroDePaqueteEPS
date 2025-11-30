@@ -1,6 +1,8 @@
 ﻿@page "/preavisousuario/upsert/{PreavisoId:int}"
 @inject NavigationManager NavManager
 @inject PreavisosService preavisosService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -97,6 +99,7 @@
     [Parameter] public int PreavisoId { get; set; }
     public Preavisos Preaviso { get; set; } = new Preavisos();
     public string Estado { get; set; } = "Crear";
+    private ApplicationUser appUser;
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,10 +108,18 @@
             Estado = "Editar";
             Preaviso = await preavisosService.Buscar(PreavisoId);
         }
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userClaimsPrincipal = authState.User;
+
+        if (userClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
     }
 
     private async Task GuardarPreaviso()
     {
+        Preaviso.ClienteId = appUser.Id;
         var modificado = await preavisosService.Guardar(Preaviso);
         if (modificado) NavManager.NavigateTo("/preavisousuario");
     }

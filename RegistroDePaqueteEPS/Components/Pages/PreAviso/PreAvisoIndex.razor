@@ -1,6 +1,8 @@
 ﻿@page "/preavisousuario"
 @inject NavigationManager NavManager
 @inject PreavisosService preavisosService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -9,12 +11,14 @@
 
 <div class="glass-container preaviso-view">
 
-    <AuthorizeView Roles="Usuario">
-        <div class="top-actions">
-            <a href="/preavisousuario/upsert/0" class="btn-new">
-                <i class="bi bi-plus-lg"></i> Nuevo Pre-Aviso
-            </a>
-        </div>
+    <AuthorizeView Roles="Cliente">
+        <Authorized>
+            <div class="top-actions">
+                <a href="/preavisousuario/upsert/0" class="btn-new">
+                    <i class="bi bi-plus-lg"></i> Nuevo Pre-Aviso
+                </a>
+            </div>
+        </Authorized>
     </AuthorizeView>
     
     <div class="table-header-row">
@@ -81,9 +85,20 @@
 
 @code {
     public List<Preavisos> ListaPreavisos { get; set; } = new List<Preavisos>();
+    private ApplicationUser appUser;
 
     protected override async Task OnInitializedAsync()
     {
-        ListaPreavisos = await preavisosService.Listar(p => p.PreavisoId > 0);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userClaimsPrincipal = authState.User;
+
+        if (userClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
+        if(userClaimsPrincipal.IsInRole("Admin"))
+            ListaPreavisos = await preavisosService.Listar(p => p.PreavisoId > 0);
+        else
+            ListaPreavisos = await preavisosService.Listar(p => p.PreavisoId > 0 && p.ClienteId == appUser.Id);
     }
 }

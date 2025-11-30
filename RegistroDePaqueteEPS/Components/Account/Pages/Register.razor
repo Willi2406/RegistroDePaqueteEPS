@@ -124,12 +124,10 @@
 
         user.NombreCompleto = Input.NombreCompleto;
         user.Provincia = Input.Provincia;
-        user.Sucursal = Input.Sucursal;
+        user.Municipio = Input.Sucursal;
         user.Identificacion = Input.Identificacion;
         user.Sexo = Input.Sexo;
         user.FechaNacimiento = Input.FechaNacimiento;
-        user.Telefono = Input.Telefono;
-        user.Celular = Input.Celular;
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
@@ -190,7 +188,7 @@
         public string Identificacion { get; set; } = "";
         public string NombreCompleto { get; set; } = "";
         public string Sexo { get; set; } = "";
-        public DateTime? FechaNacimiento { get; set; }
+        public DateTime FechaNacimiento { get; set; }
         public string Telefono { get; set; } = "";
         public string Celular { get; set; } = "";
         public string ConfirmEmail { get; set; } = "";

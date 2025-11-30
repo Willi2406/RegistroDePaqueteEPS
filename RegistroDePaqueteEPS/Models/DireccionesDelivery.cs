@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RegistroDePaqueteEPS.Data;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroDePaqueteEPS.Models;
 
@@ -7,7 +9,7 @@ public class DireccionesDelivery
     [Key]
     public int DireccionDeliveryId { get; set; }
 
-    public int ClienteId { get; set; }
+    public string ClienteId { get; set; }
 
     public int AutorizadoEntregaId { get; set; }
 
@@ -32,4 +34,10 @@ public class DireccionesDelivery
 
     [Required(ErrorMessage = "El alias es requerido")]
     public string Alias { get; set; }
+
+    [ForeignKey(nameof(ClienteId))]
+    public virtual ApplicationUser Cliente { get; set; }
+
+    [ForeignKey(nameof(AutorizadoEntregaId))]
+    public virtual AutorizadosEntrega AutorizadoEntrega { get; set; }
 }

@@ -174,9 +174,6 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Celular")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -188,10 +185,11 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("FechaNacimiento")
+                    b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Identificacion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -200,7 +198,12 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Municipio")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("NombreCompleto")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -222,18 +225,14 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Provincia")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Sexo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Sucursal")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -261,8 +260,9 @@ namespace RegistroDePaqueteEPS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Correo")
                         .IsRequired()
@@ -281,6 +281,8 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("AutorizadoEntregaId");
+
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("AutorizadosEntrega");
                 });
@@ -302,8 +304,9 @@ namespace RegistroDePaqueteEPS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Domicilio")
                         .HasColumnType("TEXT");
@@ -329,7 +332,101 @@ namespace RegistroDePaqueteEPS.Migrations
 
                     b.HasKey("DireccionDeliveryId");
 
+                    b.HasIndex("AutorizadoEntregaId");
+
+                    b.HasIndex("ClienteId");
+
                     b.ToTable("DireccionesDelivery");
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.EstatusPaquete", b =>
+                {
+                    b.Property<int>("EstatusPaqueteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Existencia")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EstatusPaqueteId");
+
+                    b.ToTable("EstatusPaquete");
+
+                    b.HasData(
+                        new
+                        {
+                            EstatusPaqueteId = 1,
+                            Descripcion = "Almacen de Origen",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 2,
+                            Descripcion = "Embarcado",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 3,
+                            Descripcion = "Linea Aerea",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 4,
+                            Descripcion = "Aduanas",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 5,
+                            Descripcion = "Centro de Distribucion",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 6,
+                            Descripcion = "Transito a la Oficina",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 7,
+                            Descripcion = "Disponible",
+                            Existencia = 0
+                        },
+                        new
+                        {
+                            EstatusPaqueteId = 8,
+                            Descripcion = "Entregado al Cliente",
+                            Existencia = 0
+                        });
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.EstatusPaqueteDetalles", b =>
+                {
+                    b.Property<int>("EstatusPaqueteDetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EstatusPaqueteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PaqueteId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EstatusPaqueteDetalleId");
+
+                    b.HasIndex("PaqueteId");
+
+                    b.ToTable("EstatusPaqueteDetalles");
                 });
 
             modelBuilder.Entity("RegistroDePaqueteEPS.Models.Paquetes", b =>
@@ -342,8 +439,9 @@ namespace RegistroDePaqueteEPS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("CondicionEspecial")
                         .HasColumnType("INTEGER");
@@ -365,6 +463,9 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<double>("Peso")
                         .HasColumnType("REAL");
 
+                    b.Property<int?>("PreavisoId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("Retenido")
                         .HasColumnType("INTEGER");
 
@@ -377,6 +478,10 @@ namespace RegistroDePaqueteEPS.Migrations
 
                     b.HasKey("PaqueteId");
 
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("PreavisoId");
+
                     b.ToTable("Paquetes");
                 });
 
@@ -386,8 +491,9 @@ namespace RegistroDePaqueteEPS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ClienteId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Contenido")
                         .IsRequired()
@@ -399,6 +505,9 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<string>("NumeroTracking")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("PaqueteId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Tienda")
                         .IsRequired()
@@ -412,6 +521,10 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("REAL");
 
                     b.HasKey("PreavisoId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("PaqueteId");
 
                     b.ToTable("Preavisos");
                 });
@@ -514,6 +627,84 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.AutorizadosEntrega", b =>
+                {
+                    b.HasOne("RegistroDePaqueteEPS.Data.ApplicationUser", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.DireccionesDelivery", b =>
+                {
+                    b.HasOne("RegistroDePaqueteEPS.Models.AutorizadosEntrega", "AutorizadoEntrega")
+                        .WithMany()
+                        .HasForeignKey("AutorizadoEntregaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RegistroDePaqueteEPS.Data.ApplicationUser", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AutorizadoEntrega");
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.EstatusPaqueteDetalles", b =>
+                {
+                    b.HasOne("RegistroDePaqueteEPS.Models.Paquetes", null)
+                        .WithMany("EstatusPaquete")
+                        .HasForeignKey("PaqueteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.Paquetes", b =>
+                {
+                    b.HasOne("RegistroDePaqueteEPS.Data.ApplicationUser", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RegistroDePaqueteEPS.Models.Preavisos", "Preaviso")
+                        .WithMany()
+                        .HasForeignKey("PreavisoId");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Preaviso");
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.Preavisos", b =>
+                {
+                    b.HasOne("RegistroDePaqueteEPS.Data.ApplicationUser", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RegistroDePaqueteEPS.Models.Paquetes", "Paquete")
+                        .WithMany()
+                        .HasForeignKey("PaqueteId");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Paquete");
+                });
+
+            modelBuilder.Entity("RegistroDePaqueteEPS.Models.Paquetes", b =>
+                {
+                    b.Navigation("EstatusPaquete");
                 });
 #pragma warning restore 612, 618
         }
