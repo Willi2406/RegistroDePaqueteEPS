@@ -9,6 +9,16 @@
 
 <div class="glass-container">
 
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <div class="top-actions">
+                <a href="/paquetes/upsert/0" class="btn-new">
+                    <i class="bi bi-plus-lg"></i> Agregar Paquete
+                </a>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+    
     <div class="table-header-row">
 
         <div class="col-cell"># Recepción</div>

@@ -62,7 +62,7 @@ await roleManager.CreateAsync(new IdentityRole(roleName));
 }
 }
 
-var emailAdmin = "warodriguezv@gmail.com";
+var emailAdmin = "blayverthreyesp14@gmail.com";
  
 
 
