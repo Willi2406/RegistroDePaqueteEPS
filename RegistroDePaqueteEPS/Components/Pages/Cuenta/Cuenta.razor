@@ -1,4 +1,6 @@
 ﻿@page "/cuenta"
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -29,26 +31,26 @@
 
             <div class="form-item">
                 <label>Sucursal</label>
-                <div class="data-box">Salcedo</div>
+                <InputText class="data-box" @bind-Value="appUser.Sucursal"/>
             </div>
 
             <div class="form-item">
                 <label>Nombre</label>
-                <div class="data-box"> William Rodriguez</div>
+                <InputText class="data-box" @bind-Value="appUser.NombreCompleto" />
             </div>
 
             <div class="form-item">
                 <label>Cédula</label>
-                <div class="data-box">402-0000000-0</div>
+                <InputText class="data-box" @bind-Value="appUser.Identificacion" />
             </div>
 
             <div class="form-item">
                 <label>Correo</label>
-                <div class="data-box">william@ejemplo.com</div>
+                <InputText class="data-box" @bind-Value="appUser.Email" />
             </div>
             <div class="form-item">
                 <label>Teléfono</label>
-                <div class="data-box">809-555-5555</div>
+                <InputText class="data-box" @bind-Value="appUser.Telefono" />
             </div>
         </div>
 
@@ -58,3 +60,21 @@
     </div>
 
 </div>
+@code
+{
+    private ApplicationUser? appUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 1. Obtener el estado de autenticación (los claims)
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userClaimsPrincipal = authState.User;
+
+        if (userClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            // 2. Usar el UserManager para buscar el usuario completo en la BD
+            // Este método usa internamente el ID del ClaimsPrincipal para buscar
+            appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
+    }
+}

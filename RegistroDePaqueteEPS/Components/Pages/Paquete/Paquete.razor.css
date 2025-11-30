@@ -69,6 +69,7 @@
     flex: 1; /* Ocupan el mismo espacio por defecto */
     text-align: center;
     font-family: 'Jaldi', sans-serif;
+    color: #006089;
     font-size: 18px; /* Ajustado para que quepa todo */
     white-space: nowrap;
     overflow: hidden;

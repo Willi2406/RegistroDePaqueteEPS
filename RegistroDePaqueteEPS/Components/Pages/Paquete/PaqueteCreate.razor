@@ -99,12 +99,6 @@
 
     private async Task GuardarPaquete()
     {
-        // Generamos un número de recepción automático si es nuevo (opcional)
-        if (string.IsNullOrEmpty(NuevoPaquete.NumeroRecepcion))
-        {
-            NuevoPaquete.NumeroRecepcion = "REC-" + DateTime.Now.ToString("yyyyMMddHHmm");
-        }
-
         var guardado = await paquetesService.Guardar(NuevoPaquete);
 
         if (guardado)

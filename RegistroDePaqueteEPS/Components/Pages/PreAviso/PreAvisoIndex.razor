@@ -9,12 +9,14 @@
 
 <div class="glass-container preaviso-view">
 
-    <div class="top-actions">
-        <a href="/preavisousuario/upsert/0" class="btn-new">
-            <i class="bi bi-plus-lg"></i> Nuevo Pre-Aviso
-        </a>
-    </div>
-
+    <AuthorizeView Roles="Usuario">
+        <div class="top-actions">
+            <a href="/preavisousuario/upsert/0" class="btn-new">
+                <i class="bi bi-plus-lg"></i> Nuevo Pre-Aviso
+            </a>
+        </div>
+    </AuthorizeView>
+    
     <div class="table-header-row">
         <div class="col-cell">Fecha</div>
         <div class="vertical-line"></div>
