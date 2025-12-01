@@ -1,3 +1,131 @@
 ﻿@page "/reporte"
+@using Microsoft.AspNetCore.Components.Sections
+@using MudBlazor
 @inject PaquetesService paquetesService
 @rendermode InteractiveServer
+
+<SectionContent SectionName="TituloPagina">
+    <h1>REPORTE</h1>
+</SectionContent>
+
+<div class="glass-container reporte-view">
+
+    <div class="filters-section">
+        <h3 class="section-subtitle">Filtrar Datos</h3>
+        <div class="filter-grid">
+            <div class="form-item">
+                <label>Desde</label>
+                <input type="date" class="input-box" @bind="FechaInicio" />
+            </div>
+            <div class="form-item">
+                <label>Hasta</label>
+                <input type="date" class="input-box" @bind="FechaFin" />
+            </div>
+            <div class="form-item button-item">
+                <button class="btn-save" @onclick="CargarDatos">Generar Reporte</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cards-wrapper">
+        <div class="stat-card">
+            <div class="icon-wrapper"><i class="bi bi-box-seam-fill main-icon"></i></div>
+            <div class="card-content">
+                <h2>Total Paquetes</h2>
+                <span class="count-number">@TotalPaquetes</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon-wrapper"><i class="bi bi-speedometer2 main-icon"></i></div>
+            <div class="card-content">
+                <h2>Total Libras</h2>
+                <span class="count-number">@TotalLibras.ToString("N2") lb</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon-wrapper"><i class="bi bi-cash-stack main-icon"></i></div>
+            <div class="card-content">
+                <h2>Valor CIF</h2>
+                <span class="count-number">US$ @TotalCIF.ToString("N2")</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-section">
+        
+        <div class="chart-card">
+            <h3 class="chart-title">Estatus de Paquetes</h3>
+            
+            <MudChart ChartType="ChartType.Donut" 
+                      Width="250px" 
+                      Height="250px" 
+                      InputData="@DataGrafico" 
+                      InputLabels="@LabelsGrafico"
+                      Class="mud-chart-custom">
+                <CustomGraphics>
+                    <text class="donut-inner-text" x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#006089" font-family="Jaldi" font-weight="bold" font-size="24">Total</text>
+                    <text class="donut-inner-text" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" fill="#333" font-family="Jaldi" font-size="36">@TotalPaquetes</text>
+                </CustomGraphics>
+            </MudChart>
+        </div>
+
+        <div class="chart-card">
+            <h3 class="chart-title">Data por Mes</h3>
+            
+            <MudChart ChartType="ChartType.Bar" 
+                      ChartSeries="@SeriesBarras" 
+                      XAxisLabels="@XAxisLabels" 
+                      Width="100%" 
+                      Height="300px"
+                      Class="mud-chart-custom">
+            </MudChart>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    public DateTime FechaInicio { get; set; } = DateTime.Now.AddMonths(-1);
+    public DateTime FechaFin { get; set; } = DateTime.Now;
+
+    public int TotalPaquetes { get; set; }
+    public double TotalLibras { get; set; }
+    public double TotalCIF { get; set; }
+
+    public double[] DataGrafico { get; set; } = { 6, 10, 5, 47 };
+    public string[] LabelsGrafico { get; set; } = { "Recibido", "Tránsito", "Disponible", "Entregado" };
+    public List<ChartSeries> SeriesBarras { get; set; } = new List<ChartSeries>();
+    public string[] XAxisLabels { get; set; } = { "Ene", "Feb", "Mar", "Abr", "May", "Jun" };
+
+    // PALETA DE COLORES EPS (Azul, Teal, Verde, Naranja)
+    // Esto es lo que cambia los colores de las barras y donas
+    private string[] ColoresEPS = new[] { "#006089", "#0191A9", "#78BE42", "#FFB130", "#FC0202" };
+
+    // Configuración para aplicar los colores
+    private MudBlazor.ChartOptions CustomGraphicsConfig = new MudBlazor.ChartOptions();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Aplicamos los colores personalizados a la configuración global del gráfico
+        CustomGraphicsConfig.ChartPalette = ColoresEPS;
+        
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        var lista = await paquetesService.Listar(p => p.PaqueteId > 0); 
+
+        TotalPaquetes = lista.Count;
+        TotalLibras = lista.Sum(p => p.Peso);
+        TotalCIF = lista.Sum(p => p.Total);
+
+        double retenidos = lista.Count(p => p.Retenido);
+        double normales = lista.Count(p => !p.Retenido);
+        
+        DataGrafico = new double[] { normales * 0.4, normales * 0.3, normales * 0.2, retenidos };
+        
+        SeriesBarras.Clear();
+        SeriesBarras.Add(new ChartSeries() { Name = "Paquetes", Data = new double[] { 10, 25, 15, 30, 40, (double)TotalPaquetes } });
+    }
+}
