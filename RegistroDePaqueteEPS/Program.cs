@@ -9,7 +9,7 @@ using RegistroDePaqueteEPS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 1. Configuración de Servicios Base y Blazor
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -17,27 +17,35 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
+// 2. Servicios de Terceros (MudBlazor)
+builder.Services.AddMudServices();
+
+// 3. Servicios de Negocio (Tus servicios propios)
+// Podrías mover esto a un método de extensión si la lista crece mucho
 builder.Services.AddScoped<PaquetesService>();
 builder.Services.AddScoped<PreavisosService>();
 builder.Services.AddScoped<AutorizadosEntregaService>();
 builder.Services.AddScoped<DireccionesDeliveryService>();
-builder.Services.AddMudServices();
+
+// 4. Configuración de Base de Datos e Identity
+var connectionString = builder.Configuration.GetConnectionString("ConStr")
+    ?? throw new InvalidOperationException("Connection string 'ConStr' not found.");
+
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
 
 builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    })
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
     .AddIdentityCookies();
 
-var ConStr = builder.Configuration.GetConnectionString("ConStr");
-builder.Services.AddDbContextFactory<ApplicationDbContext>(o => o.UseSqlite(ConStr));
-
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = false;
-        options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
-    })
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
+})
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
@@ -47,68 +55,41 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 var app = builder.Build();
 
+// 5. Inicialización de Datos (Seeding)
+// Ejecutamos esto en un scope separado antes de correr la app
 using (var scope = app.Services.CreateScope())
 {
-var services = scope.ServiceProvider;
-try
-{
-var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-string[] roleNames = { "Admin", "Cliente" };
-foreach (var roleName in roleNames)
-{
-var roleExist = await roleManager.RoleExistsAsync(roleName);
-if (!roleExist)
-{
-await roleManager.CreateAsync(new IdentityRole(roleName));
-}
+    var services = scope.ServiceProvider;
+    try
+    {
+        await DbSeeder.SeedRolesAsync(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error durante la inicialización de la base de datos.");
+    }
 }
 
-var emailAdmin = "ramonjunito10@gmail.com";
- 
-
-
-        var user = await userManager.FindByEmailAsync(emailAdmin);
-if (user != null)
-{
-if (!await userManager.IsInRoleAsync(user, "Cliente"))
-{
-await userManager.AddToRoleAsync(user, "Cliente");
-}
-}
-}
-catch (Exception ex)
-{
-var logger = services.GetRequiredService<ILogger<Program>>();
-logger.LogError(ex, "Ocurrió un error al crear los roles del sistema.");
-}
-}
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-    // ... resto del archivo ...
-
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 }
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
+app.UseStatusCodePagesWithReExecute("/not-found");
+
+app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-// Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
 app.Run();

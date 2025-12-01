@@ -16,6 +16,9 @@ public class Paquetes
     [Required(ErrorMessage = "El numero de tracking es requerido")]
     public string NumeroTracking { get; set; }
 
+    [Required(ErrorMessage = "El numero de EPS es requerido")]
+    public string NumeroEPS { get; set; }
+
     [Required(ErrorMessage = "El suplidor es requerido")]
     public string Suplidor { get; set; }
 

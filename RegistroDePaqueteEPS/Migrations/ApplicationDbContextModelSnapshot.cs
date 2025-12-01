@@ -185,11 +185,10 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("FechaNacimiento")
+                    b.Property<DateTime?>("FechaNacimiento")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Identificacion")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -203,7 +202,6 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NombreCompleto")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -232,7 +230,6 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Sexo")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -447,6 +444,10 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NumeroEPS")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

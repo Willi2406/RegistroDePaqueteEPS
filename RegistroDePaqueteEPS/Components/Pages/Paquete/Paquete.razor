@@ -1,5 +1,7 @@
 ﻿@page "/paquetesusuario"
 @inject PaquetesService paquetesService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 
@@ -94,10 +96,22 @@
 
 @code {
     public List<Paquetes> ListaPaquetes { get; set; } = new List<Paquetes>();
+    private ApplicationUser appUser;
 
     protected override async Task OnInitializedAsync()
     {
-        ListaPaquetes = await paquetesService.Listar(p => p.PaqueteId > 0);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userClaimsPrincipal = authState.User;
+
+        if (userClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
+        if (userClaimsPrincipal.IsInRole("Cliente"))
+            ListaPaquetes = await paquetesService.Listar(p => p.PaqueteId > 0 && p.ClienteId == appUser.Id);
+        else
+            ListaPaquetes = await paquetesService.Listar(p => p.PaqueteId > 0);
+            
     }
 
     // --- LÓGICA VISUAL (Colores e Iconos) ---

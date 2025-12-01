@@ -1,6 +1,8 @@
 ﻿@page "/paquetesusuario/create"
 @inject NavigationManager NavManager
 @inject PaquetesService paquetesService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -27,6 +29,12 @@
                     <label>Número de Tracking</label>
                     <InputText @bind-Value="NuevoPaquete.NumeroTracking" class="input-box" placeholder="Ej: 1Z999..." />
                     <ValidationMessage For="@(() => NuevoPaquete.NumeroTracking)" />
+                </div>
+
+                <div class="form-item">
+                    <label>Número de EPS</label>
+                    <InputText @bind-Value="NuevoPaquete.NumeroEPS" class="input-box" placeholder="Ej: 064-000..." />
+                    <ValidationMessage For="@(() => NuevoPaquete.NumeroEPS)" />
                 </div>
 
                 <div class="form-item">
@@ -99,6 +107,8 @@
 
     private async Task GuardarPaquete()
     {
+        var appUser = await UserManager.Users.FirstOrDefaultAsync(u => u.UserName == NuevoPaquete.NumeroEPS);
+        NuevoPaquete.ClienteId = appUser.Id;
         var guardado = await paquetesService.Guardar(NuevoPaquete);
 
         if (guardado)
