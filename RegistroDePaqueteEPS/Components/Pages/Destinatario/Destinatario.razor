@@ -55,7 +55,7 @@
             @foreach (var user in UsuariosFiltrados)
             {
                 <div class="data-row">
-                    <div class="col-cell small bold">@user.Id.Substring(0, 5)...</div>
+                    <div class="col-cell small">@user.UserName</div>
                     <div class="vertical-line"></div>
 
                     <div class="col-cell">@(user.NombreCompleto ?? "N/A")</div>
@@ -65,9 +65,6 @@
                     <div class="vertical-line"></div>
 
                     <div class="col-cell email-text">@user.Email</div>
-                    <div class="vertical-line"></div>
-
-                    <div class="col-cell wide">@(user.Provincia ?? "N/A")</div>
                     <div class="vertical-line"></div>
 
                     <div class="col-cell">@(user.PhoneNumber ?? "N/A")</div>
@@ -106,6 +103,6 @@
     {
         // Cargar usuarios de la base de datos
         // Nota: UserManager no tiene un método directo "ToList", hay que usar IQueryable
-        TodosLosUsuarios = await UserManager.Users.ToListAsync();
+        TodosLosUsuarios = await UserManager.Users.Where(u => u.UserName != u.Email).ToListAsync();
     }
 }
