@@ -4,7 +4,7 @@
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
-    <h1>Cuenta : Crear direcciones </h1>
+    <h1>CUENTA</h1>
 </SectionContent>
 
 <div class="glass-container create-address-view">
@@ -12,11 +12,9 @@
     <div class="sub-nav-bar">
         <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
         <div class="separator"></div>
-
-        <NavLink class="sub-nav-item" href="/cuenta/direcciones">Direcciones</NavLink>
+        <NavLink class="sub-nav-item active" href="/cuenta/direcciones">Direcciones</NavLink>
         <div class="separator"></div>
-
-        <NavLink class="sub-nav-item active" href="/cuenta/autorizados">Autorizados</NavLink>
+        <NavLink class="sub-nav-item" href="/cuenta/autorizados">Autorizados</NavLink>
     </div>
 
     <div class="form-content">
@@ -26,42 +24,57 @@
             <DataAnnotationsValidator />
 
             <div class="form-grid">
-                <div class="input-group">
+
+                <div class="form-item">
                     <label>Provincia</label>
-                    <InputText @bind-Value="Direccion.Provincia" class="input-box" placeholder="Provincia" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Provincia"
+                           placeholder="Provincia" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-item">
                     <label>Municipio</label>
-                    <InputText @bind-Value="Direccion.Municipio" class="input-box" placeholder="Ciudad" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Municipio"
+                           placeholder="Ciudad" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-item">
                     <label>Sector</label>
-                    <InputText @bind-Value="Direccion.Sector" class="input-box" placeholder="Sector" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Sector"
+                           placeholder="Sector" />
                     <ValidationMessage For="@(() => Direccion.Sector)" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-item">
                     <label>Calle</label>
-                    <InputText @bind-Value="Direccion.Calle" class="input-box" placeholder="Calle Principal" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Calle"
+                           placeholder="Calle Principal" />
                     <ValidationMessage For="@(() => Direccion.Calle)" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-item">
                     <label>Domicilio</label>
-                    <InputText @bind-Value="Direccion.Domicilio" class="input-box" placeholder="#123" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Domicilio"
+                           placeholder="#123" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-item">
                     <label>Referencias</label>
-                    <InputText @bind-Value="Direccion.Referencias" class="input-box" placeholder="#123" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Referencias"
+                           placeholder="Cerca de..." />
                     <ValidationMessage For="@(() => Direccion.Referencias)" />
                 </div>
 
-                <div class="input-group">
+                <div class="form-item">
                     <label>Alias (Ej: Casa, Oficina)</label>
-                    <InputText @bind-Value="Direccion.Alias" class="input-box" placeholder="Nombre de la dirección" />
+                    <input type="text" class="input-box"
+                           @bind-value="Direccion.Alias"
+                           placeholder="Nombre de la dirección" />
                     <ValidationMessage For="@(() => Direccion.Alias)" />
                 </div>
             </div>
@@ -91,7 +104,7 @@
     public int DireccionDeliveryId { get; set; }
 
     public DireccionesDelivery Direccion { get; set; } = new DireccionesDelivery();
-    public string Estado { get; set; }
+    public string Estado { get; set; } = "Agregar";
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,8 +113,6 @@
             Estado = "Editar";
             Direccion = await direccionesDeliveryService.Buscar(DireccionDeliveryId);
         }
-        else
-            Estado = "Agregar";
     }
 
     private async Task GuardarDireccion()

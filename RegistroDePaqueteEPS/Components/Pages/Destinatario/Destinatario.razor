@@ -1,13 +1,5 @@
 ﻿@page "/destinatario"
 @attribute [Authorize(Roles = "Admin")]
-@* 👆 Solo Admin puede ver esto *@
-
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Sections
-@using RegistroDePaqueteEPS.Data
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.EntityFrameworkCore
-
 @inject UserManager<ApplicationUser> UserManager
 @rendermode InteractiveServer
 
@@ -24,22 +16,18 @@
         </div>
     </div>
 
+    @* ... (TU CABECERA DE TABLA IGUAL QUE ANTES) ... *@
     <div class="table-header-row">
         <div class="col-cell small">No. EPS</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Nombre Completo</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Identificación</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Correo</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Teléfono</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell small">Opciones</div>
     </div>
 
@@ -57,24 +45,20 @@
                 <div class="data-row">
                     <div class="col-cell small">@user.UserName</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell">@(user.NombreCompleto ?? "N/A")</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell">@(user.Identificacion ?? "N/A")</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell email-text">@user.Email</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell">@(user.PhoneNumber ?? "N/A")</div>
                     <div class="vertical-line"></div>
 
                     <div class="col-cell small actions-cell">
-                        <button class="btn-icon edit" title="Editar">
+                        <button class="btn-icon edit" title="Editar" @onclick="() => AbrirModal(user, true)">
                             <i class="bi bi-pencil-square"></i>
                         </button>
-                        <button class="btn-icon delete" title="Eliminar">
+                        <button class="btn-icon delete" title="Eliminar" @onclick="() => AbrirModal(user, false)">
                             <i class="bi bi-trash-fill"></i>
                         </button>
                     </div>
@@ -82,14 +66,66 @@
             }
         }
     </div>
-
 </div>
+@if (mostrarModal)
+{
+    <div class="modal-backdrop" @onclick="CerrarModal">
+        <div class="modal-window" @onclick:stopPropagation>
+            
+            <div class="eps-header">
+                <img src="/Imagenes/EPS_Barra_Superior.png" alt="EPS Logo" /> 
+                <button class="btn-close-modal" @onclick="CerrarModal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="eps-body">
+                @if (esModoEdicion)
+                {
+                    <h3>EDITAR USUARIO</h3>
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" @bind="usuarioSeleccionado.NombreCompleto" />
+                    </div>
+                    <div class="form-group">
+                        <label>Identificación</label>
+                        <input type="text" @bind="usuarioSeleccionado.Identificacion" />
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="text" @bind="usuarioSeleccionado.PhoneNumber" />
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button class="btn-eps-cancel" @onclick="CerrarModal">Cancelar</button>
+                        <button class="btn-eps-primary" @onclick="GuardarCambios">Guardar</button>
+                    </div>
+                }
+                else
+                {
+                    <h3>ELIMINAR USUARIO</h3>
+                    <p>¿Estás seguro que deseas eliminar al usuario <strong>@usuarioSeleccionado.NombreCompleto</strong>?</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Esta acción no se puede deshacer.</p>
+
+                    <div class="modal-actions">
+                        <button class="btn-eps-cancel" @onclick="CerrarModal">Cancelar</button>
+                        <button class="btn-eps-primary" style="color: #c00;" @onclick="ConfirmarEliminacion">Eliminar</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     private List<ApplicationUser> TodosLosUsuarios = new();
     private string terminoBusqueda = "";
 
-    // Propiedad calculada para filtrar
+
+    private bool mostrarModal = false;
+    private bool esModoEdicion = true; 
+    private ApplicationUser usuarioSeleccionado = new(); 
+
     private List<ApplicationUser> UsuariosFiltrados =>
         string.IsNullOrWhiteSpace(terminoBusqueda)
         ? TodosLosUsuarios
@@ -101,8 +137,30 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Cargar usuarios de la base de datos
-        // Nota: UserManager no tiene un método directo "ToList", hay que usar IQueryable
         TodosLosUsuarios = await UserManager.Users.Where(u => u.UserName != u.Email).ToListAsync();
+    }
+
+    private void AbrirModal(ApplicationUser user, bool modoEditar)
+    {
+        usuarioSeleccionado = user; 
+        esModoEdicion = modoEditar;
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+    }
+
+    private async Task GuardarCambios()
+    {
+        
+        mostrarModal = false;
+        // Opcional: Recargar la lista
+    }
+
+    private async Task ConfirmarEliminacion()
+    {
+        mostrarModal = false;
     }
 }

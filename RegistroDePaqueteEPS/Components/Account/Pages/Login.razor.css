@@ -1,18 +1,10 @@
-﻿/* Título */
-.login-title {
-    font-family: 'Jaldi', sans-serif;
-    color: #FFFFFF;
-    font-size: 36px;
-    font-weight: 400;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    text-align: center;
-}
+﻿/* --- ESTILOS GLOBALES DEL FORMULARIO --- */
 
-/* Contenedor del formulario */
+/* Contenedor del formulario centrado (Login/Registro) */
 .form-wrapper {
     width: 100%;
-    max-width: 400px;
+    max-width: 400px; /* Ancho ideal para login */
+    margin: 0 auto; /* Centrado horizontal */
 }
 
 /* Grid Vertical */
@@ -29,28 +21,26 @@
     gap: 0.5rem;
 }
 
-    /* ETIQUETAS CON ÍCONOS */
+    /* Etiquetas con Iconos */
     .form-item label {
         color: #FFFFFF;
         font-family: 'Jaldi', sans-serif;
         font-size: 24px;
-        margin-left: 20px; /* Alineado con la curva del input */
-        /* Alineación Flex para el ícono y el texto */
+        margin-left: 20px; /* Alineado con la curva */
         display: flex;
         align-items: center;
-        gap: 10px; /* Espacio entre el ícono y la letra */
+        gap: 10px;
     }
 
-/* Estilo del ícono en el label */
 .input-icon {
-    font-size: 1.2rem; /* Un poco más grande que el texto */
+    font-size: 1.2rem;
 }
 
-/* --- INPUTS TOTALMENTE REDONDOS --- */
+/* --- INPUTS REDONDOS (Estilo Píldora) --- */
 .input-box {
     background-color: #FFFFFF;
     border: none;
-    border-radius: 50px; /* Redondo */
+    border-radius: 50px; /* Redondo completo */
     height: 50px;
     padding: 0 25px;
     font-family: 'Jaldi', sans-serif;
@@ -62,10 +52,10 @@
 }
 
     .input-box:focus {
-        box-shadow: 0 0 0 4px rgba(1, 145, 169, 0.3);
+        box-shadow: 0 0 0 4px rgba(1, 145, 169, 0.3); /* Brillo Teal */
     }
 
-/* --- Botón Iniciar Sesión --- */
+/* --- BOTONES --- */
 .button-item {
     margin-top: 1.5rem;
     align-items: center;
@@ -75,7 +65,7 @@
     background-color: #0191A9; /* Color Teal */
     color: #FFFFFF;
     border: none;
-    border-radius: 50px; /* Redondo */
+    border-radius: 50px;
     height: 50px;
     padding: 0 40px;
     width: 100%;
@@ -93,7 +83,7 @@
         transform: translateY(-2px);
     }
 
-/* --- Enlaces inferiores con íconos --- */
+/* --- ENLACES INFERIORES --- */
 .login-links {
     display: flex;
     justify-content: space-between;
@@ -107,11 +97,9 @@
         text-decoration: none;
         font-family: 'Jaldi', sans-serif;
         font-size: 18px;
-        /* Alineación Flex para ícono y texto */
         display: flex;
         align-items: center;
-        gap: 8px; /* Espacio entre ícono y texto */
-
+        gap: 8px;
         transition: opacity 0.2s;
     }
 
@@ -120,12 +108,11 @@
             opacity: 0.9;
         }
 
-/* Estilo del ícono en los enlaces */
 .link-icon {
     font-size: 1.1rem;
 }
 
-/* Responsive */
+/* Responsividad */
 @media (max-width: 600px) {
     .login-links {
         flex-direction: column;

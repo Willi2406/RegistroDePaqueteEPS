@@ -55,33 +55,25 @@
     transform: scale(1.05);
     text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
-
-/* Estado Activo */
 ::deep .nav-link.active {
     font-weight: 700;
     opacity: 1;
 }
 
-/* CORRECCIÓN 1: Se llama .nav-footer en el HTML, no .menu-footer */
 .nav-footer {
     margin-top: auto;
     display: flex;
     justify-content: center;
     width: 100%;
 }
-
-/* CORRECCIÓN 2: Estilos específicos para resetear el botón de Logout */
 .logout-btn {
-    appearance: none; /* Quita estilos nativos de botón */
+    appearance: none; 
     padding: 0;
     background: transparent;
 }
-
-/* Tu imagen del logo */
 .toggle-logo {
     width: 65px;
     height: auto;
     object-fit: contain;
-    /* El transform depende de tu gusto visual, si lo ves centrado déjalo, si no quítalo */
     transform: translateX(15px);
 }

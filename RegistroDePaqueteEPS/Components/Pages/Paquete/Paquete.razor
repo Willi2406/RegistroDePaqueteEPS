@@ -4,7 +4,6 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
-
 <SectionContent SectionName="TituloPagina">
     <h1>PAQUETES</h1>
 </SectionContent>
@@ -22,31 +21,22 @@
     </AuthorizeView>
 
     <div class="table-header-row">
-
         <div class="col-cell"># Recepción</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Fecha</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell wide"># Tracking</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Suplidor</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Contenido</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell small">Peso</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Estatus</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Total</div>
         <div class="vertical-line"></div>
-
         <div class="col-cell">Condición</div>
     </div>
 
@@ -63,42 +53,124 @@
             {
                 <div class="data-row justify-content-center">
 
-                    <div class="col-cell">@paquete.NumeroRecepcion</div>
+                    <div class="col-cell">
+                        <button type="button" class="btn-recepcion-link"
+                                @onclick="() => AbrirModalEdicion(paquete)"
+                                @onclick:stopPropagation="true">
+                            @paquete.NumeroRecepcion
+                        </button>
+                    </div>
                     <div class="vertical-line"></div>
 
                     <div class="col-cell">@DateTime.Now.ToString("dd/MM/yyyy")</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell wide">@paquete.NumeroTracking</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell">@paquete.Suplidor</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell">@paquete.Contenido</div>
                     <div class="vertical-line"></div>
-
-                    <div class="col-cell small">@paquete.Peso</div>
+                    <div class="col-cell small">@paquete.Peso lb</div>
                     <div class="vertical-line"></div>
-
-                    <div class="col-cell">@("Disponible")</div>
+                    <div class="col-cell" style="color:@GetStatusColor("Disponible")">Disponible</div>
                     <div class="vertical-line"></div>
-
-                    <div class="col-cell">@paquete.Total</div>
+                    <div class="col-cell">US$ @paquete.Total</div>
                     <div class="vertical-line"></div>
-
                     <div class="col-cell">@(paquete.CondicionEspecial ? "Especial" : "Normal")</div>
                 </div>
             }
         }
     </div>
+
 </div>
+@if (mostrarModalEdicion)
+{
+    <div class="modal-backdrop" @onclick="CerrarModal">
+        <div class="modal-window-blue" @onclick:stopPropagation>
+
+            <div class="eps-header">
+                <img src="/Imagenes/EPS_Barra_Superior.png" alt="EPS Logo" />
+                <button type="button" class="btn-recepcion-link" style="font-size:1.5rem;" @onclick="CerrarModal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="eps-body-blue">
+                <h3 style="border-bottom:1px solid rgba(255,255,255,0.3); padding-bottom:10px; margin-bottom:20px;">
+                    EDITAR PAQUETE
+                </h3>
+
+                <EditForm Model="PaqueteEnEdicion" OnValidSubmit="GuardarCambiosPaquete">
+                    <DataAnnotationsValidator />
+
+                    <div class="form-grid-modal">
+                        <div class="form-group-blue">
+                            <label>Tracking</label>
+                            <InputText @bind-Value="PaqueteEnEdicion.NumeroTracking" />
+                        </div>
+                        <div class="form-group-blue">
+                            <label>Suplidor</label>
+                            <InputText @bind-Value="PaqueteEnEdicion.Suplidor" />
+                        </div>
+                        <div class="form-group-blue">
+                            <label>Contenido</label>
+                            <InputText @bind-Value="PaqueteEnEdicion.Contenido" />
+                        </div>
+                        <div class="form-group-blue">
+                            <label>Peso (Libras)</label>
+                            <InputNumber @bind-Value="PaqueteEnEdicion.Peso" />
+                        </div>
+
+                        <div class="form-group-blue">
+                            <label>Valor Total (USD)</label>
+                            <InputNumber @bind-Value="PaqueteEnEdicion.Total" />
+                        </div>
+                        <div class="form-group-blue">
+                            <label>Categoría</label>
+                            <InputSelect @bind-Value="PaqueteEnEdicion.Categoria">
+                                <option value="Standard">Standard</option>
+                                <option value="Priority">Priority</option>
+                                <option value="Economy">Economy</option>
+                            </InputSelect>
+                        </div>
+
+                        <div style="grid-column: span 2; display:flex; gap:30px; margin-top:10px;">
+                            <div class="form-group-blue" style="display:flex; align-items:center; gap:10px;">
+                                <InputCheckbox @bind-Value="PaqueteEnEdicion.CondicionEspecial" id="chkEspecial" style="width:20px; height:20px;" />
+                                <label for="chkEspecial" style="margin:0; cursor:pointer;">Condición Especial</label>
+                            </div>
+                            <div class="form-group-blue" style="display:flex; align-items:center; gap:10px;">
+                                <InputCheckbox @bind-Value="PaqueteEnEdicion.Retenido" id="chkRetenido" style="width:20px; height:20px;" />
+                                <label for="chkRetenido" style="margin:0; cursor:pointer;">Retenido en Aduanas</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer-actions">
+                        <button type="button" class="btn-blue-cancel" @onclick="CerrarModal">Cancelar</button>
+                        <button type="submit" class="btn-blue-save">Guardar Cambios</button>
+                    </div>
+
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     public List<Paquetes> ListaPaquetes { get; set; } = new List<Paquetes>();
     private ApplicationUser appUser;
 
+    // --- VARIABLES MODAL ---
+    private bool mostrarModalEdicion = false;
+    private Paquetes PaqueteEnEdicion = new Paquetes();
+
     protected override async Task OnInitializedAsync()
+    {
+        await CargarPaquetes();
+    }
+
+    private async Task CargarPaquetes()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var userClaimsPrincipal = authState.User;
@@ -107,44 +179,56 @@
         {
             appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
         }
-        if (userClaimsPrincipal.IsInRole("Cliente"))
+
+        if (appUser != null && userClaimsPrincipal.IsInRole("Cliente"))
             ListaPaquetes = await paquetesService.Listar(p => p.PaqueteId > 0 && p.ClienteId == appUser.Id);
         else
             ListaPaquetes = await paquetesService.Listar(p => p.PaqueteId > 0);
-            
     }
 
-    // --- LÓGICA VISUAL (Colores e Iconos) ---
+    // --- LOGICA MODAL ---
+
+    private void AbrirModalEdicion(Paquetes paqueteOriginal)
+    {
+        // CLONAR DATOS: Importante para no modificar la tabla antes de guardar
+        PaqueteEnEdicion = new Paquetes
+        {
+            PaqueteId = paqueteOriginal.PaqueteId,
+            NumeroRecepcion = paqueteOriginal.NumeroRecepcion,
+            NumeroTracking = paqueteOriginal.NumeroTracking,
+            Suplidor = paqueteOriginal.Suplidor,
+            Contenido = paqueteOriginal.Contenido,
+            Peso = paqueteOriginal.Peso,
+            Total = paqueteOriginal.Total,
+            Categoria = paqueteOriginal.Categoria,
+            CondicionEspecial = paqueteOriginal.CondicionEspecial,
+            Retenido = paqueteOriginal.Retenido,
+            ClienteId = paqueteOriginal.ClienteId,
+            NumeroEPS = paqueteOriginal.NumeroEPS
+        };
+
+        mostrarModalEdicion = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModalEdicion = false;
+    }
+
+    private async Task GuardarCambiosPaquete()
+    {
+        // Guardar en BD
+        var guardado = await paquetesService.Guardar(PaqueteEnEdicion);
+
+        if (guardado)
+        {
+            mostrarModalEdicion = false;
+            await CargarPaquetes(); // Refrescar lista
+        }
+    }
 
     private string GetStatusColor(string status)
     {
-        return status switch
-        {
-            "Almacén de Origen" => "#FC0202",
-            "Embarcado" => "#0BC8A2",
-            "Linea Aérea" => "#B537A3",
-            "Aduanas" => "#239FC3",
-            "Centro de Distribución" => "#FFB130",
-            "Transito a la Oficina" => "#767560",
-            "Disponible" => "#78BE42",
-            "Entregado al cliente" => "#6FDCDC",
-            _ => "#78BE42" // Color por defecto (Verde Disponible)
-        };
-    }
-
-    private string GetStatusIcon(string status)
-    {
-        return status switch
-        {
-            "Almacén de Origen" => "bi bi-building",
-            "Embarcado" => "bi bi-box-seam",
-            "Linea Aérea" => "bi bi-airplane",
-            "Aduanas" => "bi bi-bank",
-            "Centro de Distribución" => "bi bi-geo-alt",
-            "Transito a la Oficina" => "bi bi-truck",
-            "Disponible" => "bi bi-check-circle",
-            "Entregado al cliente" => "bi bi-person-check",
-            _ => "bi bi-check-circle"
-        };
+        return "#78BE42"; // Ejemplo básico
     }
 }

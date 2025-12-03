@@ -1,4 +1,4 @@
-﻿/* --- Contenedor de Vidrio --- */
+﻿/* --- Layout Principal --- */
 .glass-container {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 30px;
@@ -33,7 +33,6 @@
     transition: all 0.3s ease;
 }
 
-    /* Blazor aplica la clase 'active' automáticamente al NavLink coincidente */
     .sub-nav-item.active {
         color: #006089;
         font-weight: 700;
@@ -61,12 +60,12 @@
     background-color: #ddd;
 }
 
-/* --- Contenido del Perfil --- */
+/* --- Formulario --- */
 .section-title {
     font-family: 'Jaldi', sans-serif;
     color: white;
     font-size: 24px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     font-weight: 400;
 }
 
@@ -77,34 +76,49 @@
     margin-bottom: 2rem;
 }
 
-.input-group {
+/* IMPORTANTE: Usamos .form-item en vez de input-group */
+.form-item {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-    .input-group label {
+    .form-item label {
         color: white;
         font-family: 'Jaldi', sans-serif;
         font-size: 18px;
-        margin-left: 20px; /* Alineado con la curva */
+        margin-left: 25px; /* Alineado con la curva */
     }
 
-/* CAJAS DE DATOS (Solo lectura) - Estilo Píldora */
-.data-box {
+/* --- INPUTS Y CAJAS DE DATOS TOTALMENTE REDONDOS --- */
+.input-box, .data-box {
     background-color: #FFFFFF;
-    border-radius: 30px; /* Redondo completo */
-    height: 50px;
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
+    border: none;
+    /* Redondeo completo */
+    border-radius: 50px;
+    /* Altura consistente */
+    height: 60px;
+    padding: 0 25px;
     font-family: 'Jaldi', sans-serif;
     font-size: 18px;
     color: #333;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* Sombra suave */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    outline: none;
+    width: 100%;
+    transition: all 0.3s ease;
+    /* Para centrar texto en div (data-box) */
+    display: flex;
+    align-items: center;
 }
 
-/* Botón Guardar */
+    /* Solo para inputs editables */
+    .input-box:focus {
+        box-shadow: 0 0 0 3px rgba(0, 96, 137, 0.2);
+        transform: scale(1.01);
+    }
+
+/* --- Botones --- */
 .action-row {
     display: flex;
     justify-content: flex-end;
@@ -114,8 +128,9 @@
     background-color: #006089;
     color: white;
     border: none;
-    border-radius: 30px;
-    padding: 10px 40px;
+    border-radius: 50px;
+    padding: 0 40px;
+    height: 50px;
     font-family: 'Jaldi', sans-serif;
     font-size: 18px;
     font-weight: 700;
@@ -138,11 +153,6 @@
     .sub-nav-bar {
         height: auto;
         flex-wrap: wrap;
-        gap: 10px;
-        padding: 15px;
-    }
-
-    .separator {
-        display: none;
+        padding: 10px;
     }
 }

@@ -13,7 +13,7 @@
 
     <div class="header-actions">
         <a href="/paquetesusuario" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Regresar al Listado
+            <i class="bi bi-arrow-left-circle-fill icono-grande"></i>
         </a>
     </div>
 
@@ -27,48 +27,60 @@
 
                 <div class="form-item">
                     <label>Número de Tracking</label>
-                    <InputText @bind-Value="NuevoPaquete.NumeroTracking" class="input-box" placeholder="Ej: 1Z999..." />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.NumeroTracking"
+                           placeholder="Ej: 1Z999..." />
                     <ValidationMessage For="@(() => NuevoPaquete.NumeroTracking)" />
                 </div>
 
                 <div class="form-item">
                     <label>Número de EPS</label>
-                    <InputText @bind-Value="NuevoPaquete.NumeroEPS" class="input-box" placeholder="Ej: 064-000..." />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.NumeroEPS"
+                           placeholder="Ej: 064-000..." />
                     <ValidationMessage For="@(() => NuevoPaquete.NumeroEPS)" />
                 </div>
 
                 <div class="form-item">
                     <label>Suplidor / Tienda</label>
-                    <InputText @bind-Value="NuevoPaquete.Suplidor" class="input-box" placeholder="Ej: Amazon" />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.Suplidor"
+                           placeholder="Ej: Amazon" />
                     <ValidationMessage For="@(() => NuevoPaquete.Suplidor)" />
                 </div>
 
                 <div class="form-item">
                     <label>Contenido</label>
-                    <InputText @bind-Value="NuevoPaquete.Contenido" class="input-box" placeholder="Ej: Ropa, Electrónicos" />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.Contenido"
+                           placeholder="Ej: Ropa, Electrónicos" />
                     <ValidationMessage For="@(() => NuevoPaquete.Contenido)" />
                 </div>
 
                 <div class="form-item">
                     <label>Peso (Libras)</label>
-                    <InputNumber @bind-Value="NuevoPaquete.Peso" class="input-box" placeholder="0.00" />
+                    <input type="number" class="input-box"
+                           @bind-value="NuevoPaquete.Peso"
+                           placeholder="0.00" step="0.01" />
                     <ValidationMessage For="@(() => NuevoPaquete.Peso)" />
                 </div>
 
                 <div class="form-item">
                     <label>Valor Total (USD)</label>
-                    <InputNumber @bind-Value="NuevoPaquete.Total" class="input-box" placeholder="0.00" />
+                    <input type="number" class="input-box"
+                           @bind-value="NuevoPaquete.Total"
+                           placeholder="0.00" step="0.01" />
                     <ValidationMessage For="@(() => NuevoPaquete.Total)" />
                 </div>
 
                 <div class="form-item">
                     <label>Servicio / Categoría</label>
-                    <InputSelect @bind-Value="NuevoPaquete.Categoria" class="input-box">
+                    <select class="input-box" @bind="NuevoPaquete.Categoria">
                         <option value="">Seleccione...</option>
                         <option value="Priority">Priority</option>
                         <option value="Standard">Standard</option>
                         <option value="Economy">Economy</option>
-                    </InputSelect>
+                    </select>
                     <ValidationMessage For="@(() => NuevoPaquete.Categoria)" />
                 </div>
 
@@ -107,8 +119,21 @@
 
     private async Task GuardarPaquete()
     {
-        var appUser = await UserManager.Users.FirstOrDefaultAsync(u => u.UserName == NuevoPaquete.NumeroEPS);
-        NuevoPaquete.ClienteId = appUser.Id;
+        if (!string.IsNullOrEmpty(NuevoPaquete.NumeroEPS))
+        {
+            var appUser = await UserManager.FindByNameAsync(NuevoPaquete.NumeroEPS);
+
+            if (appUser != null)
+            {
+                NuevoPaquete.ClienteId = appUser.Id;
+            }
+        }
+
+        if (string.IsNullOrEmpty(NuevoPaquete.NumeroRecepcion))
+        {
+            NuevoPaquete.NumeroRecepcion = "REC-" + DateTime.Now.ToString("yyyyMMddHHmm");
+        }
+
         var guardado = await paquetesService.Guardar(NuevoPaquete);
 
         if (guardado)

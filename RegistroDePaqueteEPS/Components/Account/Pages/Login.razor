@@ -14,12 +14,12 @@
         <DataAnnotationsValidator />
 
         <div class="form-grid">
-
             <div class="form-item">
                 <label>
                     <i class="bi bi-person-fill input-icon"></i> Usuario
                 </label>
                 <InputText @bind-Value="Input.Email" class="input-box" placeholder="" />
+                <ValidationMessage For="() => Input.Email" class="text-danger" />
             </div>
 
             <div class="form-item">
@@ -33,7 +33,6 @@
             <div class="form-item button-item">
                 <button type="submit" class="btn-login">Iniciar sesión</button>
             </div>
-
         </div>
 
         <div class="login-links">
@@ -49,15 +48,9 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
-
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
-
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
-
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
     private string? errorMessage;
 
     protected override async Task OnInitializedAsync()
@@ -74,7 +67,6 @@
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
-
             RedirectManager.RedirectTo("/Inicio");
         }
         else
@@ -85,14 +77,8 @@
 
     private sealed class InputModel
     {
-        [Required]
-        public string Email { get; set; } = "";
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; } = "";
-
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        [Required][EmailAddress] public string Email { get; set; } = "";
+        [Required][DataType(DataType.Password)] public string Password { get; set; } = "";
+        [Display(Name = "Remember me?")] public bool RememberMe { get; set; }
     }
 }

@@ -60,7 +60,6 @@
                       Width="250px" 
                       Height="250px" 
                       InputData="@DataGrafico" 
-                      InputLabels="@LabelsGrafico"
                       Class="mud-chart-custom">
                 <CustomGraphics>
                     <text class="donut-inner-text" x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#006089" font-family="Jaldi" font-weight="bold" font-size="24">Total</text>
@@ -93,7 +92,6 @@
     public double TotalCIF { get; set; }
 
     public double[] DataGrafico { get; set; } = { 6, 10, 5, 47 };
-    public string[] LabelsGrafico { get; set; } = { "Recibido", "Tránsito", "Disponible", "Entregado" };
     public List<ChartSeries> SeriesBarras { get; set; } = new List<ChartSeries>();
     public string[] XAxisLabels { get; set; } = { "Ene", "Feb", "Mar", "Abr", "May", "Jun" };
 
@@ -126,6 +124,6 @@
         DataGrafico = new double[] { normales * 0.4, normales * 0.3, normales * 0.2, retenidos };
         
         SeriesBarras.Clear();
-        SeriesBarras.Add(new ChartSeries() { Name = "Paquetes", Data = new double[] { 10, 25, 15, 30, 40, (double)TotalPaquetes } });
+        SeriesBarras.Add(new ChartSeries() {Data = new double[] { 10, 25, 15, 30, 40, (double)TotalPaquetes } });
     }
 }

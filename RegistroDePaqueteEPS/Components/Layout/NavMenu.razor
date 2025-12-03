@@ -26,7 +26,6 @@
             </NavLink>
         </div>
 
-        @* --- LÓGICA DE ROLES (Solo Admin) --- *@
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <div class="nav-item">
@@ -45,7 +44,6 @@
             </Authorized>
         </AuthorizeView>
 
-        @* --- LÓGICA DE AUTENTICACIÓN (Login/Logout) --- *@
         <AuthorizeView>
             <Authorized>
                 <div class="nav-item">
@@ -54,22 +52,9 @@
                         <span class="nav-text">Cuenta (@context.User.Identity?.Name)</span>
                     </NavLink>
                 </div>
-
-                <div class="nav-item">
-                    <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-
-                        <button type="submit" class="nav-link logout-btn">
-                            <i class="bi bi-box-arrow-left nav-icon"></i>
-                            <span class="nav-text">Cerrar Sesión</span>
-                        </button>
-                    </form>
-                </div>
             </Authorized>
         </AuthorizeView>
 
-        @* --- Footer --- *@
         <div class="nav-footer">
             <img src="/Imagenes/EPS_Barra_Lateral.png" class="toggle-logo" alt="Menú" />
         </div>
