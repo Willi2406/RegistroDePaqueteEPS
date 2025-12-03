@@ -116,6 +116,14 @@
 
 @code {
     public Paquetes NuevoPaquete { get; set; } = new Paquetes();
+    public EstatusPaqueteDetalles EstatusPaquete = new EstatusPaqueteDetalles();
+
+    public void AgregarEstatus()
+    {
+        EstatusPaquete.EstatusPaqueteId = 1;
+        EstatusPaquete.Fecha = DateTime.Now;
+        NuevoPaquete.EstatusPaquete.Add(EstatusPaquete);
+    }
 
     private async Task GuardarPaquete()
     {
@@ -129,10 +137,7 @@
             }
         }
 
-        if (string.IsNullOrEmpty(NuevoPaquete.NumeroRecepcion))
-        {
-            NuevoPaquete.NumeroRecepcion = "REC-" + DateTime.Now.ToString("yyyyMMddHHmm");
-        }
+        AgregarEstatus();
 
         var guardado = await paquetesService.Guardar(NuevoPaquete);
 

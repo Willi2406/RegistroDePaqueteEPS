@@ -21,10 +21,4 @@
     <PackageReference Include="MudBlazor" Version="8.15.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Data\DatabaseEPS.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

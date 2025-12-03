@@ -16,6 +16,10 @@ namespace RegistroDePaqueteEPS.Data
 
         public DbSet<DireccionesDelivery> DireccionesDelivery { get; set; }
 
+        public DbSet<EstatusPaquete> EstatusPaquete { get; set; }
+
+        public DbSet<EstatusPaqueteDetalles> EstatusPaqueteDetalles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
