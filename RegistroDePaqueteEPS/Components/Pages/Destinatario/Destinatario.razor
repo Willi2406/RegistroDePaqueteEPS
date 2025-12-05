@@ -1,6 +1,15 @@
 ﻿@page "/destinatario"
 @attribute [Authorize(Roles = "Admin")]
+
+@using Microsoft.AspNetCore.Identity
+@using RegistroDePaqueteEPS.Data
+@using RegistroDePaqueteEPS.Models
+@using RegistroDePaqueteEPS.Services
+
 @inject UserManager<ApplicationUser> UserManager
+@inject PaquetesService paquetesService
+@inject DireccionesDeliveryService direccionesService
+@inject AutorizadosEntregaService autorizadosService
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -16,7 +25,6 @@
         </div>
     </div>
 
-    @* ... (TU CABECERA DE TABLA IGUAL QUE ANTES) ... *@
     <div class="table-header-row">
         <div class="col-cell small">No. EPS</div>
         <div class="vertical-line"></div>
@@ -43,8 +51,13 @@
             @foreach (var user in UsuariosFiltrados)
             {
                 <div class="data-row">
-                    <div class="col-cell small">@user.UserName</div>
+                    <div class="col-cell small">
+                        <button class="btn-link-eps" @onclick="() => VerDetallesUsuario(user)">
+                            @user.UserName
+                        </button>
+                    </div>
                     <div class="vertical-line"></div>
+
                     <div class="col-cell">@(user.NombreCompleto ?? "N/A")</div>
                     <div class="vertical-line"></div>
                     <div class="col-cell">@(user.Identificacion ?? "N/A")</div>
@@ -55,10 +68,10 @@
                     <div class="vertical-line"></div>
 
                     <div class="col-cell small actions-cell">
-                        <button class="btn-icon edit" title="Editar" @onclick="() => AbrirModal(user, true)">
+                        <button class="btn-icon edit" title="Editar" @onclick="() => AbrirModalEdicion(user, true)">
                             <i class="bi bi-pencil-square"></i>
                         </button>
-                        <button class="btn-icon delete" title="Eliminar" @onclick="() => AbrirModal(user, false)">
+                        <button class="btn-icon delete" title="Eliminar" @onclick="() => AbrirModalEdicion(user, false)">
                             <i class="bi bi-trash-fill"></i>
                         </button>
                     </div>
@@ -67,14 +80,15 @@
         }
     </div>
 </div>
-@if (mostrarModal)
+
+@* --- 1. MODAL AZUL (EDICIÓN / ELIMINACIÓN) --- *@
+@if (mostrarModalEdicion)
 {
-    <div class="modal-backdrop" @onclick="CerrarModal">
-        <div class="modal-window" @onclick:stopPropagation>
-            
+    <div class="modal-backdrop" @onclick="CerrarModales">
+        <div class="modal-window-edit" @onclick:stopPropagation>
             <div class="eps-header">
-                <img src="/Imagenes/EPS_Barra_Superior.png" alt="EPS Logo" /> 
-                <button class="btn-close-modal" @onclick="CerrarModal">
+                <img src="/Imagenes/EPS_Barra_Superior.png" alt="EPS Logo" />
+                <button style="border:none; background:none; cursor:pointer;" @onclick="CerrarModales">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
@@ -85,30 +99,30 @@
                     <h3>EDITAR USUARIO</h3>
                     <div class="form-group">
                         <label>Nombre Completo</label>
-                        <input type="text" @bind="usuarioSeleccionado.NombreCompleto" />
+                        <input type="text" @bind="usuarioEnEdicion.NombreCompleto" />
                     </div>
                     <div class="form-group">
                         <label>Identificación</label>
-                        <input type="text" @bind="usuarioSeleccionado.Identificacion" />
+                        <input type="text" @bind="usuarioEnEdicion.Identificacion" />
                     </div>
                     <div class="form-group">
                         <label>Teléfono</label>
-                        <input type="text" @bind="usuarioSeleccionado.PhoneNumber" />
+                        <input type="text" @bind="usuarioEnEdicion.PhoneNumber" />
                     </div>
-                    
+
                     <div class="modal-actions">
-                        <button class="btn-eps-cancel" @onclick="CerrarModal">Cancelar</button>
+                        <button class="btn-eps-cancel" @onclick="CerrarModales">Cancelar</button>
                         <button class="btn-eps-primary" @onclick="GuardarCambios">Guardar</button>
                     </div>
                 }
                 else
                 {
                     <h3>ELIMINAR USUARIO</h3>
-                    <p>¿Estás seguro que deseas eliminar al usuario <strong>@usuarioSeleccionado.NombreCompleto</strong>?</p>
+                    <p>¿Estás seguro que deseas eliminar al usuario <strong>@usuarioEnEdicion.NombreCompleto</strong>?</p>
                     <p style="font-size: 0.9rem; opacity: 0.8;">Esta acción no se puede deshacer.</p>
 
                     <div class="modal-actions">
-                        <button class="btn-eps-cancel" @onclick="CerrarModal">Cancelar</button>
+                        <button class="btn-eps-cancel" @onclick="CerrarModales">Cancelar</button>
                         <button class="btn-eps-primary" style="color: #c00;" @onclick="ConfirmarEliminacion">Eliminar</button>
                     </div>
                 }
@@ -117,14 +131,110 @@
     </div>
 }
 
+@* --- 2. MODAL GRIS (DETALLES COMPLETOS) --- *@
+@if (mostrarModalDetalle)
+{
+    <div class="modal-backdrop" @onclick="CerrarModales">
+        <div class="modal-card-gray" @onclick:stopPropagation>
+
+            <button class="btn-close-absolute" @onclick="CerrarModales"><i class="bi bi-x-lg"></i></button>
+
+            <i class="bi bi-person-fill detail-avatar"></i>
+            <h2 class="detail-name">@usuarioEnDetalle.NombreCompleto</h2>
+            <div class="detail-eps">@usuarioEnDetalle.UserName</div>
+            <div class="detail-branch">EPS @(usuarioEnDetalle.Municipio ?? "Salcedo")</div>
+
+            <div class="details-grid">
+                <div class="detail-box">
+                    <h4>Direcciones</h4>
+                    @if (listaDirecciones.Any())
+                    {
+                        @foreach (var d in listaDirecciones)
+                        {
+                            <div style="margin-bottom:10px; border-bottom:1px dashed #ccc; padding-bottom:5px;">
+                                <div class="detail-text">@d.Calle, @d.Sector</div>
+                                <div class="detail-text" style="font-size:0.8rem; color:#666;">@d.Provincia</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="detail-text">No hay direcciones.</p>
+                    }
+                </div>
+
+                <div class="detail-box">
+                    <h4>Autorizados</h4>
+                    @if (listaAutorizados.Any())
+                    {
+                        @foreach (var a in listaAutorizados)
+                        {
+                            <div style="margin-bottom:10px; border-bottom:1px dashed #ccc; padding-bottom:5px;">
+                                <div class="detail-text">@a.Nombres</div>
+                                <div class="detail-text" style="font-size:0.8rem;">Tel: @a.Telefono</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="detail-text">No hay autorizados.</p>
+                    }
+                </div>
+            </div>
+
+            <div style="width:100%; margin-top:20px; background:rgba(255,255,255,0.6); padding:15px; border-radius:10px;">
+                <h4 style="text-align:center; color:#006080; margin-top:0;">PAQUETES REGISTRADOS</h4>
+                @if (listaPaquetes.Any())
+                {
+                    <table class="mini-table">
+                        <thead>
+                            <tr>
+                                <th>Recepción</th>
+                                <th>Tracking</th>
+                                <th>Contenido</th>
+                                <th>Estatus</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in listaPaquetes)
+                            {
+                                <tr>
+                                    <td>@p.NumeroRecepcion</td>
+                                    <td>@p.NumeroTracking</td>
+                                    <td>@p.Contenido</td>
+                                    <td>Disponible</td>
+                                    <td>$@p.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="detail-text" style="text-align:center;">No tiene paquetes.</p>
+                }
+            </div>
+
+        </div>
+    </div>
+}
+
 @code {
     private List<ApplicationUser> TodosLosUsuarios = new();
     private string terminoBusqueda = "";
 
+    // -- ESTADO MODAL EDICIÓN (AZUL) --
+    private bool mostrarModalEdicion = false;
+    private bool esModoEdicion = true;
+    private ApplicationUser usuarioEnEdicion = new();
 
-    private bool mostrarModal = false;
-    private bool esModoEdicion = true; 
-    private ApplicationUser usuarioSeleccionado = new(); 
+    // -- ESTADO MODAL DETALLE (GRIS) --
+    private bool mostrarModalDetalle = false;
+    private ApplicationUser usuarioEnDetalle = new();
+    private List<DireccionesDelivery> listaDirecciones = new();
+    private List<AutorizadosEntrega> listaAutorizados = new();
+    private List<Paquetes> listaPaquetes = new();
 
     private List<ApplicationUser> UsuariosFiltrados =>
         string.IsNullOrWhiteSpace(terminoBusqueda)
@@ -137,30 +247,81 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await CargarUsuarios();
+    }
+
+    private async Task CargarUsuarios()
+    {
         TodosLosUsuarios = await UserManager.Users.Where(u => u.UserName != u.Email).ToListAsync();
     }
 
-    private void AbrirModal(ApplicationUser user, bool modoEditar)
+    // --- LÓGICA MODAL EDICIÓN ---
+    private void AbrirModalEdicion(ApplicationUser user, bool modoEditar)
     {
-        usuarioSeleccionado = user; 
         esModoEdicion = modoEditar;
-        mostrarModal = true;
-    }
-
-    private void CerrarModal()
-    {
-        mostrarModal = false;
+        // Clonamos para no editar la tabla en vivo
+        usuarioEnEdicion = new ApplicationUser
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email,
+            NombreCompleto = user.NombreCompleto,
+            Identificacion = user.Identificacion,
+            PhoneNumber = user.PhoneNumber,
+            ConcurrencyStamp = user.ConcurrencyStamp
+        };
+        mostrarModalEdicion = true;
     }
 
     private async Task GuardarCambios()
     {
-        
-        mostrarModal = false;
-        // Opcional: Recargar la lista
+        var userReal = await UserManager.FindByIdAsync(usuarioEnEdicion.Id);
+        if (userReal != null)
+        {
+            userReal.NombreCompleto = usuarioEnEdicion.NombreCompleto;
+            userReal.Identificacion = usuarioEnEdicion.Identificacion;
+            userReal.PhoneNumber = usuarioEnEdicion.PhoneNumber;
+
+            var result = await UserManager.UpdateAsync(userReal);
+            if (result.Succeeded)
+            {
+                await CargarUsuarios();
+                mostrarModalEdicion = false;
+            }
+        }
     }
 
     private async Task ConfirmarEliminacion()
     {
-        mostrarModal = false;
+        var userReal = await UserManager.FindByIdAsync(usuarioEnEdicion.Id);
+        if (userReal != null)
+        {
+            var result = await UserManager.DeleteAsync(userReal);
+            if (result.Succeeded)
+            {
+                var local = TodosLosUsuarios.FirstOrDefault(u => u.Id == userReal.Id);
+                if (local != null) TodosLosUsuarios.Remove(local);
+                mostrarModalEdicion = false;
+            }
+        }
+    }
+
+    // --- LÓGICA MODAL DETALLES (GRIS) ---
+    private async Task VerDetallesUsuario(ApplicationUser user)
+    {
+        usuarioEnDetalle = user;
+
+        // Cargamos datos relacionados
+        listaDirecciones = await direccionesService.Listar(d => d.ClienteId == user.Id);
+        listaAutorizados = await autorizadosService.Listar(a => a.ClienteId == user.Id);
+        listaPaquetes = await paquetesService.Listar(p => p.ClienteId == user.Id);
+
+        mostrarModalDetalle = true;
+    }
+
+    private void CerrarModales()
+    {
+        mostrarModalEdicion = false;
+        mostrarModalDetalle = false;
     }
 }
