@@ -16,11 +16,11 @@ public class PaquetesService (IDbContextFactory<ApplicationDbContext> dbContext)
     public async Task AfectarExistencia(EstatusPaqueteDetalles[] detalle, TipoOperacion tipoOperacion)
     {
         await using var contexto = await dbContext.CreateDbContextAsync();
-        var componente = await contexto.EstatusPaquete.SingleAsync(e => e.EstatusPaqueteId == detalle[detalle.Length-1].EstatusPaqueteId);
+        var estatus = await contexto.EstatusPaquete.SingleAsync(e => e.EstatusPaqueteId == detalle[detalle.Length-1].EstatusPaqueteId);
         if (tipoOperacion == TipoOperacion.Suma)
-            componente.Existencia++;
+            estatus.Existencia++;
         else
-            componente.Existencia--;
+            estatus.Existencia--;
         await contexto.SaveChangesAsync();
     }
 

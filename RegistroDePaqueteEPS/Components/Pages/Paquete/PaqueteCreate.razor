@@ -1,6 +1,7 @@
 ﻿@page "/paquetesusuario/create"
 @inject NavigationManager NavManager
 @inject PaquetesService paquetesService
+@inject EmailManager emailManager
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
@@ -126,10 +127,9 @@
 
     private async Task GuardarPaquete()
     {
+        var appUser = await UserManager.FindByNameAsync(NuevoPaquete.NumeroEPS);
         if (!string.IsNullOrEmpty(NuevoPaquete.NumeroEPS))
         {
-            var appUser = await UserManager.FindByNameAsync(NuevoPaquete.NumeroEPS);
-
             if (appUser != null)
             {
                 NuevoPaquete.ClienteId = appUser.Id;
@@ -142,6 +142,7 @@
 
         if (guardado)
         {
+            await emailManager.SendUserOrderReceivedAsync(appUser.Email, NuevoPaquete.NumeroRecepcion);
             NavManager.NavigateTo("/paquetesusuario");
         }
     }

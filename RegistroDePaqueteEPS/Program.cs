@@ -17,7 +17,6 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
-// 2. Servicios de Terceros (MudBlazor)
 builder.Services.AddMudServices();
 
 // 3. Servicios de Negocio (Tus servicios propios)
@@ -26,6 +25,8 @@ builder.Services.AddScoped<PaquetesService>();
 builder.Services.AddScoped<PreavisosService>();
 builder.Services.AddScoped<AutorizadosEntregaService>();
 builder.Services.AddScoped<DireccionesDeliveryService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<EmailManager>();
 
 // 4. Configuración de Base de Datos e Identity
 var connectionString = builder.Configuration.GetConnectionString("ConStr")
@@ -50,8 +51,6 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
-
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 var app = builder.Build();
 
