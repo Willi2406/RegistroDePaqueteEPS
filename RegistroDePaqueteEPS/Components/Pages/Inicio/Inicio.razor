@@ -1,52 +1,110 @@
 ﻿@page "/Inicio"
 @inject PaquetesService paquetesService
+@using RegistroDePaqueteEPS.Models
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
     <h1>INICIO</h1>
 </SectionContent>
 
-<div class="glass-container dashboard-view">
+@* Usamos d-flex y alineación de Bootstrap en lugar de .dashboard-view *@
+<div class="glass-container justify-content-center align-items-center">
 
     <div class="cards-wrapper">
 
-        <div class="stat-card">
-            <div class="icon-wrapper">
-                <i class="bi bi-box-seam-fill main-icon"></i>
-                <i class="bi bi-check-circle-fill badge-icon"></i>
+        @if (ListaConteos.Count == 0)
+        {
+            <div class="stat-card">
+                <div class="icon-wrapper">
+                    <i class="bi bi-hourglass-split main-icon"></i>
+                </div>
+                <div class="card-content">
+                    <h2>Cargando...</h2>
+                </div>
             </div>
-            <div class="card-content">
-                <h2>Disponibles</h2>
-                <span class="count-number">@Disponibles</span>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="icon-wrapper">
-                <i class="bi bi-boxes main-icon"></i>
-            </div>
-            <div class="card-content">
-                <h2>Tránsito</h2>
-                <span class="count-number">@Transito</span>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="icon-wrapper">
-                <i class="bi bi-shield-fill-check main-icon"></i>
-            </div>
-            <div class="card-content">
-                <h2>Condición Especial</h2>
-                <span class="count-number">@Especiales</span>
-            </div>
-        </div>
+        }
+        else
+        {
+            @foreach (var estatus in ListaConteos)
+            {
+                <div class="stat-card">
+                    <div class="icon-wrapper">
+                        @* Asigna icono dinámicamente según el nombre del estatus *@
+                        <i class="@ObtenerIcono(estatus.Descripcion) main-icon"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>@estatus.Descripcion</h2>
+                        <span class="count-number">@estatus.Cantidad</span>
+                    </div>
+                </div>
+            }
+        }
 
     </div>
 </div>
 
 @code {
-    public int Disponibles { get; set; } = 0;
-    public int Transito { get; set; } = 0;
-    public int Especiales { get; set; } = 0;
+    // Clase auxiliar para mostrar los datos
+    public class EstatusConteo
+    {
+        public string Descripcion { get; set; }
+        public int Cantidad { get; set; }
+    }
 
+    public List<EstatusConteo> ListaConteos { get; set; } = new List<EstatusConteo>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        var paquetes = await paquetesService.Listar(p => p.PaqueteId > 0);
+        var estatusDefiniciones = await paquetesService.ListarEstatus();
+
+        ListaConteos.Clear();
+
+        foreach (var def in estatusDefiniciones)
+        {
+            int cantidad = paquetes.Count(p => p.EstatusPaquete.Any() &&
+                                          p.EstatusPaquete.OrderByDescending(e => e.Fecha).First().EstatusPaqueteId == def.EstatusPaqueteId);
+
+            ListaConteos.Add(new EstatusConteo
+            {
+                Descripcion = def.Descripcion,
+                Cantidad = cantidad
+            });
+        }
+    }
+
+    // Método mejorado para asignar iconos específicos
+    private string ObtenerIcono(string descripcion)
+    {
+        string desc = descripcion.ToLower();
+
+        // 1. REGLAS ESPECÍFICAS (Prioridad Alta)
+        // Si dice "oficina" o "ruta", es un CAMIÓN (transporte local)
+        if (desc.Contains("oficina") || desc.Contains("ruta") || desc.Contains("camion"))
+            return "bi bi-truck";
+
+        // Si dice "aérea" o "avion", es un AVIÓN
+        if (desc.Contains("aerea") || desc.Contains("aérea") || desc.Contains("avion"))
+            return "bi bi-airplane-fill";
+
+        // 2. REGLAS GENERALES
+        if (desc.Contains("recibido") || desc.Contains("miami")) return "bi bi-geo-alt-fill";
+
+        // "Tránsito" genérico (si no cayó arriba en oficina) suele ser vuelo internacional
+        if (desc.Contains("tránsito") || desc.Contains("transito")) return "bi bi-airplane-fill";
+
+        if (desc.Contains("aduanas") || desc.Contains("retenido")) return "bi bi-shield-lock-fill";
+        if (desc.Contains("almacén") || desc.Contains("almacen")) return "bi bi-box-seam-fill";
+        if (desc.Contains("disponible")) return "bi bi-check-circle-fill";
+        if (desc.Contains("entregado")) return "bi bi-person-check-fill";
+        if (desc.Contains("facturado")) return "bi bi-receipt";
+
+        // Icono por defecto
+        return "bi bi-box-fill";
+    }
 }

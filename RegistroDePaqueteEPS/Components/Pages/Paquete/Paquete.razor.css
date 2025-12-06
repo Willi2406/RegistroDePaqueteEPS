@@ -1,99 +1,18 @@
-﻿/* Título Principal */
-.page-title {
-    background-color: white;
-    padding: 1rem;
-    text-align: center;
-    margin-bottom: 1rem;
-    /* El header blanco ya lo tienes en MainLayout, 
-       esto es solo el texto h1 centrado arriba */
-}
+﻿/* Estilos específicos de Paquete */
 
-    .page-title h1 {
-        color: #006089;
-        font-family: 'Jaldi', sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
-        margin: 0;
-    }
-
-/* Contenedor de Vidrio (Glassmorphism) */
-.glass-container {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    padding: 20px 20px 40px 20px; /* Espacio interno */
-    min-height: 600px;
-    position: relative;
-    margin: 0 20px;
-}
-
-/* Botón Histórico */
-.top-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-
-.btn-historico {
-    background-color: #239FC3; /* Color aproximado del diseño */
-    color: white;
+/* Enlace en la tabla */
+.btn-recepcion-link {
+    background: none;
     border: none;
-    border-radius: 20px;
-    padding: 5px 20px;
-    font-family: 'Jaldi', sans-serif;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-/* --- Estructura de Filas y Encabezados --- */
-
-/* Estilo común para filas (Encabezado y Datos) */
-.table-header-row, .data-row {
-    display: flex; /* Esto hace que las columnas se alineen horizontalmente */
-    align-items: center;
-    background: #FFFFFF;
-    border-radius: 30px;
-    height: 60px; /* Altura fija como en Figma */
-    margin-bottom: 15px; /* Espacio entre filas */
-    padding: 0 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* Estilos específicos del Encabezado */
-.table-header-row {
-    color: #006089; /* Color azul oscuro para títulos */
-    font-weight: 700;
-}
-
-/* Estilos de Celda Individual */
-.col-cell {
-    flex: 1; /* Ocupan el mismo espacio por defecto */
-    text-align: center;
-    font-family: 'Jaldi', sans-serif;
     color: #006089;
-    font-size: 18px; /* Ajustado para que quepa todo */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 5px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
 }
 
-    /* Celdas más anchas (Tracking) */
-    .col-cell.wide {
-        flex: 2;
-        font-size: 16px; /* Tracking es largo, letra un poco más chica */
-    }
-
-    /* Celdas más angostas (Peso, Retenido) */
-    .col-cell.small {
-        flex: 0.5;
-    }
-
-    /* Negrita para ID */
-    .col-cell.bold {
-        font-weight: 700;
-    }
-
-/* Columna Estatus (Icono encima del texto) */
+/* Alineación columna estatus */
 .status-col {
     display: flex;
     flex-direction: column;
@@ -102,67 +21,7 @@
     line-height: 1;
 }
 
-.status-icon {
-    font-size: 1.2rem;
-    margin-bottom: 2px;
-}
-
-/* --- Línea Separadora Vertical --- */
-.vertical-line {
-    width: 1px;
-    height: 30px; /* No llega hasta el borde, como en el diseño */
-    background-color: #000000;
-    opacity: 0.3; /* Un poco más suave que negro puro */
-    margin: 0 5px;
-}
-
-/* Responsividad: Scroll horizontal si la pantalla es muy pequeña */
-@media (max-width: 1400px) {
-    .rows-container {
-        overflow-x: auto;
-    }
-
-    .table-header-row, .data-row {
-        min-width: 1200px; /* Fuerza un ancho mínimo para que no se rompa */
-    }
-}
-.top-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-}
-
-.btn-new {
-    background-color: #006089; /* Azul EPS */
-    color: white;
-    text-decoration: none;
-    padding: 10px 25px;
-    border-radius: 30px; /* Redondo */
-    font-family: 'Jaldi', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* --- ESTILOS DEL MODAL EPS (Azul) --- */
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw; /* Ocupa todo el ancho de la ventana */
-    height: 100vh; /* Ocupa todo el alto de la ventana */
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999 !important; /* IMPORTANTE: Muy alto para estar encima de todo */
-    backdrop-filter: blur(2px);
-}
-
+/* --- MODAL AZUL (Específico de esta página) --- */
 .modal-window-blue {
     background-color: white;
     width: 90%;
@@ -175,67 +34,19 @@
     flex-direction: column;
 }
 
-/* Cabecera Blanca */
-.eps-header {
-    background-color: #ffffff;
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #0099cc;
-    height: 70px;
-}
-
-    .eps-header img {
-        height: 40px; /* Ajusta al tamaño de tu logo */
-        object-fit: contain;
-    }
-
-/* Cuerpo Azul */
 .eps-body-blue {
-    background-color: #0d6e91; /* El azul de EPS */
+    background-color: #0d6e91; /* Azul EPS */
     padding: 25px;
     color: white;
+    min-height: 300px;
 }
 
-/* Grid del formulario */
-.form-grid-modal {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-/* Inputs estilo EPS */
-.form-group-blue label {
-    display: block;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    color: #e0f7fa;
-    font-weight: 600;
-}
-
-.form-group-blue input,
-.form-group-blue select {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: rgba(255,255,255,0.95);
-    color: #333;
-}
-
-    .form-group-blue input:focus {
-        outline: 2px solid #00c3ff;
-        background-color: #ffffff;
-    }
-
-/* Botones del Modal */
+/* Botones específicos dentro del modal azul */
 .modal-footer-actions {
     display: flex;
     justify-content: flex-end;
     gap: 15px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .btn-blue-save {
@@ -253,6 +64,11 @@
         transform: scale(1.05);
     }
 
+    .btn-blue-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
 .btn-blue-cancel {
     background-color: transparent;
     color: white;
@@ -262,24 +78,6 @@
     cursor: pointer;
 }
 
-.btn-recepcion-link {
-    background: none;
-    border: none;
-    color: #0d6e91;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
+    .btn-blue-cancel:hover {
+        background: rgba(255,255,255,0.1);
     }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}

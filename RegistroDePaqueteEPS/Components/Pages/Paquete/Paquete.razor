@@ -12,7 +12,7 @@
 
     <AuthorizeView Roles="Admin">
         <Authorized>
-            <div class="top-actions">
+            <div class="d-flex justify-content-end mb-3">
                 <a href="/paquetesusuario/create" class="btn-new">
                     <i class="bi bi-plus-lg"></i> Agregar Paquete
                 </a>
@@ -72,7 +72,12 @@
                     <div class="vertical-line"></div>
                     <div class="col-cell small">@paquete.Peso lb</div>
                     <div class="vertical-line"></div>
-                    <div class="col-cell" style="color:@GetStatusColor("Disponible")"></div>
+
+                    <div class="col-cell status-col" style="color:@GetStatusColor("Disponible")">
+                        @* Aquí puedes poner un icono o texto *@
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
                     <div class="vertical-line"></div>
                     <div class="col-cell">US$ @paquete.Total</div>
                     <div class="vertical-line"></div>
@@ -83,6 +88,7 @@
     </div>
 
 </div>
+
 @if (mostrarModalEdicion)
 {
     <div class="modal-backdrop" @onclick="CerrarModal">
@@ -90,7 +96,7 @@
 
             <div class="eps-header">
                 <img src="/Imagenes/EPS_Barra_Superior.png" alt="EPS Logo" />
-                <button type="button" class="btn-recepcion-link" style="font-size:1.5rem;" @onclick="CerrarModal">
+                <button type="button" class="btn-close-x" @onclick="CerrarModal">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
@@ -101,11 +107,13 @@
                 </h3>
                 <AuthorizeView Roles="Admin">
                     <Authorized>
-                        <button type="button" @onclick="ActualizarPaquete" class="btn-new">Actualizar Paquete</button>
+                        <div class="d-flex justify-content-end mb-3">
+                            <button type="button" @onclick="ActualizarPaquete" class="btn-new">Actualizar Paquete</button>
+                        </div>
                     </Authorized>
                 </AuthorizeView>
-                
-                <div class="table-header-row">
+
+                <div class="table-header-row" style="color: #006089;">
                     <div class="col-cell">Estatus</div>
                     <div class="vertical-line"></div>
                     <div class="col-cell">Fecha</div>
@@ -115,7 +123,9 @@
                     @foreach (EstatusPaqueteDetalles estatus in PaqueteEnEdicion.EstatusPaquete)
                     {
                         <div class="data-row justify-content-center">
-                            <div class="col-cell" style="color:@GetStatusColor("Disponible")">@ListaEstatus.FirstOrDefault(t => t.EstatusPaqueteId == estatus.EstatusPaqueteId)?.Descripcion</div>
+                            <div class="col-cell" style="color:@GetStatusColor("Disponible")">
+                                @ListaEstatus.FirstOrDefault(t => t.EstatusPaqueteId == estatus.EstatusPaqueteId)?.Descripcion
+                            </div>
                             <div class="vertical-line"></div>
                             <div class="col-cell">@estatus.Fecha.ToString("dd/MM/yyyy hh:mm")</div>
                         </div>
