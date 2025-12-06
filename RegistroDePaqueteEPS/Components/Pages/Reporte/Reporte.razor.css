@@ -1,61 +1,175 @@
-﻿.filters-section {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 12px;
-    border-radius: 15px;
-    margin-bottom: 0.5rem;
+﻿/* Contenedor Principal */
+.glass-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 30px;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* Espacio entre secciones */
+    margin: 0 20px;
+}
+
+/* --- SECCIÓN FILTROS --- */
+.filters-section {
+    background: rgba(255, 255, 255, 0.2); /* Un poco más blanco para diferenciar */
+    padding: 20px;
+    border-radius: 20px;
 }
 
 .section-subtitle {
     font-family: 'Jaldi', sans-serif;
     color: white;
-    font-size: 18px;
-    margin-bottom: 0.2rem;
+    font-size: 24px;
+    margin-bottom: 1rem;
     font-weight: 400;
 }
 
 .filter-grid {
     display: flex;
-    gap: 1rem;
-    align-items: flex-end;
+    gap: 2rem;
+    align-items: flex-end; /* Alinear botón con inputs */
     flex-wrap: wrap;
 }
 
-.filter-input {
-    height: 35px !important; /* Más pequeño para filtros */
-    width: 180px !important;
+/* Inputs Redondos (Reutilizados) */
+.form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.charts-section {
-    display: grid;
-    /* Columna izquierda fija para la dona, resto para barras */
-    grid-template-columns: 250px 1fr;
-    gap: 1rem;
-    /* Sin margen inferior extra */
-    flex: 1; /* Ocupa el resto del espacio */
+    .form-item label {
+        color: white;
+        font-family: 'Jaldi', sans-serif;
+        font-size: 18px;
+        margin-left: 20px;
+    }
+
+.input-box {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 50px;
+    height: 50px; /* Un poco más bajos para filtros */
+    padding: 0 25px;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 18px;
+    color: #333;
+    outline: none;
+    width: 250px; /* Ancho fijo para fechas */
+    transition: box-shadow 0.2s;
 }
 
-.chart-card {
+    .input-box:focus {
+        box-shadow: 0 0 0 3px rgba(0, 96, 137, 0.3);
+    }
+
+/* Botón Generar */
+.btn-save {
+    background-color: #006089;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0 40px;
+    height: 50px;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+    .btn-save:hover {
+        transform: scale(1.05);
+        background-color: #004d6e;
+    }
+
+/* --- SECCIÓN TARJETAS (Copiado de Inicio para consistencia) --- */
+.cards-wrapper {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-card {
     background: rgba(255, 255, 255, 0.85);
-    border-radius: 15px;
-    padding: 10px;
+    border-radius: 20px;
+    width: 300px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+.icon-wrapper {
+    color: #0097B2;
+    margin-bottom: 1rem;
+}
+
+.main-icon {
+    font-size: 3.5rem;
+}
+
+.card-content {
+    text-align: center;
+    color: #0097B2;
+    font-family: 'Jaldi', sans-serif;
+}
+
+    .card-content h2 {
+        font-size: 20px;
+        font-weight: 400;
+        margin: 0;
+    }
+
+.count-number {
+    font-size: 32px;
+    font-weight: 700;
+    display: block;
+}
+
+/* --- SECCIÓN GRÁFICOS --- */
+.charts-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Dona pequeña, Barras grandes */
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .chart-title {
     font-family: 'Jaldi', sans-serif;
     color: #006089;
-    font-size: 16px;
-    margin-bottom: 0.5rem;
-    text-align: center;
+    font-size: 24px;
+    margin-bottom: 1rem;
 }
 
+/* Ajustes para MudBlazor Charts */
+::deep .mud-chart-custom {
+    /* Puedes ajustar colores específicos de las series aquí si quieres */
+}
+
+/* Responsividad */
 @media (max-width: 1000px) {
     .charts-section {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Una columna en pantallas chicas */
     }
 
     .filter-grid {
@@ -63,7 +177,7 @@
         align-items: flex-start;
     }
 
-    .filter-input {
-        width: 100% !important;
+    .input-box {
+        width: 100%;
     }
 }

@@ -1,350 +1,248 @@
-/* ================================================= */
-/* 0. AJUSTES GLOBALES (Scroll Permitido)            */
-/* ================================================= */
+/* ======================================================
+   1. BASE Y TIPOGRAFÍA
+   ====================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&display=swap');
+
 html, body {
-    min-height: 100vh; /* Altura mínima, pero puede crecer */
-    width: 100%;
+    font-family: 'Jaldi', sans-serif;
     margin: 0;
     padding: 0;
-    font-family: 'Jaldi', sans-serif;
-    background-color: #006089;
-    /* ELIMINADO: overflow: hidden (Ahora permite scroll normal) */
+    background-color: #006089; /* Fondo base azul EPS */
+    color: #333;
 }
 
-/* ================================================= */
-/* 1. LAYOUT PRINCIPAL (MainLayout)                  */
-/* ================================================= */
-.page {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ocupa al menos toda la pantalla */
-    width: 100%;
+/* Iconos generales */
+.icono-grande {
+    font-size: 2rem;
 }
 
-.main-container {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    /* ELIMINADO: height fija. Ahora crece con el contenido */
-    height: auto;
-}
+/* ======================================================
+   2. LAYOUTS Y CONTENEDORES (Glassmorphism)
+   ====================================================== */
 
-.content {
-    flex: 1;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    /* ELIMINADO: overflow-y: auto interno */
-}
-
-.content-body {
-    flex: 1;
-    padding: 20px; /* Espaciado cómodo */
-}
-
-/* Footer */
-.layout-footer {
-    margin-top: auto;
-    padding: 15px 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.8);
-}
-
-.copyright-text, .footer-link {
-    color: inherit;
-    text-decoration: none;
-}
-
-/* ================================================= */
-/* 2. CONTENEDOR DE VIDRIO (Flexible)                */
-/* ================================================= */
+/* Contenedor Principal de Vidrio (Usado en casi todas las páginas) */
 .glass-container {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 25px;
-    /* CAMBIO: Altura automática según contenido */
-    height: auto;
-    min-height: 500px; /* Mínimo para que no se vea vacío */
-
+    border-radius: 30px;
+    padding: 30px;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
+    margin: 0 20px;
     position: relative;
     backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.section-title {
+/* Títulos de Sección (H1, H3) */
+.section-title, .login-title {
     font-family: 'Jaldi', sans-serif;
-    color: white;
-    font-size: 22px;
-    margin-bottom: 0.5rem;
+    color: #FFFFFF;
+    font-size: 28px; /* Unificado */
+    margin-bottom: 1.5rem;
     font-weight: 400;
+    text-transform: uppercase;
+    text-align: center; /* Por defecto centrado */
 }
 
-/* ================================================= */
-/* 3. FORMULARIOS Y INPUTS (Compactos)               */
-/* ================================================= */
+/* Alineación a la izquierda para títulos dentro de formularios si se requiere */
+.form-content .section-title {
+    text-align: left;
+}
+
+/* ======================================================
+   3. FORMULARIOS Y INPUTS (Estilo Píldora)
+   ====================================================== */
+
+/* Contenedor centrado (Para Login/Register) */
+.form-wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Grid de 2 columnas (Para formularios largos) */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
+/* Item individual (Label + Input) */
 .form-item {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.5rem;
 }
 
+    /* Etiquetas */
     .form-item label {
-        color: white;
+        color: #FFFFFF;
         font-family: 'Jaldi', sans-serif;
-        font-size: 15px;
-        margin-left: 15px;
+        font-size: 20px;
+        margin-left: 20px; /* Alineado con la curva */
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-/* Inputs Redondos Compactos */
+/* Iconos en etiquetas */
+.input-icon {
+    font-size: 1.2rem;
+}
+
+/* --- INPUT MAESTRO (Totalmente Redondo) --- */
 .input-box, .data-box {
     background-color: #FFFFFF;
     border: none;
-    border-radius: 50px;
-    height: 45px; /* Altura compacta */
-    padding: 0 20px;
+    border-radius: 50px; /* Píldora */
+    height: 50px; /* Altura estándar */
+    padding: 0 25px;
     font-family: 'Jaldi', sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     color: #333;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     outline: none;
     width: 100%;
     transition: all 0.3s ease;
+    /* Reset browser styles */
+    -webkit-appearance: none;
+    appearance: none;
+    /* Flex para .data-box (solo lectura) */
     display: flex;
     align-items: center;
 }
 
+    /* Estado Focus */
     .input-box:focus {
-        box-shadow: 0 0 0 3px rgba(0, 96, 137, 0.2);
+        box-shadow: 0 0 0 3px rgba(1, 145, 169, 0.3); /* Brillo Teal */
         transform: scale(1.01);
     }
 
+/* Ajuste para Select (Flecha) */
 select.input-box {
-    -webkit-appearance: none;
-    appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006089' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 20px center;
-    background-size: 1em;
+    background-size: 1.2em;
     cursor: pointer;
 }
 
-/* Checkbox Switches */
-.options-row {
-    display: flex;
-    gap: 2rem;
-    margin-top: 0.5rem;
-    padding-left: 10px;
-    grid-column: 1 / -1;
+/* Validación (Bordes de color) */
+.input-box.invalid {
+    border: 2px solid #dc3545 !important;
 }
 
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
+.input-box.modified.valid {
+    border: 2px solid #198754 !important;
 }
 
-.checkbox-label {
-    color: white;
-    font-family: 'Jaldi', sans-serif;
-    font-size: 15px;
+.validation-message {
+    color: #ffcccc;
+    font-size: 14px;
+    margin-left: 25px;
 }
 
-/* Switch Slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 22px;
-}
+/* ======================================================
+   4. BOTONES (Acciones)
+   ====================================================== */
 
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-}
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: .4s;
-    }
-
-input:checked + .slider {
-    background-color: #006089;
-}
-
-    input:checked + .slider:before {
-        transform: translateX(18px);
-    }
-
-.slider.round {
-    border-radius: 34px;
-}
-
-    .slider.round:before {
-        border-radius: 50%;
-    }
-
-/* ================================================= */
-/* 4. BOTONES GLOBALES (Compactos)                   */
-/* ================================================= */
-.action-buttons {
+.action-buttons, .action-row {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+    margin-top: 1rem;
 }
 
-/* Botón Guardar / Principal */
-.btn-save, .btn-primary-eps {
-    background-color: #006089;
-    color: white;
+.button-item {
+    margin-top: 1.5rem;
+    align-items: center; /* Centrar en login */
+}
+
+/* Estilo Base de Botón */
+.btn-save, .btn-login, .btn-register {
+    background-color: #0191A9; /* Teal Corporativo */
+    color: #FFFFFF;
     border: none;
     border-radius: 50px;
-    padding: 0 30px;
-    height: 45px;
+    height: 50px;
+    padding: 0 40px;
+    min-width: 150px;
     font-family: 'Jaldi', sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    transition: transform 0.2s;
-    display: inline-flex;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    /* Flex para centrar texto */
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
 }
 
-    .btn-save:hover, .btn-primary-eps:hover {
+    .btn-save:hover, .btn-login:hover, .btn-register:hover {
+        background-color: #017a8c;
         transform: scale(1.05);
-        background-color: #004d6e;
-        color: white;
     }
 
-/* Botón Cancelar */
+/* Botón Cancelar / Volver */
 .btn-cancel, .btn-back {
     background: transparent;
     color: white;
     border: 2px solid white;
     border-radius: 50px;
-    padding: 0 25px;
-    height: 45px;
-    display: flex;
-    align-items: center;
+    padding: 0 30px;
+    height: 50px;
     font-family: 'Jaldi', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background 0.2s;
 }
 
     .btn-cancel:hover, .btn-back:hover {
         background: rgba(255,255,255,0.1);
-        color: white;
     }
 
-/* Botón Añadir (Nuevo) */
-.btn-add, .btn-new {
-    background-color: #FFFFFF;
-    color: #006089;
-    border: none;
-    border-radius: 30px;
-    padding: 6px 18px;
-    font-family: 'Jaldi', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    transition: transform 0.2s;
-    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-}
-
-    .btn-add:hover, .btn-new:hover {
-        transform: scale(1.05);
-        background-color: #f0f0f0;
+    /* Botón solo icono (Back simple) */
+    .btn-back.icon-only {
+        border: none;
+        padding: 0;
+        width: auto;
     }
 
-/* Iconos de acción */
-.btn-icon {
-    background: none;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-    padding: 4px;
-}
-
-    .btn-icon:hover {
-        transform: scale(1.2);
-    }
-
-    .btn-icon.edit {
-        color: #006089;
-    }
-
-    .btn-icon.delete {
-        color: #dc3545;
-    }
-
-/* ================================================= */
-/* 5. SUB-NAVEGACIÓN                                 */
-/* ================================================= */
+/* ======================================================
+   5. NAVEGACIÓN INTERNA (Pestañas)
+   ====================================================== */
 .sub-nav-bar {
     background-color: #FFFFFF;
     border-radius: 30px;
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 0 1.5rem;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
-    margin-bottom: 1.5rem;
+    padding: 0 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .sub-nav-item {
     font-family: 'Jaldi', sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     color: #888;
     text-decoration: none;
     font-weight: 400;
-    padding: 0.4rem 1rem;
+    padding: 0.5rem 1rem;
     position: relative;
     transition: all 0.3s ease;
 }
 
-    .sub-nav-item.active, .sub-nav-item:hover {
+    .sub-nav-item.active {
         color: #006089;
         font-weight: 700;
     }
@@ -352,7 +250,7 @@ input:checked + .slider {
         .sub-nav-item.active::after {
             content: '';
             position: absolute;
-            bottom: 3px;
+            bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
             width: 20px;
@@ -361,278 +259,83 @@ input:checked + .slider {
             border-radius: 2px;
         }
 
+    .sub-nav-item:hover {
+        color: #006089;
+    }
+
 .separator {
     width: 1px;
-    height: 15px;
+    height: 20px;
     background-color: #ddd;
 }
 
-/* ================================================= */
-/* 6. TABLAS (Filas flotantes)                       */
-/* ================================================= */
-.table-header-row, .data-row {
+/* ======================================================
+   6. LINKS DE LOGIN (Olvide Contraseña / Crear Cuenta)
+   ====================================================== */
+.login-links {
     display: flex;
-    align-items: center;
-    background: #FFFFFF;
-    border-radius: 30px;
-    height: 50px;
-    margin-bottom: 10px;
-    padding: 0 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.table-header-row {
-    color: #006089;
-    font-weight: 700;
-    font-size: 15px;
-}
-
-.col-cell {
-    flex: 1;
-    text-align: center;
-    font-family: 'Jaldi', sans-serif;
-    font-size: 15px;
-    color: #006089;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 5px;
-}
-
-    .col-cell.wide {
-        flex: 2;
-    }
-
-    .col-cell.small {
-        flex: 0.6;
-    }
-
-.vertical-line {
-    width: 1px;
-    height: 25px;
-    background-color: #ddd;
-    margin: 0 5px;
-}
-
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    color: #FFFFFF;
-    font-size: 20px;
-    text-align: center;
-    min-height: 150px;
-}
-
-/* ================================================= */
-/* 7. TARJETAS Y GRID                                */
-/* ================================================= */
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 15px;
-}
-
-.address-card {
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-    min-height: 160px;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 0 10px;
 }
 
-    .address-card:hover {
-        transform: translateY(-3px);
+    .login-links a {
+        color: #FFFFFF;
+        text-decoration: none;
+        font-family: 'Jaldi', sans-serif;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.2s;
     }
 
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-}
+        .login-links a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
 
-.icon-box {
-    background-color: #006089;
-    color: white;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.link-icon {
     font-size: 1.1rem;
 }
 
-.alias-text {
-    font-family: 'Jaldi', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    color: #333;
-    flex: 1;
+/* ======================================================
+   7. MUDBLAZOR OVERRIDES (Diálogos transparentes)
+   ====================================================== */
+.mud-dialog.glass-dialog {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 40px !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
 }
 
-.card-body p {
-    margin: 2px 0;
-    font-family: 'Jaldi', sans-serif;
-    font-size: 14px;
-    color: #555;
-}
-
-.card-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-/* ================================================= */
-/* 8. TARJETAS DE ESTADÍSTICAS                       */
-/* ================================================= */
-.cards-wrapper {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-}
-
-.stat-card {
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 20px;
-    width: 250px;
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-    padding: 1rem;
-}
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.95);
-    }
-
-.icon-wrapper {
-    color: #0097B2;
-    margin-bottom: 0.5rem;
-    position: relative;
-}
-
-.main-icon {
-    font-size: 2.8rem;
-}
-
-.badge-icon {
-    position: absolute;
-    font-size: 1.2rem;
-    bottom: -2px;
-    right: -5px;
-    color: #0097B2;
-    background: rgba(255,255,255,0.8);
-    border-radius: 50%;
-}
-
-.card-content {
-    text-align: center;
-    color: #0097B2;
-    font-family: 'Jaldi', sans-serif;
-}
-
-    .card-content h2 {
-        font-size: 18px;
-        font-weight: 400;
-        margin: 0;
-        line-height: 1.2;
-    }
-
-.count-number {
-    font-size: 32px;
-    font-weight: 700;
-    display: block;
-    margin-top: 0.2rem;
-}
-
-/* ================================================= */
-/* 9. MODALES (Base)                                 */
-/* ================================================= */
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999 !important;
-    backdrop-filter: blur(3px);
-}
-
-.eps-header {
-    background-color: #ffffff;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #0099cc;
-    height: 60px;
-    width: 100%;
-}
-
-    .eps-header img {
-        height: 35px;
-        object-fit: contain;
-    }
-
-.btn-close-modal, .btn-close-x {
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    color: #333;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* RESPONSIVIDAD */
-@media (max-width: 1000px) {
+/* ======================================================
+   8. RESPONSIVIDAD GLOBAL
+   ====================================================== */
+@media (max-width: 768px) {
     .form-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* 1 Columna en móvil */
     }
 
-    .rows-container {
-        overflow-x: auto;
+    .sub-nav-bar {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 5px;
     }
 
-    .table-header-row, .data-row {
-        min-width: 600px;
+    .separator {
+        display: none;
+    }
+
+    .login-links {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .glass-container {
+        padding: 20px;
+        margin: 10px;
     }
 }

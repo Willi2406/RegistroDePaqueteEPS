@@ -1,4 +1,4 @@
-﻿/* Layout Base */
+﻿/* --- Layout Principal --- */
 .glass-container {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 30px;
@@ -10,7 +10,57 @@
     margin: 0 20px;
 }
 
-/* Títulos y Botón Volver */
+/* --- Sub-Menú --- */
+.sub-nav-bar {
+    background-color: #FFFFFF;
+    border-radius: 30px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.sub-nav-item {
+    font-family: 'Jaldi', sans-serif;
+    font-size: 20px;
+    color: #888;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+    .sub-nav-item.active {
+        color: #006089;
+        font-weight: 700;
+    }
+
+        .sub-nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background-color: #006089;
+            border-radius: 2px;
+        }
+
+    .sub-nav-item:hover {
+        color: #006089;
+    }
+
+.separator {
+    width: 1px;
+    height: 20px;
+    background-color: #ddd;
+}
+
+/* --- Formulario --- */
 .section-title {
     font-family: 'Jaldi', sans-serif;
     color: white;
@@ -19,23 +69,6 @@
     font-weight: 400;
 }
 
-.btn-back {
-    color: white;
-    text-decoration: none;
-    font-family: 'Jaldi', sans-serif;
-    font-size: 18px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: transform 0.2s;
-}
-
-    .btn-back:hover {
-        transform: translateX(-5px);
-        text-decoration: underline;
-    }
-
-/* Formulario Grid */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -43,7 +76,7 @@
     margin-bottom: 3rem;
 }
 
-
+/* IMPORTANTE: Usamos .form-item en vez de input-group */
 .form-item {
     display: flex;
     flex-direction: column;
@@ -54,23 +87,27 @@
         color: white;
         font-family: 'Jaldi', sans-serif;
         font-size: 18px;
-        margin-left: 25px; 
+        margin-left: 25px; /* Alineado con la curva */
     }
 
-
+/* --- INPUTS TOTALMENTE REDONDOS --- */
 .input-box {
     background-color: #FFFFFF;
     border: none;
-    border-radius: 50px; 
+    /* Redondeo completo */
+    border-radius: 50px;
+    /* Altura para igualar la foto */
     height: 60px;
     padding: 0 25px;
     font-family: 'Jaldi', sans-serif;
     font-size: 18px;
     color: #333;
+    /* Sombra suave */
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     outline: none;
     width: 100%;
     transition: all 0.3s ease;
+    /* Evita estilos predeterminados */
     -webkit-appearance: none;
     appearance: none;
 }
@@ -80,39 +117,7 @@
         transform: scale(1.01);
     }
 
-select.input-box {
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006089' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 25px center;
-    background-size: 1.2em;
-    cursor: pointer;
-}
-
-.file-upload-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background-color: rgba(255, 255, 255, 0.9);
-    cursor: pointer;
-    position: relative;
-    color: #006089;
-}
-
-    .file-upload-box:hover {
-        background-color: #FFFFFF;
-    }
-
-.file-input-hidden {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-    border-radius: 50px;
-}
-
-/* Botones */
+/* --- Botones --- */
 .action-buttons {
     display: flex;
     justify-content: flex-end;
@@ -164,8 +169,10 @@ select.input-box {
     .form-grid {
         grid-template-columns: 1fr;
     }
-}
 
-.icono-grande {
-    font-size: 2rem;
+    .sub-nav-bar {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
 }

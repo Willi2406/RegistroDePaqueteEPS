@@ -26,8 +26,6 @@ builder.Services.AddScoped<PaquetesService>();
 builder.Services.AddScoped<PreavisosService>();
 builder.Services.AddScoped<AutorizadosEntregaService>();
 builder.Services.AddScoped<DireccionesDeliveryService>();
-// Busca donde se agregan los servicios de identidad y asegúrate de usar tu clase EmailSender
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
 
 // 4. Configuración de Base de Datos e Identity
 var connectionString = builder.Configuration.GetConnectionString("ConStr")

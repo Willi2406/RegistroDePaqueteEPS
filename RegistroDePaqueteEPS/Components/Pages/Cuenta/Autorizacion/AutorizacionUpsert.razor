@@ -10,7 +10,7 @@
     <h1>CUENTA</h1>
 </SectionContent>
 
-<div class="glass-container">
+<div class="glass-container create-authorized-view">
 
     <div class="sub-nav-bar">
         <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
@@ -91,7 +91,7 @@
 
     private async Task GuardarAutorizado()
     {
-        if (AutorizadoEntregaId == 0)
+        if(AutorizadoEntregaId == 0)
         {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var userClaimsPrincipal = authState.User;
@@ -103,7 +103,7 @@
 
             Autorizado.ClienteId = appUser.Id;
         }
-
+        
         var modificado = await autorizadosEntregaService.Guardar(Autorizado);
         if (modificado) NavManager.NavigateTo("/cuenta/autorizados");
     }

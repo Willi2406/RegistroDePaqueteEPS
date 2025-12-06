@@ -1,55 +1,92 @@
 /* ================================================= */
-/* 1. LAYOUT GENERAL (Pantalla Completa Fija)        */
+/* 1. LAYOUT GENERAL Y ESTRUCTURA BASE               */
 /* ================================================= */
 .page {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Ocupa exactamente el alto de la ventana */
-    width: 100vw;
+    min-height: 100vh;
     background-color: #006089;
     font-family: 'Jaldi', sans-serif;
-    overflow: hidden; /* Evita que la página entera haga scroll */
+    overflow: hidden; /* Evita scroll en el body principal */
 }
 
 .main-container {
     display: flex;
     flex: 1;
     flex-direction: row;
-    /* Restamos la altura del header (70px) para que encaje perfecto */
-    height: calc(100vh - 70px);
+    /* IMPORTANTE: Esto debe coincidir con la altura del header (80px) */
+    height: calc(100vh - 80px);
     overflow: hidden;
 }
 
+/* Contenedor del contenido dinámico (@Body) */
+.content {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto; /* El scroll ocurre solo aquí dentro */
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-body {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* Footer pegado al fondo del contenido */
+.layout-footer {
+    margin-top: auto;
+    padding: 10px 2rem;
+    display: flex; /* Asegura alineación correcta */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+}
+
+.copyright-text, .footer-link {
+    color: #FFFFFF;
+    font-size: 16px; /* Ajustado un poco para que no sea gigante */
+    text-decoration: none;
+}
+
+    .footer-link:hover {
+        text-decoration: underline;
+    }
+
+
 /* ================================================= */
-/* 2. HEADER SUPERIOR (Tamaño Estándar Web)          */
+/* 2. HEADER SUPERIOR (BARRA BLANCA)                 */
 /* ================================================= */
 .top-header {
     background-color: #FFFFFF;
-    height: 70px; /* Tamaño "justo" (ni 80px ni 50px) */
+    height: 80px; /* Altura unificada */
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Logo Izq - Titulo Centro - Usuario Der */
     align-items: center;
-    padding: 0 1.5rem;
+    padding: 0 2rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-bottom: 3px solid #0099cc;
-    z-index: 1000;
+    border-bottom: 4px solid #0099cc; /* Linea azul inferior estilo EPS */
+    position: relative;
+    z-index: 1000; /* Por encima del contenido, por debajo del overlay del popup */
 }
 
-/* Logo */
+/* Logo Izquierda */
 .logo-container {
-    width: 200px;
     display: flex;
     align-items: center;
+    width: 250px; /* Espacio reservado para equilibrar el header */
 }
 
 .logo-img {
-    max-height: 40px; /* Logo tamaño medio */
+    max-height: 50px; /* Ajustado para el header de 80px */
     width: auto;
 }
 
-/* Título */
+/* Título Central */
 .header-title-container {
     flex: 1;
     display: flex;
@@ -57,16 +94,18 @@
     align-items: center;
 }
 
+/* Estilos para el H1 inyectado */
 ::deep h1 {
     margin: 0;
     font-family: 'Jaldi', sans-serif;
     font-weight: 700;
-    font-size: 26px; /* Tamaño de título legible */
+    font-size: 32px; /* Ajustado para caber en 80px */
     color: #006089;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Usuario */
+/* Sección Usuario Derecha */
 .user-header-info {
     display: flex;
     align-items: center;
@@ -74,71 +113,103 @@
     gap: 10px;
     cursor: pointer;
     color: #006080;
-    width: 200px;
+    width: 250px; /* Mismo ancho que el logo para centrar perfecto el título */
+    user-select: none;
 }
 
-.user-name-text {
-    font-weight: 700;
+    .user-header-info:hover {
+        opacity: 0.8;
+    }
+
+.user-header-name {
+    font-weight: bold;
     font-size: 1rem;
-    line-height: 1.1;
-}
-
-.user-code-text {
-    font-size: 0.85rem;
-    opacity: 0.9;
+    text-align: right;
+    line-height: 1.2;
 }
 
 .user-header-icon {
-    font-size: 2rem;
+    font-size: 2.2rem;
 }
 
+
 /* ================================================= */
-/* 3. CONTENEDOR BARRA LATERAL                       */
+/* 3. BARRA LATERAL (SIDEBAR)                        */
 /* ================================================= */
 .sidebar-container {
-    width: 140px; /* Ancho suficiente para iconos y texto corto */
+    width: 200px;
     display: flex;
     justify-content: center;
-    padding: 1rem;
-    padding-right: 1.5rem; /* Separación visual del contenido */
-    background: transparent;
+    padding: 2rem 2rem 2rem 0; /* Ajustado padding */
 }
 
-/* ================================================= */
-/* 4. CONTENIDO CENTRAL                              */
-/* ================================================= */
-.content {
-    flex: 1;
-    padding: 0;
+.nav-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 30px 30px 0; /* Redondeado solo a la derecha */
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* El scroll solo aparece aquí si es necesario */
-    scrollbar-width: thin; /* Scrollbar fino para Firefox */
-}
-
-.content-body {
-    flex: 1;
-    padding: 1.5rem 2rem; /* Espaciado interno cómodo */
-}
-
-/* Footer */
-.layout-footer {
-    margin-top: auto;
-    padding: 10px 2rem;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
-    background: rgba(0,0,0,0.1); /* Fondo sutil para distinguir el footer */
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    backdrop-filter: blur(5px);
 }
 
-.copyright-text, .footer-link {
-    color: rgba(255,255,255,0.9);
-    text-decoration: none;
+.nav-item {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
+
+::deep .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s;
+    background: transparent !important;
+}
+
+.nav-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.2rem;
+    color: white;
+}
+
+.nav-text {
+    font-family: 'Jaldi', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: capitalize;
+    line-height: 1;
+}
+
+::deep .nav-link:hover {
+    transform: scale(1.1);
+}
+
+::deep .nav-link.active {
+    font-weight: 700;
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+.menu-footer {
+    margin-top: auto;
+}
+
+.toggle-logo {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+}
+
 
 /* ================================================= */
-/* 5. POPUP DE PERFIL                                */
+/* 4. POPUP DE PERFIL (FLOTANTE)                     */
 /* ================================================= */
 .profile-overlay {
     position: fixed;
@@ -147,21 +218,195 @@
     width: 100vw;
     height: 100vh;
     z-index: 2000;
+    background: transparent;
+    cursor: default;
 }
 
 .profile-popup-card {
     position: absolute;
-    top: 75px;
-    right: 15px;
-    width: 350px;
-    background-color: #f5f5f5;
+    top: 85px; /* Justo debajo del header */
+    right: 20px;
+    width: 400px;
+    background-color: #e0e0e0; /* Gris */
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    padding: 25px;
     z-index: 2001;
     color: #004d66;
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeIn 0.2s ease-out;
 }
-/* ... (El resto de estilos del popup se mantienen igual, solo ajusta tamaños si lo ves necesario) */
+
+.profile-icon-large {
+    font-size: 3.5rem;
+    color: #006080;
+    margin-bottom: 5px;
+}
+
+.profile-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-align: center;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.profile-eps-number {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #006080;
+    margin: 5px 0 15px 0;
+}
+
+.profile-branch {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+/* Grid Direcciones */
+.address-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.5); /* Fondo sutil para leer mejor */
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.addr-title {
+    font-weight: bold;
+    color: #006080;
+    font-size: 0.85rem;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+}
+
+.addr-text {
+    font-size: 0.8rem;
+    color: #004d66;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Iconos acciones */
+.profile-actions-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #004d66;
+    transition: transform 0.2s;
+}
+
+    .action-item:hover {
+        transform: scale(1.1);
+        color: #008eb2;
+    }
+
+    .action-item i {
+        font-size: 1.8rem;
+    }
+
+    .action-item span {
+        font-weight: bold;
+        font-size: 0.75rem;
+        text-align: center;
+    }
+
+/* Botón Cerrar Sesión */
+.btn-logout {
+    background-color: #0099cc;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+    .btn-logout:hover {
+        background-color: #0077a3;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================================= */
+/* 5. RESPONSIVIDAD                                  */
+/* ================================================= */
+@media (max-width: 800px) {
+    .main-container {
+        flex-direction: column-reverse;
+        height: auto;
+    }
+
+    .sidebar-container {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .nav-card {
+        flex-direction: row;
+        justify-content: space-around;
+        min-height: auto;
+        border-radius: 30px;
+    }
+
+    .nav-item {
+        margin-bottom: 0;
+        width: auto;
+    }
+
+    .nav-link {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .nav-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    .nav-text {
+        font-size: 14px;
+    }
+
+    .top-header {
+        padding: 0 1rem;
+    }
+
+    .logo-container, .user-header-info {
+        width: auto;
+    }
+
+    ::deep h1 {
+        font-size: 20px;
+    }
+}

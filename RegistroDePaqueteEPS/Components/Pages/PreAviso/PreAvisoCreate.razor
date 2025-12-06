@@ -6,11 +6,18 @@
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
-    <h1>PRE-AVISO</h1>
+    <h1>PRE-AVISO </h1>
 </SectionContent>
 
-<div class="glass-container">
-    <div>
+<div class="glass-container create-preaviso-view">
+
+    <div class="header-actions">
+        <a href="/preavisousuario" class="btn-back">
+            <i class="bi bi-arrow-left-circle-fill icono-grande"></i>
+        </a>
+    </div>
+
+    <div class="form-content">
         <h3 class="section-title">@Estado Preaviso</h3>
 
         <EditForm Model="Preaviso" OnValidSubmit="GuardarPreaviso">
@@ -70,7 +77,6 @@
 
                 <div class="form-item">
                     <label>Factura (PDF/Imagen)</label>
-                    @* Combinamos la clase global .input-box con la local .file-upload-box *@
                     <div class="file-upload-box input-box">
                         <i class="bi bi-cloud-upload"></i>
                         <span>Adjuntar Archivo</span>

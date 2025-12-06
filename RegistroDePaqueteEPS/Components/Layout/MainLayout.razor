@@ -4,13 +4,11 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject NavigationManager NavManager
 
-<MudPopoverProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
-@* Agregamos un ID o Clase específica para el scope del Zoom *@
-<div class="page dashboard-scale">
-
+<div class="page">
     <header class="top-header">
         <div class="logo-container">
             <img src="/Imagenes/EPS_Barra_Superior.png" alt="EPS Logo" class="logo-img" />
@@ -35,37 +33,51 @@
 
         @if (mostrarPopup)
         {
-            <div class="profile-overlay" @onclick="CerrarPerfil"></div>
-            <div class="profile-popup-card">
-                <i class="bi bi-person-fill profile-icon-large"></i>
+            <div class="profile-overlay" @onclick="CerrarPerfil"></div> <div class="profile-card animate-fade-in">
+                <i class="bi bi-person-fill profile-avatar-icon"></i>
                 <h3 class="profile-name">@NombreUsuario</h3>
-                <h4 class="profile-eps-number">@CodigoEPS</h4>
+                <h4 class="profile-code">@CodigoEPS</h4>
                 <p class="profile-branch">EPS @Sucursal</p>
 
-                <div class="address-container">
+                <div class="address-grid">
                     <div class="address-box">
-                        <div class="addr-title">Paquetes</div>
-                        <div class="addr-text">
-                            8298 NW 21st St<br />APT @CodigoEPS<br />Doral, FL 33122
+                        <div class="addr-title">Dirección de Paquetes</div>
+                        <div class="addr-content">
+                            8298 NW 21st St<br/>
+                            APT @CodigoEPS<br/>
+                            Doral, FL 33122-0002
                         </div>
                     </div>
                     <div class="address-box">
-                        <div class="addr-title">Correspondencia</div>
-                        <div class="addr-text">
-                            P.O BOX 025650<br />APT @CodigoEPS<br />MIAMI, FL 33102
+                        <div class="addr-title">Dirección de Correspondencia</div>
+                        <div class="addr-content">
+                            P.O BOX 025650<br/>
+                            APT @CodigoEPS<br/>
+                            MIAMI, FL 33102-5650
                         </div>
                     </div>
                 </div>
 
-                <div class="profile-actions-row">
-                    <a href="/sucursales" class="action-item"><i class="bi bi-shop"></i><span>Sucursales</span></a>
-                    <a href="/faq" class="action-item"><i class="bi bi-question-circle-fill"></i><span>FAQ</span></a>
-                    <a href="/tutoriales" class="action-item"><i class="bi bi-display"></i><span>Tutoriales</span></a>
+                <div class="action-icons-row">
+                    <a href="/sucursales" class="icon-action">
+                        <i class="bi bi-shop"></i>
+                        <span>Sucursales</span>
+                    </a>
+                    <a href="/faq" class="icon-action">
+                        <i class="bi bi-question-circle-fill"></i>
+                        <span>Preguntas<br>Frecuentes</span>
+                    </a>
+                    <a href="/tutoriales" class="icon-action">
+                        <i class="bi bi-display"></i>
+                        <span>Tutoriales</span>
+                    </a>
                 </div>
 
-                <form action="Account/Logout" method="post" style="width:100%;">
+                <form action="Account/Logout" method="post">
                     <input type="hidden" name="ReturnUrl" value="" />
-                    <button type="submit" class="btn-logout">Cerrar Sesión</button>
+                    <button type="submit" class="btn-logout">
+                        Cerrar Sesión
+                    </button>
                 </form>
             </div>
         }
@@ -76,13 +88,17 @@
             <div class="content-body">
                 @Body
             </div>
-
-            <div class="layout-footer">
-                <div class="copyright-text">EPS, Todos los Derechos Reservados</div>
-                <a href="#" class="footer-link">Términos y condiciones</a>
+            
+            <div class="layout-footer d-flex justify-content-between">
+                <div class="copyright-text">
+                    EPS, Todos los Derechos Reservados
+                </div>
+                <div>
+                    <a href="#" class="footer-link">Terminos, condiciones y politica de privacidad</a>
+                </div>
             </div>
         </main>
-
+        
         <aside class="sidebar-container">
             <NavMenu />
         </aside>
@@ -91,27 +107,39 @@
 
 @code {
     private bool mostrarPopup = false;
+    
+    // Variables para mostrar datos
     private string NombreUsuario = "Cargando...";
     private string CodigoEPS = "---";
-    private string Sucursal = "Principal";
+    private string Sucursal = "Principal"; 
 
     protected override async Task OnInitializedAsync()
     {
+        // 1. Obtenemos el estado de autenticación
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var userPrincipal = authState.User;
 
         if (userPrincipal.Identity != null && userPrincipal.Identity.IsAuthenticated)
         {
             var appUser = await UserManager.GetUserAsync(userPrincipal);
+
             if (appUser != null)
             {
+                // 3. Asignamos los valores reales de la BD
                 NombreUsuario = appUser.NombreCompleto ?? userPrincipal.Identity.Name;
-                CodigoEPS = appUser.UserName;
-                Sucursal = appUser.Municipio ?? "Salcedo";
+                CodigoEPS = appUser.UserName; // Asumiendo que el UserName es el código (ej. 064-000824)
+                Sucursal = appUser.Municipio ?? "Salcedo"; // Usamos Municipio como sucursal por defecto
             }
         }
     }
 
-    private void TogglePerfil() => mostrarPopup = !mostrarPopup;
-    private void CerrarPerfil() => mostrarPopup = false;
+    private void TogglePerfil()
+    {
+        mostrarPopup = !mostrarPopup;
+    }
+
+    private void CerrarPerfil()
+    {
+        mostrarPopup = false;
+    }
 }

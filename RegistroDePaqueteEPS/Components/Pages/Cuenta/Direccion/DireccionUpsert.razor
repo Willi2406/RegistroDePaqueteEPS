@@ -10,7 +10,7 @@
     <h1>CUENTA</h1>
 </SectionContent>
 
-<div class="glass-container">
+<div class="glass-container create-address-view">
 
     <div class="sub-nav-bar">
         <NavLink class="sub-nav-item" href="/cuenta">Perfil</NavLink>
@@ -77,7 +77,7 @@
                     <label>Transportista</label>
                     <select class="input-box" @bind="Direccion.AutorizadoEntregaId">
                         <option selected disabled value="">Seleccione...</option>
-                        @foreach (AutorizadosEntrega autorizado in AutorizadosEntrega)
+                        @foreach(AutorizadosEntrega autorizado in AutorizadosEntrega)
                         {
                             <option value="@autorizado.AutorizadoEntregaId">@autorizado.Nombres</option>
                         }
@@ -133,7 +133,7 @@
 
     private async Task GuardarDireccion()
     {
-        if (DireccionDeliveryId == 0)
+        if(DireccionDeliveryId == 0)
         {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var userClaimsPrincipal = authState.User;
@@ -145,7 +145,7 @@
 
             Direccion.ClienteId = appUser.Id;
         }
-
+        
         var modificado = await direccionesDeliveryService.Guardar(Direccion);
         if (modificado)
             NavManager.NavigateTo("/cuenta/direcciones");
