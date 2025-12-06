@@ -17,10 +17,10 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,27 +31,27 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Provincia = table.Column<string>(type: "TEXT", nullable: false),
-                    Municipio = table.Column<string>(type: "TEXT", nullable: false),
-                    Identificacion = table.Column<string>(type: "TEXT", nullable: true),
-                    NombreCompleto = table.Column<string>(type: "TEXT", nullable: true),
-                    Sexo = table.Column<string>(type: "TEXT", nullable: true),
-                    FechaNacimiento = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Provincia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Municipio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Identificacion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sexo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,10 +62,10 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "EstatusPaquete",
                 columns: table => new
                 {
-                    EstatusPaqueteId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
-                    Existencia = table.Column<int>(type: "INTEGER", nullable: false)
+                    EstatusPaqueteId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Existencia = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,11 +76,11 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,11 +97,11 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,10 +118,10 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,9 +138,9 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetUserPasskeys",
                 columns: table => new
                 {
-                    CredentialId = table.Column<byte[]>(type: "BLOB", maxLength: 1024, nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<string>(type: "TEXT", nullable: false)
+                    CredentialId = table.Column<byte[]>(type: "varbinary(1024)", maxLength: 1024, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,8 +157,8 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,10 +181,10 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,13 +201,13 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "AutorizadosEntrega",
                 columns: table => new
                 {
-                    AutorizadoEntregaId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClienteId = table.Column<string>(type: "TEXT", nullable: false),
-                    Identificacion = table.Column<string>(type: "TEXT", nullable: false),
-                    Nombres = table.Column<string>(type: "TEXT", nullable: false),
-                    Telefono = table.Column<string>(type: "TEXT", nullable: false),
-                    Correo = table.Column<string>(type: "TEXT", nullable: false)
+                    AutorizadoEntregaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Identificacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,21 +221,51 @@ namespace RegistroDePaqueteEPS.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Paquetes",
+                columns: table => new
+                {
+                    PaqueteId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PreavisoId = table.Column<int>(type: "int", nullable: true),
+                    NumeroRecepcion = table.Column<string>(type: "nvarchar(max)", nullable: false, computedColumnSql: "'MIO' + RIGHT('00000000' + CAST(PaqueteId AS VARCHAR(10)), 8)"),
+                    NumeroTracking = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumeroEPS = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Suplidor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Peso = table.Column<double>(type: "float", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    CondicionEspecial = table.Column<bool>(type: "bit", nullable: false),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Retenido = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Paquetes", x => x.PaqueteId);
+                    table.ForeignKey(
+                        name: "FK_Paquetes_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DireccionesDelivery",
                 columns: table => new
                 {
-                    DireccionDeliveryId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClienteId = table.Column<string>(type: "TEXT", nullable: false),
-                    AutorizadoEntregaId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Provincia = table.Column<string>(type: "TEXT", nullable: false),
-                    Municipio = table.Column<string>(type: "TEXT", nullable: false),
-                    Sector = table.Column<string>(type: "TEXT", nullable: false),
-                    Calle = table.Column<string>(type: "TEXT", nullable: false),
-                    Domicilio = table.Column<string>(type: "TEXT", nullable: true),
-                    Referencias = table.Column<string>(type: "TEXT", nullable: false),
-                    Principal = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Alias = table.Column<string>(type: "TEXT", nullable: false)
+                    DireccionDeliveryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AutorizadoEntregaId = table.Column<int>(type: "int", nullable: false),
+                    Provincia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Municipio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sector = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Calle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Referencias = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Principal = table.Column<bool>(type: "bit", nullable: false),
+                    Alias = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -251,51 +281,27 @@ namespace RegistroDePaqueteEPS.Migrations
                         column: x => x.AutorizadoEntregaId,
                         principalTable: "AutorizadosEntrega",
                         principalColumn: "AutorizadoEntregaId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "EstatusPaqueteDetalles",
                 columns: table => new
                 {
-                    EstatusPaqueteDetalleId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PaqueteId = table.Column<int>(type: "INTEGER", nullable: false),
-                    EstatusPaqueteId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    EstatusPaqueteDetalleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaqueteId = table.Column<int>(type: "int", nullable: false),
+                    EstatusPaqueteId = table.Column<int>(type: "int", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EstatusPaqueteDetalles", x => x.EstatusPaqueteDetalleId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Paquetes",
-                columns: table => new
-                {
-                    PaqueteId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClienteId = table.Column<string>(type: "TEXT", nullable: false),
-                    PreavisoId = table.Column<int>(type: "INTEGER", nullable: true),
-                    NumeroRecepcion = table.Column<string>(type: "TEXT", nullable: false, computedColumnSql: "'MIO' || printf('%08d', PaqueteId)"),
-                    NumeroTracking = table.Column<string>(type: "TEXT", nullable: false),
-                    NumeroEPS = table.Column<string>(type: "TEXT", nullable: false),
-                    Suplidor = table.Column<string>(type: "TEXT", nullable: false),
-                    Contenido = table.Column<string>(type: "TEXT", nullable: false),
-                    Peso = table.Column<double>(type: "REAL", nullable: false),
-                    Total = table.Column<double>(type: "REAL", nullable: false),
-                    CondicionEspecial = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Categoria = table.Column<string>(type: "TEXT", nullable: false),
-                    Retenido = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Paquetes", x => x.PaqueteId);
                     table.ForeignKey(
-                        name: "FK_Paquetes_AspNetUsers_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        name: "FK_EstatusPaqueteDetalles_Paquetes_PaqueteId",
+                        column: x => x.PaqueteId,
+                        principalTable: "Paquetes",
+                        principalColumn: "PaqueteId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -303,16 +309,16 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "Preavisos",
                 columns: table => new
                 {
-                    PreavisoId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClienteId = table.Column<string>(type: "TEXT", nullable: false),
-                    PaqueteId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    NumeroTracking = table.Column<string>(type: "TEXT", nullable: false),
-                    Tienda = table.Column<string>(type: "TEXT", nullable: false),
-                    Transportista = table.Column<string>(type: "TEXT", nullable: false),
-                    Contenido = table.Column<string>(type: "TEXT", nullable: false),
-                    Valor = table.Column<double>(type: "REAL", nullable: false)
+                    PreavisoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PaqueteId = table.Column<int>(type: "int", nullable: true),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NumeroTracking = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tienda = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Transportista = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Valor = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -354,7 +360,8 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -385,7 +392,8 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AutorizadosEntrega_ClienteId",
@@ -413,11 +421,6 @@ namespace RegistroDePaqueteEPS.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Paquetes_PreavisoId",
-                table: "Paquetes",
-                column: "PreavisoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Preavisos_ClienteId",
                 table: "Preavisos",
                 column: "ClienteId");
@@ -425,39 +428,14 @@ namespace RegistroDePaqueteEPS.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Preavisos_PaqueteId",
                 table: "Preavisos",
-                column: "PaqueteId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_EstatusPaqueteDetalles_Paquetes_PaqueteId",
-                table: "EstatusPaqueteDetalles",
                 column: "PaqueteId",
-                principalTable: "Paquetes",
-                principalColumn: "PaqueteId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Paquetes_Preavisos_PreavisoId",
-                table: "Paquetes",
-                column: "PreavisoId",
-                principalTable: "Preavisos",
-                principalColumn: "PreavisoId");
+                unique: true,
+                filter: "[PaqueteId] IS NOT NULL");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Paquetes_AspNetUsers_ClienteId",
-                table: "Paquetes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Preavisos_AspNetUsers_ClienteId",
-                table: "Preavisos");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Preavisos_Paquetes_PaqueteId",
-                table: "Preavisos");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -486,19 +464,19 @@ namespace RegistroDePaqueteEPS.Migrations
                 name: "EstatusPaqueteDetalles");
 
             migrationBuilder.DropTable(
+                name: "Preavisos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AutorizadosEntrega");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Paquetes");
 
             migrationBuilder.DropTable(
-                name: "Preavisos");
+                name: "AspNetUsers");
         }
     }
 }

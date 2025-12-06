@@ -27,9 +27,38 @@ namespace RegistroDePaqueteEPS.Data
             {
                 entity.HasKey(e => e.PaqueteId);
 
-                // Cambio: printf('%08d', Id) asegura 8 dígitos
                 entity.Property(e => e.NumeroRecepcion)
-                      .HasComputedColumnSql("'MIO' || printf('%08d', PaqueteId)");
+                      .HasComputedColumnSql("'MIO' + RIGHT('00000000' + CAST(PaqueteId AS VARCHAR(10)), 8)");
+
+               entity.HasOne(d => d.Preaviso)
+              .WithOne(p => p.Paquete)
+              .HasForeignKey<Preavisos>(p => p.PaqueteId)
+              .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            builder.Entity<DireccionesDelivery>(entity =>
+            {
+                entity.HasKey(e => e.DireccionDeliveryId);
+
+                entity.HasOne(d => d.AutorizadoEntrega)
+                      .WithMany() // Autorizados no tiene una lista de direcciones en su modelo, así que vacío.
+                      .HasForeignKey(d => d.AutorizadoEntregaId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<Preavisos>(entity =>
+            {
+                entity.HasKey(e => e.PreavisoId);
+            });
+
+            builder.Entity<EstatusPaqueteDetalles>(entity =>
+            {
+                entity.HasKey(e => e.EstatusPaqueteDetalleId);
+
+                entity.HasOne<Paquetes>()
+                      .WithMany(p => p.EstatusPaquete)
+                      .HasForeignKey(d => d.PaqueteId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             builder.Entity<EstatusPaquete>(entity =>
