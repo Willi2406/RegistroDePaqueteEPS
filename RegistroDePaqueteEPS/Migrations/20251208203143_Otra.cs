@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RegistroDePaqueteEPS.Migrations
 {
     /// <inheritdoc />
-    public partial class primera : Migration
+    public partial class Otra : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

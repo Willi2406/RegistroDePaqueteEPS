@@ -201,10 +201,18 @@
 
     private void ActualizarPaquete()
     {
-        EstatusPaqueteDetalles EstatusPaquete = new EstatusPaqueteDetalles();
-        EstatusPaquete.EstatusPaqueteId = PaqueteEnEdicion.EstatusPaquete.Count() + 1;
-        PaqueteEnEdicion.EstatusPaquete.Add(EstatusPaquete);
-        actualizado = false;
+        int nuevoId = PaqueteEnEdicion.EstatusPaquete.Count() + 1;
+        if(nuevoId <= 8)
+        {
+            EstatusPaqueteDetalles EstatusPaquete = new EstatusPaqueteDetalles();
+            EstatusPaquete.EstatusPaqueteId = PaqueteEnEdicion.EstatusPaquete.Count() + 1;
+            if(nuevoId == 7)
+            {
+                PaqueteEnEdicion.Total = PaqueteEnEdicion.Peso * 320;
+            }
+            PaqueteEnEdicion.EstatusPaquete.Add(EstatusPaquete);
+            actualizado = false;
+        }
     }
 
     private void CerrarModal()

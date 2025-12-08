@@ -14,10 +14,10 @@ public class DireccionesDelivery
     public int AutorizadoEntregaId { get; set; }
 
     [Required]
-    public string Provincia { get; set; }
+    public string Provincia { get; set; } = "Hermanas Mirabal";
 
     [Required]
-    public string Municipio { get; set; }
+    public string Municipio { get; set; } = "Salcedo";
 
     [Required(ErrorMessage = "El sector es requerido")]
     public string Sector { get; set; }

@@ -61,14 +61,6 @@
                 </div>
 
                 <div class="form-item">
-                    <label>Valor Total (USD)</label>
-                    <input type="number" class="input-box"
-                           @bind-value="NuevoPaquete.Total"
-                           placeholder="0.00" step="0.01" />
-                    <ValidationMessage For="@(() => NuevoPaquete.Total)" />
-                </div>
-
-                <div class="form-item">
                     <label>Servicio / Categoría</label>
                     <select class="input-box" @bind="NuevoPaquete.Categoria">
                         <option value="">Seleccione...</option>

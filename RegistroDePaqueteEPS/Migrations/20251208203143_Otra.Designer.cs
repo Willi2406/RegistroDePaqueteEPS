@@ -11,8 +11,8 @@ using RegistroDePaqueteEPS.Data;
 namespace RegistroDePaqueteEPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251208194341_primera")]
-    partial class primera
+    [Migration("20251208203143_Otra")]
+    partial class Otra
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
