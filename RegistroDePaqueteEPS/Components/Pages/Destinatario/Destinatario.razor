@@ -21,7 +21,8 @@
     <div class="search-bar-container">
         <div class="search-box">
             <i class="bi bi-search search-icon"></i>
-            <input type="text" @bind="terminoBusqueda" @bind:event="oninput" placeholder="Buscar usuario..." />
+            @* Evento oninput para filtrar en tiempo real mientras escribes *@
+            <input type="text" @bind="terminoBusqueda" @bind:event="oninput" placeholder="Buscar por Nombre, EPS, Cédula..." />
         </div>
     </div>
 
@@ -294,13 +295,15 @@
     private List<AutorizadosEntrega> listaAutorizados = new();
     private List<Paquetes> listaPaquetes = new();
 
+    // LÓGICA DE FILTRADO ACTUALIZADA
     private List<ApplicationUser> UsuariosFiltrados =>
         string.IsNullOrWhiteSpace(terminoBusqueda)
         ? TodosLosUsuarios
         : TodosLosUsuarios.Where(u =>
             (u.NombreCompleto?.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase) ?? false) ||
             (u.Email?.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase) ?? false) ||
-            (u.Identificacion?.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase) ?? false)
+            (u.Identificacion?.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase) ?? false) ||
+            (u.UserName?.Contains(terminoBusqueda, StringComparison.OrdinalIgnoreCase) ?? false) // <-- AQUI SE AGREGO EL FILTRO POR EPS
           ).ToList();
 
     protected override async Task OnInitializedAsync()

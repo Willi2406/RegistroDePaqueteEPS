@@ -38,9 +38,6 @@
         <div class="vertical-line"></div>
 
         <div class="col-cell">Valor</div>
-        <div class="vertical-line"></div>
-
-        <div class="col-cell small">Acciones</div>
     </div>
     <div class="rows-container">
         @if (ListaPreavisos.Count == 0)
@@ -71,11 +68,6 @@
                     <div class="vertical-line"></div>
 
                     <div class="col-cell">@PreAviso.Valor</div>
-                    <div class="vertical-line"></div>
-
-                    <div class="col-cell small">
-                        <a href="preavisousuario/upsert/@PreAviso.PreavisoId" class="btn btn-outline-primary"><span class="bi bi-pencil"/></a>
-                    </div>
 
                 </div>
             }

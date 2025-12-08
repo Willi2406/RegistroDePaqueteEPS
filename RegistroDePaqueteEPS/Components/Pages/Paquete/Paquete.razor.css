@@ -1,4 +1,41 @@
-﻿/* Estilos específicos de Paquete */
+﻿/* ================================================= */
+/* 1. BARRA DE BÚSQUEDA                              */
+/* ================================================= */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-box {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    width: 400px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.search-icon {
+    font-size: 1.1rem;
+    color: #333;
+    margin-right: 10px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 15px;
+    width: 100%;
+    color: #333;
+    background: transparent;
+}
+
+/* ================================================= */
+/* 2. ESTILOS DE COLUMNAS (TABLA)                    */
+/* ================================================= */
 
 /* Enlace en la tabla */
 .btn-recepcion-link {
@@ -22,12 +59,13 @@
 }
 
 /* ================================================= */
-/* MODALES (Solución Fondo Negro y Centrado)         */
+/* 3. MODALES (SOLUCIÓN CENTRADO PERFECTO)           */
 /* ================================================= */
 
 /* FONDO GIGANTE: Cubre 200% para evitar bordes blancos por el Zoom */
 .modal-backdrop {
     position: fixed;
+    /* Coordenadas negativas para asegurar cobertura total */
     top: -50vh;
     left: -50vw;
     width: 200vw;
@@ -44,8 +82,7 @@
 
 /* --- MODAL AZUL (Específico de esta página) --- */
 .modal-window-blue {
-    /* Posición relativa porque el backdrop flex lo centra */
-    /* O puedes usar fixed + transform si prefieres forzarlo */
+    /* Posición Fixed para centrado absoluto respecto a la ventana */
     position: fixed;
     top: 50%;
     left: 50%;

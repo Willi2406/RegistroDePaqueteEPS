@@ -99,7 +99,10 @@
         </div>
 
         <form action="Account/Logout" method="post" style="width:100%;">
+            <AntiforgeryToken />
+
             <input type="hidden" name="ReturnUrl" value="" />
+
             <button type="submit" class="btn-logout">Cerrar Sesión</button>
         </form>
     </div>
