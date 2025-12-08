@@ -10,15 +10,9 @@
     <h1>PAQUETES</h1>
 </SectionContent>
 
-<div class="glass-container create-paquete-view">
+<div class="glass-container">
 
-    <div class="header-actions">
-        <a href="/paquetesusuario" class="btn-back">
-            <i class="bi bi-arrow-left-circle-fill icono-grande"></i>
-        </a>
-    </div>
-
-    <div class="form-content">
+    <div>
         <h3 class="section-title">Registrar Nuevo Paquete</h3>
 
         <EditForm Model="NuevoPaquete" OnValidSubmit="GuardarPaquete">
@@ -106,6 +100,7 @@
             </div>
 
             <div class="action-buttons">
+                @* El botón Cancelar sirve para regresar *@
                 <a href="/paquetesusuario" class="btn-cancel">Cancelar</a>
                 <button type="submit" class="btn-save">Guardar Paquete</button>
             </div>

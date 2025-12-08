@@ -28,7 +28,7 @@ namespace RegistroDePaqueteEPS.Data
                 entity.HasKey(e => e.PaqueteId);
 
                 entity.Property(e => e.NumeroRecepcion)
-                      .HasComputedColumnSql("'MIO' + RIGHT('00000000' + CAST(PaqueteId AS VARCHAR(10)), 8)");
+                      .HasComputedColumnSql("'MIO' || printf('%08d', PaqueteId)");
 
                entity.HasOne(d => d.Preaviso)
               .WithOne(p => p.Paquete)

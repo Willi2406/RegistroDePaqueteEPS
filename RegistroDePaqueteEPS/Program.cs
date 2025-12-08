@@ -33,7 +33,7 @@ var connectionString = builder.Configuration.GetConnectionString("ConStr")
     ?? throw new InvalidOperationException("Connection string 'ConStr' not found.");
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 
 builder.Services.AddAuthentication(options =>
 {

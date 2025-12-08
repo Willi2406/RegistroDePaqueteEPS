@@ -8,20 +8,20 @@
     <h1>REPORTE</h1>
 </SectionContent>
 
-<div class="glass-container reporte-view">
+<div class="glass-container">
 
     <div class="filters-section">
         <h3 class="section-subtitle">Filtrar Datos</h3>
         <div class="filter-grid">
             <div class="form-item">
                 <label>Desde</label>
-                <input type="date" class="input-box" @bind="FechaInicio" />
+                <input type="date" class="input-box filter-input" @bind="FechaInicio" />
             </div>
             <div class="form-item">
                 <label>Hasta</label>
-                <input type="date" class="input-box" @bind="FechaFin" />
+                <input type="date" class="input-box filter-input" @bind="FechaFin" />
             </div>
-            <div class="form-item button-item">
+            <div class="form-item">
                 <button class="btn-save" @onclick="CargarDatos">Generar Reporte</button>
             </div>
         </div>
@@ -52,30 +52,32 @@
     </div>
 
     <div class="charts-section">
-        
+
         <div class="chart-card">
-            <h3 class="chart-title">Estatus de Paquetes</h3>
-            
-            <MudChart ChartType="ChartType.Donut" 
-                      Width="250px" 
-                      Height="250px" 
-                      InputData="@DataGrafico" 
+            <h3 class="chart-title">Estatus</h3>
+
+            @* Dona muy compacta *@
+            <MudChart ChartType="ChartType.Donut"
+                      Width="140px"
+                      Height="140px"
+                      InputData="@DataGrafico"
                       Class="mud-chart-custom">
                 <CustomGraphics>
-                    <text class="donut-inner-text" x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#006089" font-family="Jaldi" font-weight="bold" font-size="24">Total</text>
-                    <text class="donut-inner-text" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" fill="#333" font-family="Jaldi" font-size="36">@TotalPaquetes</text>
+                    <text class="donut-inner-text" x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#006089" font-family="Jaldi" font-weight="bold" font-size="14">Total</text>
+                    <text class="donut-inner-text" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" fill="#333" font-family="Jaldi" font-size="20">@TotalPaquetes</text>
                 </CustomGraphics>
             </MudChart>
         </div>
 
         <div class="chart-card">
-            <h3 class="chart-title">Data por Mes</h3>
-            
-            <MudChart ChartType="ChartType.Bar" 
-                      ChartSeries="@SeriesBarras" 
-                      XAxisLabels="@XAxisLabels" 
-                      Width="100%" 
-                      Height="300px"
+            <h3 class="chart-title">Mensual</h3>
+
+            @* Barras con altura reducida a 180px *@
+            <MudChart ChartType="ChartType.Bar"
+                      ChartSeries="@SeriesBarras"
+                      XAxisLabels="@XAxisLabels"
+                      Width="100%"
+                      Height="180px"
                       Class="mud-chart-custom">
             </MudChart>
         </div>
@@ -95,24 +97,18 @@
     public List<ChartSeries> SeriesBarras { get; set; } = new List<ChartSeries>();
     public string[] XAxisLabels { get; set; } = { "Ene", "Feb", "Mar", "Abr", "May", "Jun" };
 
-    // PALETA DE COLORES EPS (Azul, Teal, Verde, Naranja)
-    // Esto es lo que cambia los colores de las barras y donas
     private string[] ColoresEPS = new[] { "#006089", "#0191A9", "#78BE42", "#FFB130", "#FC0202" };
-
-    // Configuración para aplicar los colores
     private MudBlazor.ChartOptions CustomGraphicsConfig = new MudBlazor.ChartOptions();
 
     protected override async Task OnInitializedAsync()
     {
-        // Aplicamos los colores personalizados a la configuración global del gráfico
         CustomGraphicsConfig.ChartPalette = ColoresEPS;
-        
         await CargarDatos();
     }
 
     private async Task CargarDatos()
     {
-        var lista = await paquetesService.Listar(p => p.PaqueteId > 0); 
+        var lista = await paquetesService.Listar(p => p.PaqueteId > 0);
 
         TotalPaquetes = lista.Count;
         TotalLibras = lista.Sum(p => p.Peso);
@@ -120,10 +116,10 @@
 
         double retenidos = lista.Count(p => p.Retenido);
         double normales = lista.Count(p => !p.Retenido);
-        
+
         DataGrafico = new double[] { normales * 0.4, normales * 0.3, normales * 0.2, retenidos };
-        
+
         SeriesBarras.Clear();
-        SeriesBarras.Add(new ChartSeries() {Data = new double[] { 10, 25, 15, 30, 40, (double)TotalPaquetes } });
+        SeriesBarras.Add(new ChartSeries() { Data = new double[] { 10, 25, 15, 30, 40, (double)TotalPaquetes } });
     }
 }
