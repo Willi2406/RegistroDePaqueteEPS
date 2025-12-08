@@ -1,14 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor
-@inject AuthenticationStateProvider AuthStateProvider
-@inject UserManager<ApplicationUser> UserManager
-@inject NavigationManager NavManager
 
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-@* Agregamos un ID o Clase específica para el scope del Zoom *@
 <div class="page dashboard-scale">
 
     <header class="top-header">
@@ -20,55 +16,8 @@
             <SectionOutlet SectionName="TituloPagina" />
         </div>
 
-        <AuthorizeView Roles="Cliente">
-            <Authorized>
-                <div class="user-header-info" @onclick="TogglePerfil">
-                    <div class="text-right">
-                        <span class="user-name-text">@NombreUsuario</span>
-                        <br />
-                        <span class="user-code-text">@CodigoEPS</span>
-                    </div>
-                    <i class="bi bi-person-fill user-header-icon"></i>
-                </div>
-            </Authorized>
-        </AuthorizeView>
+        <div style="width: 200px;"></div>
 
-        @if (mostrarPopup)
-        {
-            <div class="profile-overlay" @onclick="CerrarPerfil"></div>
-            <div class="profile-popup-card">
-                <i class="bi bi-person-fill profile-icon-large"></i>
-                <h3 class="profile-name">@NombreUsuario</h3>
-                <h4 class="profile-eps-number">@CodigoEPS</h4>
-                <p class="profile-branch">EPS @Sucursal</p>
-
-                <div class="address-container">
-                    <div class="address-box">
-                        <div class="addr-title">Paquetes</div>
-                        <div class="addr-text">
-                            8298 NW 21st St<br />APT @CodigoEPS<br />Doral, FL 33122
-                        </div>
-                    </div>
-                    <div class="address-box">
-                        <div class="addr-title">Correspondencia</div>
-                        <div class="addr-text">
-                            P.O BOX 025650<br />APT @CodigoEPS<br />MIAMI, FL 33102
-                        </div>
-                    </div>
-                </div>
-
-                <div class="profile-actions-row">
-                    <a href="/sucursales" class="action-item"><i class="bi bi-shop"></i><span>Sucursales</span></a>
-                    <a href="/faq" class="action-item"><i class="bi bi-question-circle-fill"></i><span>FAQ</span></a>
-                    <a href="/tutoriales" class="action-item"><i class="bi bi-display"></i><span>Tutoriales</span></a>
-                </div>
-
-                <form action="Account/Logout" method="post" style="width:100%;">
-                    <input type="hidden" name="ReturnUrl" value="" />
-                    <button type="submit" class="btn-logout">Cerrar Sesión</button>
-                </form>
-            </div>
-        }
     </header>
 
     <div class="main-container">
@@ -88,30 +37,3 @@
         </aside>
     </div>
 </div>
-
-@code {
-    private bool mostrarPopup = false;
-    private string NombreUsuario = "Cargando...";
-    private string CodigoEPS = "---";
-    private string Sucursal = "Principal";
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var userPrincipal = authState.User;
-
-        if (userPrincipal.Identity != null && userPrincipal.Identity.IsAuthenticated)
-        {
-            var appUser = await UserManager.GetUserAsync(userPrincipal);
-            if (appUser != null)
-            {
-                NombreUsuario = appUser.NombreCompleto ?? userPrincipal.Identity.Name;
-                CodigoEPS = appUser.UserName;
-                Sucursal = appUser.Municipio ?? "Salcedo";
-            }
-        }
-    }
-
-    private void TogglePerfil() => mostrarPopup = !mostrarPopup;
-    private void CerrarPerfil() => mostrarPopup = false;
-}

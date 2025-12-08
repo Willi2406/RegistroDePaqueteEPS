@@ -1,5 +1,5 @@
 /* ================================================= */
-/* CONTENEDOR DEL MENÚ (Compacto y Elegante)         */
+/* CONTENEDOR DEL MENÚ                               */
 /* ================================================= */
 .nav-card {
     background: rgba(255, 255, 255, 0.1);
@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: center;
     padding: 1.5rem 0;
-    backdrop-filter: blur(8px); /* Más desenfoque para mejor lectura */
+    backdrop-filter: blur(8px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     border-right: 1px solid rgba(255,255,255,0.1);
 }
@@ -19,63 +19,54 @@
     width: 100%;
     margin-bottom: 1.5rem;
     text-align: center;
-    position: relative;
 }
 
-/* ================================================= */
-/* ENLACES Y EFECTOS (La magia está aquí)            */
-/* ================================================= */
+/* Enlaces */
 ::deep .nav-link {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: rgba(255, 255, 255, 0.7); /* Blanco suave por defecto */
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transición suave */
-    background: transparent !important; /* IMPORTANTE: Sin fondo */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: transparent !important;
     border: none;
     width: 100%;
     padding: 5px 0;
     cursor: pointer;
 }
 
-/* Iconos */
 .nav-icon {
     font-size: 1.8rem;
     margin-bottom: 0.3rem;
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* Texto */
 .nav-text {
     font-family: 'Jaldi', sans-serif;
     font-size: 15px;
     font-weight: 400;
     line-height: 1.2;
-    transition: font-weight 0.3s ease;
 }
 
-/* --- EFECTO HOVER (El que te gustaba) --- */
+/* Efectos Hover */
 ::deep .nav-link:hover {
-    color: #ffffff; /* Blanco puro */
-    transform: translateY(-3px); /* Levanta un poco el elemento */
-    /* Resplandor en el texto */
+    color: #ffffff;
+    transform: translateY(-3px);
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(0, 195, 255, 0.6);
 }
 
     ::deep .nav-link:hover .nav-icon {
-        transform: scale(1.2); /* Crece el icono */
-        /* Resplandor específico para el icono */
+        transform: scale(1.2);
         filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
     }
 
-/* --- ESTADO ACTIVO (Seleccionado) --- */
+/* Activo */
 ::deep .nav-link.active {
     color: #ffffff;
     font-weight: 700;
     opacity: 1;
-    /* Un brillo azul sutil fijo para indicar dónde estás */
     text-shadow: 0 0 15px rgba(0, 195, 255, 0.8);
 }
 
@@ -84,7 +75,6 @@
         filter: drop-shadow(0 0 5px rgba(0, 195, 255, 0.8));
     }
 
-    /* Indicador lateral para el activo */
     ::deep .nav-link.active::after {
         content: '';
         position: absolute;
@@ -93,14 +83,12 @@
         transform: translateY(-50%);
         width: 4px;
         height: 70%;
-        background-color: #00c3ff; /* Azul neón */
+        background-color: #00c3ff;
         border-radius: 4px 0 0 4px;
         box-shadow: 0 0 10px #00c3ff;
     }
 
-/* ================================================= */
-/* FOOTER Y LOGO                                     */
-/* ================================================= */
+/* Footer y Logo */
 .nav-footer {
     margin-top: auto;
     display: flex;
@@ -116,10 +104,181 @@
     display: block;
     margin: 0 auto;
     opacity: 0.8;
-    transition: opacity 0.3s;
+    transition: all 0.3s;
 }
 
-    .toggle-logo:hover {
+.clickable-logo {
+    cursor: pointer;
+}
+
+    .clickable-logo:hover {
         opacity: 1;
-        filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+    }
+
+/* ================================================= */
+/* ESTILOS DEL MODAL (POPUP) CORREGIDOS              */
+/* ================================================= */
+
+.profile-overlay {
+    position: fixed;
+    /* TRUCO: Hacemos el fondo GIGANTE y lo movemos atrás para asegurar que cubra todo */
+    top: -50vh;
+    left: -50vw;
+    width: 200vw;
+    height: 200vh;
+    /* Fondo oscuro fuerte (negro 70%) */
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    cursor: default;
+    backdrop-filter: blur(4px); /* Difumina el fondo */
+}
+
+.profile-popup-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* CAMBIO: Ancho aumentado a 400px (Más grande) */
+    width: 400px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    /* Sombra muy fuerte para resaltar sobre lo negro */
+    box-shadow: 0 25px 80px rgba(0,0,0,0.8);
+    padding: 30px;
+    z-index: 2001;
+    color: #004d66;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #fff;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Estilos internos del perfil */
+.profile-icon-large {
+    font-size: 4rem; /* Icono más grande */
+    color: #006080;
+    margin-bottom: 10px;
+}
+
+.profile-name {
+    font-size: 1.5rem; /* Nombre más grande */
+    font-weight: 800;
+    margin: 0;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.profile-eps-number {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #006080;
+    margin: 5px 0 15px 0;
+}
+
+.profile-branch {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #555;
+}
+
+.address-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.7);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.addr-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #006089;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2px;
+}
+
+.addr-text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    font-weight: 600;
+    color: #333;
+}
+
+.profile-actions-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #006080;
+    gap: 5px;
+    padding: 5px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+    .action-item:hover {
+        color: #008eb2;
+        transform: scale(1.1);
+        background: rgba(0,0,0,0.05);
+    }
+
+    .action-item i {
+        font-size: 1.8rem;
+    }
+
+    .action-item span {
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+.btn-logout {
+    background-color: #0099cc;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 153, 204, 0.3);
+}
+
+    .btn-logout:hover {
+        background-color: #0077a3;
+        transform: translateY(-2px);
+    }}
+
+    .btn-logout:hover {
+        background-color: #0077a3;
     }

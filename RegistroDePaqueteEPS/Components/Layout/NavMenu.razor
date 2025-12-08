@@ -1,6 +1,14 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+@using RegistroDePaqueteEPS.Data
+
+@inject AuthenticationStateProvider AuthStateProvider
+@inject UserManager<ApplicationUser> UserManager
+
+@* IMPORTANTE: Hacemos el menú interactivo para que el clic funcione *@
+@rendermode InteractiveServer
 
 <div class="nav-card">
     <nav class="flex-column">
@@ -49,26 +57,99 @@
                 <div class="nav-item">
                     <NavLink class="nav-link" href="cuenta">
                         <i class="bi bi-person-circle nav-icon"></i>
-                        <span class="nav-text">Cuenta (@context.User.Identity?.Name)</span>
+                        <span class="nav-text">Cuenta</span>
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
 
         <div class="nav-footer">
-            <img src="/Imagenes/EPS_Barra_Lateral.png" class="toggle-logo" alt="Menú" />
+            <img src="/Imagenes/EPS_Barra_Lateral.png"
+                 class="toggle-logo clickable-logo"
+                 alt="Menú"
+                 @onclick="TogglePerfil" />
         </div>
 
     </nav>
 </div>
 
+@* --- MODAL DE PERFIL --- *@
+@if (mostrarPopup)
+{
+    <div class="profile-overlay" @onclick="CerrarPerfil"></div>
+
+    <div class="profile-popup-card animate-fade-in">
+        <i class="bi bi-person-fill profile-icon-large"></i>
+        <h3 class="profile-name">@NombreUsuario</h3>
+        <h4 class="profile-eps-number">@CodigoEPS</h4>
+        <p class="profile-branch">EPS @Sucursal</p>
+
+        <div class="address-container">
+            <div class="address-box">
+                <div class="addr-title">Paquetes</div>
+                <div class="addr-text">
+                    8298 NW 21st St<br />APT @CodigoEPS<br />Doral, FL 33122
+                </div>
+            </div>
+            <div class="address-box">
+                <div class="addr-title">Correspondencia</div>
+                <div class="addr-text">
+                    P.O BOX 025650<br />APT @CodigoEPS<br />MIAMI, FL 33102
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions-row">
+            <a href="/sucursales" class="action-item"><i class="bi bi-shop"></i><span>Sucursales</span></a>
+            <a href="/faq" class="action-item"><i class="bi bi-question-circle-fill"></i><span>FAQ</span></a>
+            <a href="/tutoriales" class="action-item"><i class="bi bi-display"></i><span>Tutoriales</span></a>
+        </div>
+
+        <form action="Account/Logout" method="post" style="width:100%;">
+            <input type="hidden" name="ReturnUrl" value="" />
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
+    </div>
+}
+
 @code {
     private string? currentUrl;
 
-    protected override void OnInitialized()
+    // Variables del Modal
+    private bool mostrarPopup = false;
+    private string NombreUsuario = "Cargando...";
+    private string CodigoEPS = "---";
+    private string Sucursal = "Principal";
+
+    protected override async Task OnInitializedAsync()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+
+        // Cargar datos del usuario
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var userPrincipal = authState.User;
+
+        if (userPrincipal.Identity != null && userPrincipal.Identity.IsAuthenticated)
+        {
+            var appUser = await UserManager.GetUserAsync(userPrincipal);
+            if (appUser != null)
+            {
+                NombreUsuario = appUser.NombreCompleto ?? userPrincipal.Identity.Name;
+                CodigoEPS = appUser.UserName;
+                Sucursal = appUser.Municipio ?? "Salcedo";
+            }
+        }
+    }
+
+    private void TogglePerfil()
+    {
+        mostrarPopup = !mostrarPopup;
+    }
+
+    private void CerrarPerfil()
+    {
+        mostrarPopup = false;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
