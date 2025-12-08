@@ -73,7 +73,7 @@
                     <div class="col-cell small">@paquete.Peso lb</div>
                     <div class="vertical-line"></div>
 
-                    <div class="col-cell status-col" style="color:@GetStatusColor("Disponible")">
+                    <div class="col-cell status-col" style="color:@GetStatusColor(8)">
                         @* Aquí puedes poner un icono o texto *@
                         <i class="bi bi-check-circle"></i>
                     </div>
@@ -123,7 +123,7 @@
                     @foreach (EstatusPaqueteDetalles estatus in PaqueteEnEdicion.EstatusPaquete)
                     {
                         <div class="data-row justify-content-center">
-                            <div class="col-cell" style="color:@GetStatusColor("Disponible")">
+                            <div class="col-cell" style="color:@GetStatusColor(estatus.EstatusPaqueteId)">
                                 @ListaEstatus.FirstOrDefault(t => t.EstatusPaqueteId == estatus.EstatusPaqueteId)?.Descripcion
                             </div>
                             <div class="vertical-line"></div>
@@ -233,8 +233,19 @@
         }
     }
 
-    private string GetStatusColor(string status)
+    private string GetStatusColor(int idstatus)
     {
-        return "#78BE42"; // Ejemplo básico
+        switch (idstatus)
+        {
+            case 1: return "#FC0202"; // Rojo
+            case 2: return "#0BC8A2"; // Verde Agua
+            case 3: return "#B537A3"; // Morado
+            case 4: return "#239FC3"; // Azul
+            case 5: return "#FFB130"; // Naranja
+            case 6: return "#767560"; // Oliva
+            case 7: return "#78BE42"; // Verde
+            case 8: return "#6FDCDC"; // Celeste
+            default: return "#333333"; // Color por defecto (Gris oscuro)
+        }
     }
 }

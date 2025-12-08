@@ -36,9 +36,6 @@
         </div>
 
         <div class="login-links">
-            <a href="Account/ForgotPassword">
-                <i class="bi bi-key-fill link-icon"></i> Olvidé mi contraseña
-            </a>
             <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">
                 <i class="bi bi-person-plus-fill link-icon"></i> Crear cuenta
             </a>
