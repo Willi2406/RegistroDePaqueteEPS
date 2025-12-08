@@ -1,5 +1,7 @@
 ﻿@page "/cuenta/autorizados"
 @inject AutorizadosEntregaService autorizadosEntregaService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -71,10 +73,23 @@
 
 @code {
     public List<AutorizadosEntrega> ListaAutorizados { get; set; } = new List<AutorizadosEntrega>();
+    private ApplicationUser appUser;
 
     protected override async Task OnInitializedAsync()
     {
-        ListaAutorizados = await autorizadosEntregaService.Listar(a => a.AutorizadoEntregaId > 0);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userClaimsPrincipal = authState.User;
+
+        if (userClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
+        await CargarAutorizados();
+    }
+
+    public async Task CargarAutorizados()
+    {
+        ListaAutorizados = await autorizadosEntregaService.Listar(a => a.AutorizadoEntregaId > 0 && a.ClienteId == appUser.Id);
     }
 
     private async Task Eliminar(int id)
@@ -83,7 +98,7 @@
         if (eliminado)
         {
             Console.WriteLine("Direccion Eliminada");
-            ListaAutorizados = await autorizadosEntregaService.Listar(a => a.AutorizadoEntregaId > 0);
+            await CargarAutorizados();
         }
     }
 }

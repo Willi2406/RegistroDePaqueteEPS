@@ -1,5 +1,7 @@
 ﻿@page "/cuenta/direcciones"
 @inject DireccionesDeliveryService direccionesDeliveryService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -75,10 +77,25 @@
 
 @code {
     public List<DireccionesDelivery> ListaDirecciones { get; set; } = new List<DireccionesDelivery>();
+    private ApplicationUser appUser;
 
     protected override async Task OnInitializedAsync()
     {
-        ListaDirecciones = await direccionesDeliveryService.Listar(d => d.DireccionDeliveryId > 0);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userClaimsPrincipal = authState.User;
+
+        if (userClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
+
+        await CargarDirecciones();
+
+    }
+
+    public async Task CargarDirecciones()
+    {
+        ListaDirecciones = await direccionesDeliveryService.Listar(d => d.DireccionDeliveryId > 0 && d.ClienteId == appUser.Id);
     }
 
     private async Task Eliminar(int id)
@@ -87,7 +104,7 @@
         if(eliminado)
         {
             Console.WriteLine("Direccion Eliminada");
-            ListaDirecciones = await direccionesDeliveryService.Listar(d => d.DireccionDeliveryId > 0);
+            await CargarDirecciones();
         }
     }
 }
