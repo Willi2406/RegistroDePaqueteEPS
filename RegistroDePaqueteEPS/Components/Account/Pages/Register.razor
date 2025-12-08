@@ -41,8 +41,8 @@
                 </div>
 
                 <div class="form-item">
-                    <label>Teléfono:</label>
-                    <InputText @bind-Value="Input.Telefono" class="input-box" placeholder="809-000-0000" />
+                    <label>Celular:</label>
+                    <InputText @bind-Value="Input.Celular" class="input-box" placeholder="809-000-0000" />
                 </div>
 
                 <div class="form-item">
@@ -75,8 +75,8 @@
                 </div>
 
                 <div class="form-item">
-                    <label>Celular:</label>
-                    <InputText @bind-Value="Input.Celular" class="input-box" placeholder="829-000-0000" />
+                    <label>Confirmar Celular:</label>
+                    <InputText @bind-Value="Input.ConfirmCelular" class="input-box" placeholder="829-000-0000" />
                 </div>
 
                 <div class="form-item">
@@ -131,6 +131,7 @@
         user.Identificacion = Input.Identificacion;
         user.Sexo = Input.Sexo;
         user.FechaNacimiento = Input.FechaNacimiento;
+        user.PhoneNumber = Input.Celular;
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
@@ -187,8 +188,10 @@
         public string NombreCompleto { get; set; } = "";
         public string Sexo { get; set; } = "";
         public DateTime FechaNacimiento { get; set; }
-        public string Telefono { get; set; } = "";
         public string Celular { get; set; } = "";
+        [Compare("Celular", ErrorMessage = "Los correos no coinciden")]
+        public string ConfirmCelular { get; set; } = "";
+        [Compare("Email", ErrorMessage = "Los correos no coinciden")]
         public string ConfirmEmail { get; set; } = "";
     }
 }

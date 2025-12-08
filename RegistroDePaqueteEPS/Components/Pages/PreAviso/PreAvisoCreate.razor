@@ -67,16 +67,6 @@
                            step="0.01" />
                     <ValidationMessage For="@(() => Preaviso.Valor)" />
                 </div>
-
-                <div class="form-item">
-                    <label>Factura (PDF/Imagen)</label>
-                    @* Combinamos la clase global .input-box con la local .file-upload-box *@
-                    <div class="file-upload-box input-box">
-                        <i class="bi bi-cloud-upload"></i>
-                        <span>Adjuntar Archivo</span>
-                        <InputFile OnChange="ManejarArchivo" class="file-input-hidden" />
-                    </div>
-                </div>
             </div>
 
             <div class="action-buttons">
@@ -116,10 +106,5 @@
         Preaviso.ClienteId = appUser.Id;
         var modificado = await preavisosService.Guardar(Preaviso);
         if (modificado) NavManager.NavigateTo("/preavisousuario");
-    }
-
-    private void ManejarArchivo(InputFileChangeEventArgs e)
-    {
-        // Lógica de archivo
     }
 }

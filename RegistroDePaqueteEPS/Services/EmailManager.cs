@@ -43,11 +43,10 @@ public class EmailManager(IEmailService _emailService)
         await _emailService.SendEmailAsync(email, subject, body);
     }
 
-    // 6. Pedido disponible/listo
     public async Task SendUserOrderReadyAsync(string email, string orderId)
     {
         string subject = $"¡Tu Pedido #{orderId} está listo!";
-        string body = $"<p>Buenas noticias, tu pedido #{orderId} ya está disponible para retirar/entregar.</p>";
+        string body = $"<p>Buenas noticias, tu pedido #{orderId} ya está disponible para retirar.</p>";
         await _emailService.SendEmailAsync(email, subject, body);
     }
 
@@ -58,7 +57,6 @@ public class EmailManager(IEmailService _emailService)
         await _emailService.SendEmailAsync(_adminEmail, subject, body);
     }
 
-    // B. Aviso eliminación de cuenta
     private async Task SendAdminUserDeletedAlertAsync(string userEmail)
     {
         string subject = "[ALERTA] Usuario eliminado";

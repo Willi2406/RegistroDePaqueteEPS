@@ -1,6 +1,8 @@
 ﻿@page "/cuenta"
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
 <SectionContent SectionName="TituloPagina">
@@ -24,23 +26,23 @@
     <div class="form-grid">
 
         <div class="form-item">
-            <label>Codigo</label>
-            <div class="data-box">2024</div>
+            <label>Usuario</label>
+            <InputText class="data-box" @bind-Value="appUser.UserName" disabled />
         </div>
 
         <div class="form-item">
             <label>Sucursal</label>
-            <InputText class="data-box" @bind-Value="appUser.Municipio" />
+            <InputText class="data-box" @bind-Value="appUser.Municipio" disabled/>
         </div>
 
         <div class="form-item">
             <label>Nombre</label>
-            <InputText class="data-box" @bind-Value="appUser.NombreCompleto" />
+            <InputText class="data-box" @bind-Value="appUser.NombreCompleto" disabled/>
         </div>
 
         <div class="form-item">
             <label>Cédula</label>
-            <InputText class="data-box" @bind-Value="appUser.Identificacion" />
+            <InputText class="data-box" @bind-Value="appUser.Identificacion" disabled/>
         </div>
 
         <div class="form-item">
@@ -55,11 +57,9 @@
     </div>
 
     <div class="action-buttons">
-        <button class="btn-save">Guardar Cambios</button>
+        <button class="btn-save" @onclick="GuardarCambiosAsync">Guardar Cambios</button>
     </div>
-
 </div>
-
 @code
 {
     private ApplicationUser? appUser;
@@ -75,6 +75,32 @@
             // 2. Usar el UserManager para buscar el usuario completo en la BD
             // Este método usa internamente el ID del ClaimsPrincipal para buscar
             appUser = await UserManager.GetUserAsync(userClaimsPrincipal);
+        }
+    }
+
+    private async Task GuardarCambiosAsync()
+    {
+        // 1. Verificar que el objeto appUser no sea null.
+        if (appUser == null)
+        {
+            return;
+        }
+
+        var result = await UserManager.UpdateAsync(appUser);
+
+        if (result.Succeeded)
+        {
+            await SignInManager.RefreshSignInAsync(appUser);
+
+            navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("Error al guardar cambios:");
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($"- {error.Description}");
+            }
         }
     }
 }

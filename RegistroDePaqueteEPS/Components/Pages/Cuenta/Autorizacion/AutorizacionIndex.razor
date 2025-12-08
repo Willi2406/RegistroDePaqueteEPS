@@ -57,7 +57,7 @@
                             <a href="/cuenta/autorizados/upsert/@persona.AutorizadoEntregaId" class="btn-icon edit">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <button class="btn-icon delete" title="Eliminar">
+                            <button class="btn-icon delete" title="Eliminar" @onclick="() => Eliminar(persona.AutorizadoEntregaId)">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                         </div>
@@ -75,5 +75,14 @@
     protected override async Task OnInitializedAsync()
     {
         ListaAutorizados = await autorizadosEntregaService.Listar(a => a.AutorizadoEntregaId > 0);
+    }
+
+    private async Task Eliminar(int id)
+    {
+        var eliminado = await autorizadosEntregaService.Eliminar(id);
+        if (eliminado)
+        {
+            Console.WriteLine("Direccion Eliminada");
+        }
     }
 }

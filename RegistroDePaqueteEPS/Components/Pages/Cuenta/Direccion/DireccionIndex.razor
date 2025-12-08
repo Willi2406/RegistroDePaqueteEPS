@@ -63,7 +63,7 @@
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
-                        <button class="btn-icon delete" title="Eliminar">
+                        <button class="btn-icon delete" title="Eliminar" @onclick="() => Eliminar(dir.DireccionDeliveryId)">
                             <i class="bi bi-trash-fill"></i>
                         </button>
                     </div>
@@ -79,5 +79,14 @@
     protected override async Task OnInitializedAsync()
     {
         ListaDirecciones = await direccionesDeliveryService.Listar(d => d.DireccionDeliveryId > 0);
+    }
+
+    private async Task Eliminar(int id)
+    {
+        var eliminado = await direccionesDeliveryService.Eliminar(id);
+        if(eliminado)
+        {
+            Console.WriteLine("Direccion Eliminada");
+        }
     }
 }
