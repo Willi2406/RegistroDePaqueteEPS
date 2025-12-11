@@ -11,8 +11,8 @@ using RegistroDePaqueteEPS.Data;
 namespace RegistroDePaqueteEPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251211053204_primera")]
-    partial class primera
+    [Migration("20251211165324_Otra")]
+    partial class Otra
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -554,6 +554,9 @@ namespace RegistroDePaqueteEPS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("PaqueteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Recibido")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Tienda")

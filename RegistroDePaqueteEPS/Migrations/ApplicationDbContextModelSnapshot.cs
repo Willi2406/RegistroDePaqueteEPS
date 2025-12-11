@@ -553,6 +553,9 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.Property<int?>("PaqueteId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Recibido")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Tienda")
                         .IsRequired()
                         .HasColumnType("TEXT");

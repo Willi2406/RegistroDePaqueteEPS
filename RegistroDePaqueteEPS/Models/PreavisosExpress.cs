@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroDePaqueteEPS.Models;
 
-public class Preavisos
+public class PreavisosExpress
 {
     [Key]
-    public int PreavisoId {  get; set; }
+    public int PreavisoId { get; set; }
     public string ClienteId { get; set; }
     public int? PaqueteId { get; set; }
 
@@ -16,17 +16,6 @@ public class Preavisos
     [Required(ErrorMessage = "El numero de tracking es requerido")]
     public string NumeroTracking { get; set; }
 
-    [Required(ErrorMessage = "El suplidor es requerido")]
-    public string Tienda { get; set; }
-
-    public string Transportista { get; set; }
-
-    [Required(ErrorMessage = "El contenido es requerido")]
-    public string Contenido { get; set; }
-
-    [Required(ErrorMessage = "El valor es requerido")]
-    public double Valor { get; set; }
-
     public bool Recibido { get; set; } = false;
 
     [ForeignKey(nameof(ClienteId))]
@@ -34,5 +23,4 @@ public class Preavisos
 
     [ForeignKey(nameof(PaqueteId))]
     public virtual Paquetes Paquete { get; set; }
-
 }
