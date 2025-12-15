@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RegistroDePaqueteEPS.Migrations
 {
     /// <inheritdoc />
-    public partial class Otra : Migration
+    public partial class primera : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -339,8 +339,7 @@ namespace RegistroDePaqueteEPS.Migrations
                     Tienda = table.Column<string>(type: "TEXT", nullable: false),
                     Transportista = table.Column<string>(type: "TEXT", nullable: false),
                     Contenido = table.Column<string>(type: "TEXT", nullable: false),
-                    Valor = table.Column<double>(type: "REAL", nullable: false),
-                    Recibido = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Valor = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {

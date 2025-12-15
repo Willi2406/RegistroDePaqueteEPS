@@ -27,8 +27,6 @@ public class Preavisos
     [Required(ErrorMessage = "El valor es requerido")]
     public double Valor { get; set; }
 
-    public bool Recibido { get; set; } = false;
-
     [ForeignKey(nameof(ClienteId))]
     public virtual ApplicationUser Cliente { get; set; }
 
