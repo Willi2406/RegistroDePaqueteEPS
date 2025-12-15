@@ -34,34 +34,6 @@
             </NavLink>
         </div>
 
-        <div class="nav-item">
-            <NavLink class="nav-link" href="preavisoexpress">
-                <i class="bi bi-rocket-takeoff-fill nav-icon"></i>
-                <span class="nav-text">Pre-Aviso Express</span>
-            </NavLink>
-        </div>
-
-        <div class="nav-item">
-            <NavLink class="nav-link" href="reembolsos">
-                <i class="bi bi-cash-coin nav-icon"></i>
-                <span class="nav-text">Reembolsos</span>
-            </NavLink>
-        </div>
-
-        <div class="nav-item">
-            <NavLink class="nav-link" href="delivery">
-                <i class="bi bi-truck nav-icon"></i>
-                <span class="nav-text">Delivery</span>
-            </NavLink>
-        </div>
-
-        <div class="nav-item">
-            <NavLink class="nav-link" href="entregas">
-                <i class="bi bi-box-arrow-right nav-icon"></i>
-                <span class="nav-text">Entregas</span>
-            </NavLink>
-        </div>
-
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <div class="nav-item">
@@ -128,7 +100,9 @@
 
         <form action="Account/Logout" method="post" style="width:100%;">
             <AntiforgeryToken />
+
             <input type="hidden" name="ReturnUrl" value="" />
+
             <button type="submit" class="btn-logout">Cerrar Sesión</button>
         </form>
     </div>

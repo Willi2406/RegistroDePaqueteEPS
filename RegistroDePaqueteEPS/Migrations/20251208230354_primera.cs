@@ -73,27 +73,6 @@ namespace RegistroDePaqueteEPS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reembolsos",
-                columns: table => new
-                {
-                    ReembolsoId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClienteId = table.Column<string>(type: "TEXT", nullable: false),
-                    FechaSolicitud = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Asunto = table.Column<string>(type: "TEXT", nullable: false),
-                    Tipo = table.Column<string>(type: "TEXT", nullable: false),
-                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
-                    NumeroTrackingRef = table.Column<string>(type: "TEXT", nullable: false),
-                    Observaciones = table.Column<string>(type: "TEXT", nullable: false),
-                    MontoTotal = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Estado = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reembolsos", x => x.ReembolsoId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -483,9 +462,6 @@ namespace RegistroDePaqueteEPS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Preavisos");
-
-            migrationBuilder.DropTable(
-                name: "Reembolsos");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

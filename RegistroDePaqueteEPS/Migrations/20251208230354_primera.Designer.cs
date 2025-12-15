@@ -11,7 +11,7 @@ using RegistroDePaqueteEPS.Data;
 namespace RegistroDePaqueteEPS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251211053204_primera")]
+    [Migration("20251208230354_primera")]
     partial class primera
     {
         /// <inheritdoc />
@@ -167,51 +167,6 @@ namespace RegistroDePaqueteEPS.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("RegistroDePaqueteEPS.Components.Pages.Rembolsos.RembolsosCreate+Reembolso", b =>
-                {
-                    b.Property<int>("ReembolsoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Asunto")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("FechaSolicitud")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MetodoPago")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("MontoTotal")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NumeroTrackingRef")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Observaciones")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ReembolsoId");
-
-                    b.ToTable("Reembolsos");
                 });
 
             modelBuilder.Entity("RegistroDePaqueteEPS.Data.ApplicationUser", b =>

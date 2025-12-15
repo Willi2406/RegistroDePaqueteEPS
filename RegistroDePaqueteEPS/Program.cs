@@ -27,7 +27,6 @@ builder.Services.AddScoped<AutorizadosEntregaService>();
 builder.Services.AddScoped<DireccionesDeliveryService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<EmailManager>();
-builder.Services.AddScoped<ReembolsosService>();
 
 // 4. Configuración de Base de Datos e Identity
 var connectionString = builder.Configuration.GetConnectionString("ConStr")

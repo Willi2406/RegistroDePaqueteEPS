@@ -18,24 +18,46 @@
         <EditForm Model="NuevoPaquete" OnValidSubmit="GuardarPaquete">
             <DataAnnotationsValidator />
 
-            @* --- 1. DATOS GENERALES --- *@
             <div class="form-grid">
+
                 <div class="form-item">
                     <label>Número de Tracking</label>
-                    <input type="text" class="input-box" @bind-value="NuevoPaquete.NumeroTracking" placeholder="Ej: 1Z999..." />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.NumeroTracking"
+                           placeholder="Ej: 1Z999..." />
                     <ValidationMessage For="@(() => NuevoPaquete.NumeroTracking)" />
                 </div>
 
                 <div class="form-item">
                     <label>Número de EPS</label>
-                    <input type="text" class="input-box" @bind-value="NuevoPaquete.NumeroEPS" placeholder="Ej: 064-000..." />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.NumeroEPS"
+                           placeholder="Ej: 064-000..." />
                     <ValidationMessage For="@(() => NuevoPaquete.NumeroEPS)" />
                 </div>
 
                 <div class="form-item">
                     <label>Suplidor / Tienda</label>
-                    <input type="text" class="input-box" @bind-value="NuevoPaquete.Suplidor" placeholder="Ej: Amazon" />
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.Suplidor"
+                           placeholder="Ej: Amazon" />
                     <ValidationMessage For="@(() => NuevoPaquete.Suplidor)" />
+                </div>
+
+                <div class="form-item">
+                    <label>Contenido</label>
+                    <input type="text" class="input-box"
+                           @bind-value="NuevoPaquete.Contenido"
+                           placeholder="Ej: Ropa, Electrónicos" />
+                    <ValidationMessage For="@(() => NuevoPaquete.Contenido)" />
+                </div>
+
+                <div class="form-item">
+                    <label>Peso (Libras)</label>
+                    <input type="number" class="input-box"
+                           @bind-value="NuevoPaquete.Peso"
+                           placeholder="0.00" step="0.01" />
+                    <ValidationMessage For="@(() => NuevoPaquete.Peso)" />
                 </div>
 
                 <div class="form-item">
@@ -66,94 +88,13 @@
                         <span class="checkbox-label">Retenido en Aduanas</span>
                     </div>
                 </div>
+
             </div>
 
-            @* --- 2. SECCIÓN DE DETALLE (LETRAS BLANCAS) --- *@
-            <div class="detail-section">
-                <h4 class="detail-title">Contenido del Paquete</h4>
-
-                @* Inputs para agregar detalle *@
-                <div class="detail-inputs-row">
-                    <div class="form-item" style="flex: 2;">
-                        <label>Descripción</label>
-                        <input type="text" class="input-box small-input" @bind="ArticuloTemporal.Descripcion" placeholder="Ej: Zapatos" />
-                    </div>
-
-                    <div class="form-item">
-                        <label>Valor (USD)</label>
-                        <input type="number" class="input-box small-input" @bind="ArticuloTemporal.Valor" placeholder="0.00" />
-                    </div>
-
-                    <div class="form-item">
-                        <label>Peso (Lb)</label>
-                        <input type="number" class="input-box small-input" @bind="ArticuloTemporal.Peso" placeholder="0.00" />
-                    </div>
-
-                    <div class="form-item" style="justify-content: flex-end;">
-                        <button type="button" class="btn-add" @onclick="AgregarDetalle">
-                            <i class="bi bi-plus-circle"></i> Agregar
-                        </button>
-                    </div>
-                </div>
-
-                @* Tabla de detalles *@
-                <div class="table-responsive mt-3">
-                    <table class="custom-table">
-                        <thead>
-                            <tr>
-                                <th>Descripción</th>
-                                <th>Valor</th>
-                                <th>Peso</th>
-                                <th style="text-align: center;">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (ListaArticulos.Any())
-                            {
-                                @foreach (var item in ListaArticulos)
-                                {
-                                    <tr>
-                                        <td>@item.Descripcion</td>
-                                        <td>US$ @item.Valor.ToString("N2")</td>
-                                        <td>@item.Peso.ToString("N2") lb</td>
-                                        <td style="text-align: center;">
-                                            <button type="button" class="btn-icon-small delete" @onclick="() => RemoverDetalle(item)">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted" style="color: rgba(255,255,255,0.7) !important;">
-                                        Aún no se han agregado artículos.
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                @* Resumen de Totales *@
-                <div class="totals-row">
-                    <div class="total-item">
-                        <span>Cant:</span> <strong>@ListaArticulos.Count</strong>
-                    </div>
-                    <div class="total-item">
-                        <span>Peso Total:</span> <strong>@NuevoPaquete.Peso.ToString("N2") lb</strong>
-                    </div>
-                    <div class="total-item">
-                        <span>Total (CIF):</span> <strong style="color: #78BE42; font-size: 1.3rem;">US$ @NuevoPaquete.Total.ToString("N2")</strong>
-                    </div>
-                </div>
-            </div>
-
-            @* --- BOTONES DE ACCIÓN --- *@
             <div class="action-buttons">
+                @* El botón Cancelar sirve para regresar *@
                 <a href="/paquetesusuario" class="btn-cancel">Cancelar</a>
-                <button type="button" @onclick="GuardarPaquete" class="btn-save">Guardar Paquete</button>
+                <button type="submit" class="btn-save">Guardar Paquete</button>
             </div>
 
         </EditForm>
@@ -165,74 +106,30 @@
     public Paquetes NuevoPaquete { get; set; } = new Paquetes();
     public EstatusPaqueteDetalles EstatusPaquete = new EstatusPaqueteDetalles();
 
-    // Lógica local para el Detalle
-    public List<ArticuloDetalle> ListaArticulos { get; set; } = new List<ArticuloDetalle>();
-    public ArticuloDetalle ArticuloTemporal { get; set; } = new ArticuloDetalle();
-
-    public class ArticuloDetalle
-    {
-        public string Descripcion { get; set; } = "";
-        public decimal Valor { get; set; }
-        public double Peso { get; set; }
-    }
-
-    private void AgregarDetalle()
-    {
-        if (string.IsNullOrWhiteSpace(ArticuloTemporal.Descripcion) || ArticuloTemporal.Valor <= 0)
-        {
-            return;
-        }
-
-        ListaArticulos.Add(new ArticuloDetalle
-        {
-            Descripcion = ArticuloTemporal.Descripcion,
-            Valor = ArticuloTemporal.Valor,
-            Peso = ArticuloTemporal.Peso
-        });
-
-        ArticuloTemporal = new ArticuloDetalle(); // Limpiar
-        RecalcularTotales();
-    }
-
-    private void RemoverDetalle(ArticuloDetalle item)
-    {
-        ListaArticulos.Remove(item);
-        RecalcularTotales();
-    }
-
-    private void RecalcularTotales()
-    {
-        NuevoPaquete.Peso = ListaArticulos.Sum(x => x.Peso);
-        NuevoPaquete.Contenido = string.Join(", ", ListaArticulos.Select(x => x.Descripcion));
-    }
-
-    public void AgregarEstatusInicial()
+    public void AgregarEstatus()
     {
         EstatusPaquete.EstatusPaqueteId = 1;
-        EstatusPaquete.Fecha = DateTime.Now;
         NuevoPaquete.EstatusPaquete.Add(EstatusPaquete);
     }
 
     private async Task GuardarPaquete()
     {
-        if (string.IsNullOrEmpty(NuevoPaquete.NumeroTracking) || string.IsNullOrEmpty(NuevoPaquete.NumeroEPS)) return;
-
         var appUser = await UserManager.FindByNameAsync(NuevoPaquete.NumeroEPS);
-        if (appUser != null)
+        if (!string.IsNullOrEmpty(NuevoPaquete.NumeroEPS))
         {
-            NuevoPaquete.ClienteId = appUser.Id;
+            if (appUser != null)
+            {
+                NuevoPaquete.ClienteId = appUser.Id;
+            }
         }
 
-        AgregarEstatusInicial();
+        AgregarEstatus();
 
         var guardado = await paquetesService.Guardar(NuevoPaquete);
 
         if (guardado)
         {
-            if (appUser != null)
-            {
-                await emailManager.SendUserOrderReceivedAsync(appUser.Email, NuevoPaquete.NumeroRecepcion);
-            }
+            await emailManager.SendUserOrderReceivedAsync(appUser.Email, NuevoPaquete.NumeroRecepcion);
             NavManager.NavigateTo("/paquetesusuario");
         }
     }
